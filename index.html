@@ -180,7 +180,6 @@
             <select id="filterKonseptorSelect" onchange="applyFiltersAndSort()"
                     class="touch-target min-h-[44px] w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
               <option value="all">Semua Konseptor</option>
-              <!-- Opsi konseptor diinjeksi via script -->
             </select>
           </div>
         </div>
@@ -219,28 +218,125 @@
 
     <!-- Section: BA Jasa Terkait Container -->
     <div id="containerBA" class="hidden space-y-4">
-      
-      <!-- Action Toolbar BA -->
-      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        <div class="relative flex-1 max-w-md">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm pointer-events-none"></i>
-          <input type="text" id="searchInputBA" oninput="handleFilterBA()" 
-                 placeholder="Cari nomor BA, PT, bandara, atau PIC..." 
-                 class="touch-target w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-slate-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700 transition">
+
+      <!-- Master Card / Ringkasan Metrik BA (KPI Bar) -->
+      <section aria-label="Ringkasan Metrik Berita Acara" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+        <!-- Card 1: Total BA -->
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Total Berita Acara</span>
+            <i class="fa-solid fa-file-invoice text-slate-400"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricTotalBA" class="text-2xl sm:text-3xl font-bold font-mono text-slate-900">0</span>
+            <span class="text-xs text-slate-500">berkas</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Seluruh BA teregistrasi 2026</p>
         </div>
 
-        <div class="flex items-center gap-2">
-          <button onclick="loadData()" title="Segarkan Data" 
-                  class="touch-target px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg text-slate-700 shadow-sm text-sm transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
-            <i class="fa-solid fa-rotate-right"></i>
-          </button>
-          <button onclick="openModal()" 
-                  class="touch-target flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
-            <i class="fa-solid fa-plus text-xs"></i>
-            <span>Catat BA Jasa Terkait</span>
-          </button>
+        <!-- Card 2: Dokumen Lengkap -->
+        <div class="bg-white rounded-xl border border-emerald-200 p-4 shadow-sm flex flex-col justify-between bg-emerald-50/20">
+          <div class="flex items-center justify-between text-emerald-800 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Dokumen Lengkap</span>
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricLengkapBA" class="text-2xl sm:text-3xl font-bold font-mono text-emerald-800">0</span>
+            <span class="text-xs text-emerald-700">berkas</span>
+          </div>
+          <p class="text-[11px] text-emerald-800 mt-1">Berkas Google Drive tersedia</p>
         </div>
-      </div>
+
+        <!-- Card 3: Belum Upload Berkas -->
+        <div class="bg-white rounded-xl border border-rose-200 p-4 shadow-sm flex flex-col justify-between bg-rose-50/20">
+          <div class="flex items-center justify-between text-rose-800 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Belum Ada Berkas</span>
+            <i class="fa-solid fa-file-circle-xmark text-rose-600"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricBelumBA" class="text-2xl sm:text-3xl font-bold font-mono text-rose-800">0</span>
+            <span class="text-xs text-rose-700">berkas</span>
+          </div>
+          <p class="text-[11px] text-rose-800 mt-1">Dokumen BA belum diunggah</p>
+        </div>
+      </section>
+
+      <!-- Bar Kontrol Fungsional: Filter, Urutan & Rentang Waktu BA -->
+      <section aria-label="Kontrol Filter dan Urutan BA" class="bg-white rounded-xl border border-slate-200 p-3.5 sm:p-4 shadow-sm space-y-3">
+        
+        <!-- Baris Atas: Pencarian Teks & Tombol Aksi -->
+        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+          <div class="relative flex-1">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm pointer-events-none"></i>
+            <input type="text" id="searchInputBA" oninput="applyBAFiltersAndSort()" 
+                   placeholder="Cari nomor BA, PT, bandara, atau PIC..." 
+                   class="touch-target w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700 transition">
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Toggle Sorting BA -->
+            <button onclick="toggleSortOrderBA()" id="btnSortToggleBA" title="Ubah Urutan Data"
+                    class="touch-target px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-xs sm:text-sm font-medium transition flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+              <i id="sortIconBA" class="fa-solid fa-arrow-down-wide-short text-xs"></i>
+              <span id="sortLabelTextBA">Terbaru ↓</span>
+            </button>
+
+            <!-- Segarkan Data -->
+            <button onclick="loadData()" title="Segarkan Data" 
+                    class="touch-target px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-sm transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+
+            <!-- Catat BA Baru -->
+            <button onclick="openModal()" 
+                    class="touch-target flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span>Catat BA Jasa Terkait</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Baris Bawah: Rentang Tanggal, Filter Status, Filter Bandara -->
+        <div class="pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <!-- Rentang Tanggal Mulai -->
+          <div>
+            <label for="filterDateStartBA" class="block text-[11px] font-semibold text-slate-600 mb-1">Tanggal Mulai</label>
+            <input type="date" id="filterDateStartBA" onchange="applyBAFiltersAndSort()"
+                   class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+          </div>
+
+          <!-- Rentang Tanggal Selesai -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="filterDateEndBA" class="block text-[11px] font-semibold text-slate-600">Tanggal Selesai</label>
+              <button onclick="resetDateRangeBA()" type="button" class="text-[10px] text-blue-700 hover:underline">Reset Tanggal</button>
+            </div>
+            <input type="date" id="filterDateEndBA" onchange="applyBAFiltersAndSort()"
+                   class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+          </div>
+
+          <!-- Filter Status Dokumen -->
+          <div>
+            <label for="filterStatusSelectBA" class="block text-[11px] font-semibold text-slate-600 mb-1">Status Berkas</label>
+            <select id="filterStatusSelectBA" onchange="applyBAFiltersAndSort()"
+                    class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+              <option value="all">Semua Status</option>
+              <option value="lengkap">Dokumen Lengkap</option>
+              <option value="draft">Belum Ada Berkas</option>
+            </select>
+          </div>
+
+          <!-- Filter Lokasi Bandara -->
+          <div>
+            <label for="filterBandaraSelectBA" class="block text-[11px] font-semibold text-slate-600 mb-1">Lokasi Bandara</label>
+            <select id="filterBandaraSelectBA" onchange="applyBAFiltersAndSort()"
+                    class="touch-target min-h-[44px] w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+              <option value="all">Semua Bandara</option>
+            </select>
+          </div>
+        </div>
+
+      </section>
 
       <!-- Tabel BA Jasa Terkait -->
       <section id="secBA" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -252,17 +348,18 @@
           <table class="w-full text-left text-sm border-collapse">
             <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-semibold border-b border-slate-200">
               <tr>
-                <th scope="col" class="px-4 py-3 w-14 text-center">No</th>
-                <th scope="col" class="px-4 py-3 whitespace-nowrap">Tanggal</th>
-                <th scope="col" class="px-4 py-3 whitespace-nowrap">Nomor Berita Acara</th>
-                <th scope="col" class="px-4 py-3 min-w-[220px]">Badan Usaha (PT)</th>
-                <th scope="col" class="px-4 py-3 min-w-[200px]">Bandara</th>
-                <th scope="col" class="px-4 py-3 min-w-[180px]">Tim PIC</th>
-                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Dokumen BA</th>
+                <th scope="col" class="px-3.5 py-3 w-12 text-center">No</th>
+                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Tanggal</th>
+                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Nomor Berita Acara</th>
+                <th scope="col" class="px-3.5 py-3 min-w-[200px]">Badan Usaha (PT)</th>
+                <th scope="col" class="px-3.5 py-3 min-w-[180px]">Bandara</th>
+                <th scope="col" class="px-3.5 py-3 min-w-[160px]">Tim PIC</th>
+                <th scope="col" class="px-3.5 py-3 text-center whitespace-nowrap">Dokumen BA</th>
+                <th scope="col" class="px-3.5 py-3 text-center whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody id="tbodyBA" class="divide-y divide-slate-200 text-slate-800">
-              <tr><td colspan="7" class="px-4 py-12 text-center text-slate-500">Memuat data...</td></tr>
+              <tr><td colspan="8" class="px-4 py-12 text-center text-slate-500">Memuat data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -303,7 +400,7 @@
     </div>
   </div>
 
-  <!-- Modal Dialog Edit & Upload Susulan (editModal) -->
+  <!-- Modal Dialog Edit Surat Keluar (editModal) -->
   <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
     <div class="bg-white rounded-xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto border border-slate-200">
       <div class="flex justify-between items-center pb-3 border-b border-slate-200">
@@ -401,6 +498,99 @@
     </div>
   </div>
 
+  <!-- Modal Dialog Edit Berita Acara (editBAModal) -->
+  <div id="editBAModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto border border-slate-200">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base">Kelola & Revisi Berita Acara</h3>
+          <p class="text-xs text-slate-500">Pembaruan data dan upload susulan dokumen BA</p>
+        </div>
+        <button onclick="closeEditBAModal()" aria-label="Tutup Modal Edit BA" 
+                class="touch-target w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="editBAForm" onsubmit="handleEditBASubmit(event)" class="mt-4 space-y-4">
+        <input type="hidden" id="editBANoUrut" value="">
+        <input type="hidden" id="editBANomorBA" value="">
+
+        <!-- Informasi Ringkas BA (Read-only) -->
+        <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs">
+          <div class="flex justify-between items-center border-b border-slate-200/80 pb-1.5">
+            <span class="text-slate-500 font-medium">Nomor Berita Acara:</span>
+            <span id="readBANomorBA" class="font-mono font-bold text-slate-900 text-sm">-</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <span class="text-slate-500 block">Tanggal BA:</span>
+              <span id="readBATanggal" class="font-medium text-slate-800">-</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">No. Urut:</span>
+              <span id="readBANoUrut" class="font-mono font-semibold text-slate-800">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Field Edit Data Teks -->
+        <div class="space-y-3">
+          <div>
+            <label for="editBANamaPT" class="block text-xs font-semibold text-slate-700 mb-1">Nama Badan Usaha (PT) *</label>
+            <input type="text" id="editBANamaPT" required class="touch-target w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none">
+          </div>
+
+          <div>
+            <label for="editBABandaraSelect" class="block text-xs font-semibold text-slate-700 mb-1">Lokasi Bandara *</label>
+            <select id="editBABandaraSelect" required class="touch-target min-h-[44px] w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+              <!-- Diisi dinamis via initBandaraFilterBA -->
+            </select>
+          </div>
+
+          <div>
+            <label for="editBAPicList" class="block text-xs font-semibold text-slate-700 mb-1">Tim PIC Pemeriksa *</label>
+            <input type="text" id="editBAPicList" required placeholder="Contoh: 1. Andy Bastian  2. Tony Fredrik" class="touch-target w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none">
+          </div>
+        </div>
+
+        <!-- Status Berkas Eksisting -->
+        <div class="p-3 rounded-lg border border-slate-200 bg-white flex items-center justify-between text-xs">
+          <div>
+            <span class="text-slate-500 block text-[11px]">Dokumen Berita Acara Eksisting:</span>
+            <span id="badgeExistingBA" class="text-xs font-medium text-slate-700">-</span>
+          </div>
+          <div id="linkContainerBA"></div>
+        </div>
+
+        <!-- Input Berkas Susulan / Pengganti -->
+        <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
+          <p class="text-xs text-slate-600 font-medium">
+            Unggah berkas baru dalam format PDF untuk melengkapi atau merevisi dokumen di Google Drive:
+          </p>
+          <div>
+            <label for="editFileBA" class="block text-xs font-semibold text-slate-800 mb-1">
+              <i class="fa-solid fa-file-pdf text-rose-700 mr-1.5"></i>Upload Dokumen Berita Acara (PDF)
+            </label>
+            <input type="file" id="editFileBA" accept=".pdf" 
+                   class="touch-target w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-800 hover:file:bg-rose-100">
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-200 flex justify-end space-x-3">
+          <button type="button" onclick="closeEditBAModal()" 
+                  class="touch-target px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+            Batal
+          </button>
+          <button type="submit" id="btnEditBASubmit" 
+                  class="touch-target px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-sm transition flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+            <span>Simpan Perubahan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzFk3Lgw0kXLpqhFgrBgVDOZyCKYwANppBq6-AtVggCK5EzJYKsFm39Tyz07AN8JqG0/exec";
 
@@ -408,6 +598,7 @@
     let dataSurat = [];
     let dataBA = [];
     let currentSortOrder = 'desc';
+    let currentSortOrderBA = 'desc';
 
     const PIC_OPTIONS = [
       "Cece Tarya",
@@ -438,6 +629,7 @@
       "Siti Halimah",
       "Fauziah Israyani Putri"
     ];
+
     const BANDARA_OPTIONS = [
       { kode: "CGK", nama: "Soekarno-Hatta (Tangerang)" },
       { kode: "HLP", nama: "Halim Perdanakusuma (Jakarta)" },
@@ -483,6 +675,7 @@
       return d.toISOString().split('T')[0];
     }
 
+    /* === Logika Tab Surat Keluar === */
     function getSuratStatus(r) {
       const hasND = r[7] && String(r[7]).trim().startsWith('http');
       const hasSurat = r[8] && String(r[8]).trim().startsWith('http');
@@ -522,22 +715,6 @@
       });
     }
 
-    function switchTab(tab) {
-      currentTab = tab;
-      const isSurat = tab === 'surat-keluar';
-
-      document.getElementById('containerSuratKeluar').classList.toggle('hidden', !isSurat);
-      document.getElementById('containerBA').classList.toggle('hidden', isSurat);
-
-      document.getElementById('tabBtnSurat').className = isSurat
-        ? "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md bg-blue-700 text-white shadow-sm transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-        : "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md text-slate-300 hover:text-white transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white";
-
-      document.getElementById('tabBtnBA').className = !isSurat
-        ? "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md bg-blue-700 text-white shadow-sm transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-        : "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md text-slate-300 hover:text-white transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white";
-    }
-
     function toggleSortOrder() {
       currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
       const label = document.getElementById('sortLabelText');
@@ -558,31 +735,6 @@
       applyFiltersAndSort();
     }
 
-    async function loadData() {
-      const icon = document.getElementById('refreshIcon');
-      if (icon) icon.classList.add('fa-spin');
-
-      try {
-        const [resSurat, resBA] = await Promise.all([
-          fetch(`${GAS_API_URL}?action=getSuratKeluar`).then(r => r.json()),
-          fetch(`${GAS_API_URL}?action=getBAJasaTerkait`).then(r => r.json())
-        ]);
-
-        dataSurat = (resSurat.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
-        dataBA = (resBA.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
-
-        calculateMetrics();
-        applyFiltersAndSort();
-
-        document.getElementById('countBA').textContent = `${dataBA.length} Berkas`;
-        renderBA(dataBA);
-      } catch (err) {
-        showToast("Gagal menyinkronkan data: " + err.message, "error");
-      } finally {
-        if (icon) icon.classList.remove('fa-spin');
-      }
-    }
-
     function applyFiltersAndSort() {
       const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
       const dateStart = document.getElementById('filterDateStart')?.value;
@@ -591,7 +743,6 @@
       const konseptorFilter = document.getElementById('filterKonseptorSelect')?.value || 'all';
 
       let filtered = dataSurat.filter(r => {
-        // Filter Kata Kunci
         if (q) {
           const matchNo = String(r[0] || '').toLowerCase().includes(q);
           const matchTanggal = String(r[1] || '').toLowerCase().includes(q);
@@ -601,7 +752,6 @@
           if (!matchNo && !matchTanggal && !matchNomor && !matchPerihal && !matchKonseptor) return false;
         }
 
-        // Filter Rentang Tanggal
         if (dateStart || dateEnd) {
           const rDateOnly = formatISODateOnly(r[1]);
           if (rDateOnly) {
@@ -610,13 +760,11 @@
           }
         }
 
-        // Filter Status Kelengkapan
         if (statusFilter !== 'all') {
           const s = getSuratStatus(r);
           if (s !== statusFilter) return false;
         }
 
-        // Filter Konseptor
         if (konseptorFilter !== 'all') {
           if (String(r[6] || '').trim() !== konseptorFilter) return false;
         }
@@ -624,7 +772,6 @@
         return true;
       });
 
-      // Sorting
       filtered.sort((a, b) => {
         const noA = parseInt(a[0]) || 0;
         const noB = parseInt(b[0]) || 0;
@@ -684,36 +831,198 @@
       `}).join('');
     }
 
+    /* === Logika Tab BA DOC Jasa Terkait === */
+    function getBAStatus(r) {
+      return (r[5] && String(r[5]).trim().startsWith('http')) ? 'lengkap' : 'draft';
+    }
+
+    function calculateBAMetrics() {
+      let total = dataBA.length;
+      let lengkap = 0;
+      let belum = 0;
+
+      dataBA.forEach(r => {
+        const s = getBAStatus(r);
+        if (s === 'lengkap') lengkap++;
+        else belum++;
+      });
+
+      const elTotal = document.getElementById('metricTotalBA');
+      const elLengkap = document.getElementById('metricLengkapBA');
+      const elBelum = document.getElementById('metricBelumBA');
+
+      if (elTotal) elTotal.textContent = total.toLocaleString('id-ID');
+      if (elLengkap) elLengkap.textContent = lengkap.toLocaleString('id-ID');
+      if (elBelum) elBelum.textContent = belum.toLocaleString('id-ID');
+    }
+
+    function initBandaraFilterBA() {
+      const filterSel = document.getElementById('filterBandaraSelectBA');
+      if (filterSel) {
+        filterSel.innerHTML = '<option value="all">Semua Bandara</option>';
+        BANDARA_OPTIONS.forEach(b => {
+          const opt = document.createElement('option');
+          opt.value = b.kode;
+          opt.textContent = `${b.nama} (${b.kode})`;
+          filterSel.appendChild(opt);
+        });
+      }
+
+      const editSel = document.getElementById('editBABandaraSelect');
+      if (editSel) {
+        editSel.innerHTML = '<option value="" disabled>-- Pilih Bandara --</option>';
+        BANDARA_OPTIONS.forEach(b => {
+          const opt = document.createElement('option');
+          opt.value = b.kode;
+          opt.textContent = `${b.nama} (${b.kode})`;
+          editSel.appendChild(opt);
+        });
+      }
+    }
+
+    function toggleSortOrderBA() {
+      currentSortOrderBA = currentSortOrderBA === 'desc' ? 'asc' : 'desc';
+      const label = document.getElementById('sortLabelTextBA');
+      const icon = document.getElementById('sortIconBA');
+      if (currentSortOrderBA === 'desc') {
+        if (label) label.textContent = "Terbaru ↓";
+        if (icon) icon.className = "fa-solid fa-arrow-down-wide-short text-xs";
+      } else {
+        if (label) label.textContent = "Terlama ↑";
+        if (icon) icon.className = "fa-solid fa-arrow-up-wide-short text-xs";
+      }
+      applyBAFiltersAndSort();
+    }
+
+    function resetDateRangeBA() {
+      const start = document.getElementById('filterDateStartBA');
+      const end = document.getElementById('filterDateEndBA');
+      if (start) start.value = '';
+      if (end) end.value = '';
+      applyBAFiltersAndSort();
+    }
+
+    function applyBAFiltersAndSort() {
+      const q = (document.getElementById('searchInputBA')?.value || '').toLowerCase().trim();
+      const dateStart = document.getElementById('filterDateStartBA')?.value;
+      const dateEnd = document.getElementById('filterDateEndBA')?.value;
+      const statusFilter = document.getElementById('filterStatusSelectBA')?.value || 'all';
+      const bandaraFilter = document.getElementById('filterBandaraSelectBA')?.value || 'all';
+
+      let filtered = dataBA.filter(r => {
+        if (q) {
+          const matchNo = String(r[0] || '').toLowerCase().includes(q);
+          const matchTanggal = String(r[1] || '').toLowerCase().includes(q);
+          const matchNomorBA = String(r[2] || '').toLowerCase().includes(q);
+          const matchPT = String(r[3] || '').toLowerCase().includes(q);
+          const matchBandara = String(r[4] || '').toLowerCase().includes(q);
+          const matchPIC = String(r[6] || '').toLowerCase().includes(q);
+          if (!matchNo && !matchTanggal && !matchNomorBA && !matchPT && !matchBandara && !matchPIC) return false;
+        }
+
+        if (dateStart || dateEnd) {
+          const rDateOnly = formatISODateOnly(r[1]);
+          if (rDateOnly) {
+            if (dateStart && rDateOnly < dateStart) return false;
+            if (dateEnd && rDateOnly > dateEnd) return false;
+          }
+        }
+
+        if (statusFilter !== 'all') {
+          const s = getBAStatus(r);
+          if (s !== statusFilter) return false;
+        }
+
+        if (bandaraFilter !== 'all') {
+          const bandaraText = String(r[4] || '').toUpperCase();
+          if (!bandaraText.includes(bandaraFilter.toUpperCase())) return false;
+        }
+
+        return true;
+      });
+
+      filtered.sort((a, b) => {
+        const noA = parseInt(a[0]) || 0;
+        const noB = parseInt(b[0]) || 0;
+        return currentSortOrderBA === 'desc' ? noB - noA : noA - noB;
+      });
+
+      const countEl = document.getElementById('countBA');
+      if (countEl) countEl.textContent = `${filtered.length} Berkas (dari ${dataBA.length})`;
+      renderBA(filtered);
+    }
+
     function renderBA(rows) {
       const tbody = document.getElementById('tbodyBA');
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-500">Tidak ada data Berita Acara ditemukan</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-10 text-center text-slate-500">Tidak ada data Berita Acara ditemukan sesuai filter</td></tr>`;
         return;
       }
-      tbody.innerHTML = rows.map(r => `
-        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-200">
-          <td class="px-4 py-3 text-center font-mono text-xs text-slate-600 font-semibold">${r[0]}</td>
-          <td class="px-4 py-3 whitespace-nowrap text-xs text-slate-700">${formatDate(r[1])}</td>
-          <td class="px-4 py-3 whitespace-nowrap font-medium text-slate-900 font-mono text-xs">${r[2] || '-'}</td>
-          <td class="px-4 py-3 font-semibold text-slate-900">${r[3] || '-'}</td>
-          <td class="px-4 py-3 text-xs text-slate-700">${r[4] || '-'}</td>
-          <td class="px-4 py-3 text-xs text-slate-700 whitespace-pre-line">${r[6] || '-'}</td>
-          <td class="px-4 py-3 text-center whitespace-nowrap">
-            ${r[5] ? `<a href="${r[5]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-rose-700 hover:text-rose-900 text-xs font-semibold bg-rose-50 border border-rose-200 px-2.5 py-1 rounded"><i class="fa-solid fa-file-pdf"></i> Dokumen</a>` : '<span class="text-slate-400">-</span>'}
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = rows.map(r => {
+        const hasDoc = r[5] && String(r[5]).trim().startsWith('http');
+        const docHtml = hasDoc 
+          ? `<a href="${r[5]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-rose-700 hover:text-rose-900 text-xs font-semibold bg-rose-50 border border-rose-200 px-2.5 py-1 rounded"><i class="fa-solid fa-file-pdf"></i> Dokumen</a>`
+          : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200"><i class="fa-solid fa-file-circle-xmark text-[10px]"></i> Belum Ada Berkas</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50 transition-colors border-b border-slate-200">
+            <td class="px-3.5 py-3 text-center font-mono text-xs text-slate-600 font-semibold">${r[0]}</td>
+            <td class="px-3.5 py-3 whitespace-nowrap text-xs text-slate-700">${formatDate(r[1])}</td>
+            <td class="px-3.5 py-3 whitespace-nowrap font-medium text-slate-900 font-mono text-xs">${r[2] || '-'}</td>
+            <td class="px-3.5 py-3 font-semibold text-slate-900">${r[3] || '-'}</td>
+            <td class="px-3.5 py-3 text-xs text-slate-700">${r[4] || '-'}</td>
+            <td class="px-3.5 py-3 text-xs text-slate-700 whitespace-pre-line">${r[6] || '-'}</td>
+            <td class="px-3.5 py-3 text-center whitespace-nowrap">${docHtml}</td>
+            <td class="px-3.5 py-3 text-center whitespace-nowrap">
+              <button onclick="openEditBAModal('${r[0]}')" title="Kelola / Revisi Data BA" 
+                      class="touch-target inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+                <i class="fa-solid fa-pen-to-square text-[11px]"></i>
+                <span>Kelola</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    function handleFilterBA() {
-      const q = (document.getElementById('searchInputBA')?.value || '').toLowerCase().trim();
-      const filtered = dataBA.filter(r => 
-        String(r[2] || '').toLowerCase().includes(q) || 
-        String(r[3] || '').toLowerCase().includes(q) || 
-        String(r[4] || '').toLowerCase().includes(q) ||
-        String(r[6] || '').toLowerCase().includes(q)
-      );
-      renderBA(filtered);
+    function switchTab(tab) {
+      currentTab = tab;
+      const isSurat = tab === 'surat-keluar';
+
+      document.getElementById('containerSuratKeluar').classList.toggle('hidden', !isSurat);
+      document.getElementById('containerBA').classList.toggle('hidden', isSurat);
+
+      document.getElementById('tabBtnSurat').className = isSurat
+        ? "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md bg-blue-700 text-white shadow-sm transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        : "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md text-slate-300 hover:text-white transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white";
+
+      document.getElementById('tabBtnBA').className = !isSurat
+        ? "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md bg-blue-700 text-white shadow-sm transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        : "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md text-slate-300 hover:text-white transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white";
+    }
+
+    async function loadData() {
+      const icon = document.getElementById('refreshIcon');
+      if (icon) icon.classList.add('fa-spin');
+
+      try {
+        const [resSurat, resBA] = await Promise.all([
+          fetch(`${GAS_API_URL}?action=getSuratKeluar`).then(r => r.json()),
+          fetch(`${GAS_API_URL}?action=getBAJasaTerkait`).then(r => r.json())
+        ]);
+
+        dataSurat = (resSurat.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
+        dataBA = (resBA.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
+
+        calculateMetrics();
+        calculateBAMetrics();
+        applyFiltersAndSort();
+        applyBAFiltersAndSort();
+      } catch (err) {
+        showToast("Gagal menyinkronkan data: " + err.message, "error");
+      } finally {
+        if (icon) icon.classList.remove('fa-spin');
+      }
     }
 
     function openModal() {
@@ -766,7 +1075,7 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Lokasi Bandara *</label>
-              <select name="bandaraSelect" id="bandaraSelect" required class="touch-target w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+              <select name="bandaraSelect" id="bandaraSelect" required class="touch-target min-h-[44px] w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
                 ${BANDARA_OPTIONS.map(b => `<option value="${b.kode}">${b.nama} (${b.kode})</option>`).join('')}
               </select>
             </div>
@@ -795,6 +1104,7 @@
       document.getElementById('mainForm').reset();
     }
 
+    /* === Edit Modal: Surat Keluar === */
     function openEditModal(noUrut) {
       const row = dataSurat.find(item => String(item[0]) === String(noUrut));
       if (!row) {
@@ -809,7 +1119,6 @@
       document.getElementById('readKonseptor').textContent = row[6] || '-';
       document.getElementById('readPerihal').textContent = row[3] || '-';
 
-      // Status ND
       const badgeND = document.getElementById('badgeExistingND');
       const containerND = document.getElementById('linkContainerND');
       if (row[7] && String(row[7]).trim().startsWith('http')) {
@@ -822,7 +1131,6 @@
         containerND.innerHTML = '';
       }
 
-      // Status Surat
       const badgeSurat = document.getElementById('badgeExistingSurat');
       const containerSurat = document.getElementById('linkContainerSurat');
       if (row[8] && String(row[8]).trim().startsWith('http')) {
@@ -843,6 +1151,61 @@
     function closeEditModal() {
       document.getElementById('editModal').classList.add('hidden');
       document.getElementById('editForm').reset();
+    }
+
+    /* === Edit Modal: Berita Acara === */
+    function openEditBAModal(noUrut) {
+      const row = dataBA.find(item => String(item[0]) === String(noUrut));
+      if (!row) {
+        showToast("Data Berita Acara tidak ditemukan.", "error");
+        return;
+      }
+
+      document.getElementById('editBANoUrut').value = row[0];
+      document.getElementById('editBANomorBA').value = row[2] || '';
+      document.getElementById('readBANomorBA').textContent = row[2] || '-';
+      document.getElementById('readBATanggal').textContent = formatDate(row[1]);
+      document.getElementById('readBANoUrut').textContent = row[0];
+
+      document.getElementById('editBANamaPT').value = row[3] || '';
+      document.getElementById('editBAPicList').value = row[6] || '';
+
+      const selBandara = document.getElementById('editBABandaraSelect');
+      if (selBandara) {
+        const bandaraStr = String(row[4] || '');
+        let found = false;
+        for (let i = 0; i < selBandara.options.length; i++) {
+          const opt = selBandara.options[i];
+          if (opt.value && (bandaraStr.includes(opt.value) || opt.text.includes(bandaraStr))) {
+            selBandara.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found && selBandara.options.length > 0) {
+          selBandara.selectedIndex = 0;
+        }
+      }
+
+      const badgeBA = document.getElementById('badgeExistingBA');
+      const containerBA = document.getElementById('linkContainerBA');
+      if (row[5] && String(row[5]).trim().startsWith('http')) {
+        badgeBA.textContent = "Dokumen Tersedia";
+        badgeBA.className = "text-xs font-semibold text-emerald-800";
+        containerBA.innerHTML = `<a href="${row[5]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1 text-[11px] font-semibold text-rose-700 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Dokumen</a>`;
+      } else {
+        badgeBA.textContent = "Belum diunggah";
+        badgeBA.className = "text-xs font-medium text-slate-400";
+        containerBA.innerHTML = '';
+      }
+
+      document.getElementById('editFileBA').value = '';
+      document.getElementById('editBAModal').classList.remove('hidden');
+    }
+
+    function closeEditBAModal() {
+      document.getElementById('editBAModal').classList.add('hidden');
+      document.getElementById('editBAForm').reset();
     }
 
     function readFileAsBase64(fileInputId) {
@@ -904,6 +1267,53 @@
       } finally {
         btn.disabled = false;
         btn.innerHTML = `Simpan Pembaruan`;
+      }
+    }
+
+    async function handleEditBASubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnEditBASubmit');
+      const noUrut = document.getElementById('editBANoUrut').value;
+      const nomorBA = document.getElementById('editBANomorBA').value;
+      const namaPT = document.getElementById('editBANamaPT').value;
+      const picList = document.getElementById('editBAPicList').value;
+      const selBandara = document.getElementById('editBABandaraSelect');
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyimpan...`;
+
+      try {
+        const base64BA = await readFileAsBase64('editFileBA');
+
+        const payload = {
+          action: "updateBAJasaTerkait",
+          noUrut: noUrut,
+          nomorBA: nomorBA,
+          namaPT: namaPT,
+          kodeBandara: selBandara.value,
+          lokasiBandara: selBandara.options[selBandara.selectedIndex].text,
+          picList: picList,
+          fileBA: base64BA
+        };
+
+        const res = await fetch(GAS_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        }).then(r => r.json());
+
+        if (res.status === 'success') {
+          showToast(res.message || "Data Berita Acara berhasil diperbarui.");
+          closeEditBAModal();
+          loadData();
+        } else {
+          showToast("Galat: " + res.message, "error");
+        }
+      } catch (err) {
+        showToast("Gagal memperbarui: " + err.message, "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Simpan Perubahan`;
       }
     }
 
@@ -975,6 +1385,7 @@
 
     window.onload = () => {
       initKonseptorFilter();
+      initBandaraFilterBA();
       loadData();
     };
   </script>
