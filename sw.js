@@ -1,4 +1,4 @@
-const CACHE_NAME = 'persuratan-subdit5-v3';
+const CACHE_NAME = 'persuratan-subdit5-v4';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
@@ -10,7 +10,7 @@ const STATIC_ASSETS = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap'
 ];
 
-/* Install: Tolerant precaching menggunakan Promise.allSettled (R-09) */
+/* Install: Precache aset statis dan langsung skip waiting */
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-/* Activate: Pembersihan cache lama */
+/* Activate: Bersihkan seluruh cache versi lama dan klaim kontrol klien */
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -37,16 +37,33 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-/* Fetch: Network first untuk GAS API, cache-first untuk aset statis (R-06) */
+/* Fetch Routing */
 self.addEventListener('fetch', (event) => {
   const reqUrl = event.request.url;
 
-  // Lewatkan panggilan API Google Apps Script dari cache
+  // 1. Lewatkan panggilan API Google Apps Script langsung ke jaringan
   if (reqUrl.includes('script.google.com') || reqUrl.includes('google.com/macros')) {
     event.respondWith(fetch(event.request));
     return;
   }
 
+  // 2. Navigasi Dokumen HTML: Gunakan Network-First agar pembaruan rilis segera tampil di perangkat mobile
+  if (event.request.mode === 'navigate' || (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone).catch(() => {}));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  // 3. Aset Statis Lainnya (Font, CDN CSS, Gambar): Cache-First dengan fallback jaringan
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
@@ -60,7 +77,6 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          // Fallback offline untuk dokumen HTML
           if (event.request.mode === 'navigate') {
             return caches.match('./index.html');
           }
