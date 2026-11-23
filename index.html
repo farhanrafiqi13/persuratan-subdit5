@@ -1204,17 +1204,18 @@
       if (editSel) {
         const curVal = editSel.value;
         editSel.innerHTML = '<option value="" disabled selected>-- Pilih Bandara --</option>';
+        const manualOpt = document.createElement('option');
+        manualOpt.value = '__MANUAL__';
+        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
+        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
+        editSel.appendChild(manualOpt);
+
         BANDARA_OPTIONS.forEach(b => {
           const opt = document.createElement('option');
           opt.value = b.kode;
           opt.textContent = `${b.nama} (${b.kode})`;
           editSel.appendChild(opt);
         });
-        const manualOpt = document.createElement('option');
-        manualOpt.value = '__MANUAL__';
-        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
-        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
-        editSel.appendChild(manualOpt);
 
         if (curVal && Array.from(editSel.options).some(o => o.value === curVal)) {
           editSel.value = curVal;
@@ -1225,17 +1226,18 @@
       if (modalAddSel) {
         const curVal = modalAddSel.value;
         modalAddSel.innerHTML = '<option value="" disabled selected>-- Pilih Bandara --</option>';
+        const manualOpt = document.createElement('option');
+        manualOpt.value = '__MANUAL__';
+        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
+        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
+        modalAddSel.appendChild(manualOpt);
+
         BANDARA_OPTIONS.forEach(b => {
           const opt = document.createElement('option');
           opt.value = b.kode;
           opt.textContent = `${b.nama} (${b.kode})`;
           modalAddSel.appendChild(opt);
         });
-        const manualOpt = document.createElement('option');
-        manualOpt.value = '__MANUAL__';
-        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
-        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
-        modalAddSel.appendChild(manualOpt);
 
         if (curVal && Array.from(modalAddSel.options).some(o => o.value === curVal)) {
           modalAddSel.value = curVal;
@@ -1521,8 +1523,8 @@
               <select name="bandaraSelect" id="bandaraSelect" required onchange="handleBandaraSelectChange(this, 'manualBandaraContainer')"
                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
                 <option value="" disabled selected>-- Pilih Bandara --</option>
-                ${BANDARA_OPTIONS.map(b => `<option value="${escapeHtml(b.kode)}">${escapeHtml(b.nama)} (${escapeHtml(b.kode)})</option>`).join('')}
                 <option value="__MANUAL__" class="font-semibold text-blue-700 bg-blue-50">+ Input Bandara Baru (Manual)...</option>
+                ${BANDARA_OPTIONS.map(b => `<option value="${escapeHtml(b.kode)}">${escapeHtml(b.nama)} (${escapeHtml(b.kode)})</option>`).join('')}
               </select>
             </div>
           </div>
