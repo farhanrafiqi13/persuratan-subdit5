@@ -697,10 +697,31 @@
 
             <div>
               <label for="editBABandaraSelect" class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
-              <select id="editBABandaraSelect" required 
+              <select id="editBABandaraSelect" required onchange="handleBandaraSelectChange(this, 'editManualBandaraContainer')"
                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white transition shadow-xs">
                 <!-- Diisi dinamis via initBandaraFilterBA -->
               </select>
+            </div>
+
+            <!-- Kontainer Input Manual Master Bandara Baru (Modal Edit) -->
+            <div id="editManualBandaraContainer" class="hidden p-3.5 bg-blue-50/70 rounded-xl border border-blue-200/80 space-y-2.5">
+              <div class="text-[11px] font-semibold text-blue-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-plus text-blue-600"></i>
+                <span>Pendaftaran Master Bandara Baru</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div>
+                  <label for="editManualKodeBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Kode 3 Huruf (IATA) *</label>
+                  <input type="text" id="editManualKodeBandara" maxlength="4" placeholder="SUB" 
+                         oninput="this.value = this.value.toUpperCase()" 
+                         class="touch-target min-h-[44px] w-full text-xs sm:text-sm font-mono font-bold uppercase border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="editManualNamaBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Nama Lengkap Bandara & Kota *</label>
+                  <input type="text" id="editManualNamaBandara" placeholder="Juanda (Surabaya)" 
+                         class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+                </div>
+              </div>
             </div>
 
             <div>
@@ -1166,6 +1187,7 @@
     function initBandaraFilterBA() {
       const filterSel = document.getElementById('filterBandaraSelectBA');
       if (filterSel) {
+        const curVal = filterSel.value;
         filterSel.innerHTML = '<option value="all">Semua Bandara</option>';
         BANDARA_OPTIONS.forEach(b => {
           const opt = document.createElement('option');
@@ -1173,17 +1195,100 @@
           opt.textContent = `${b.nama} (${b.kode})`;
           filterSel.appendChild(opt);
         });
+        if (curVal && Array.from(filterSel.options).some(o => o.value === curVal)) {
+          filterSel.value = curVal;
+        }
       }
 
       const editSel = document.getElementById('editBABandaraSelect');
       if (editSel) {
-        editSel.innerHTML = '<option value="" disabled>-- Pilih Bandara --</option>';
+        const curVal = editSel.value;
+        editSel.innerHTML = '<option value="" disabled selected>-- Pilih Bandara --</option>';
         BANDARA_OPTIONS.forEach(b => {
           const opt = document.createElement('option');
           opt.value = b.kode;
           opt.textContent = `${b.nama} (${b.kode})`;
           editSel.appendChild(opt);
         });
+        const manualOpt = document.createElement('option');
+        manualOpt.value = '__MANUAL__';
+        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
+        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
+        editSel.appendChild(manualOpt);
+
+        if (curVal && Array.from(editSel.options).some(o => o.value === curVal)) {
+          editSel.value = curVal;
+        }
+      }
+
+      const modalAddSel = document.getElementById('bandaraSelect');
+      if (modalAddSel) {
+        const curVal = modalAddSel.value;
+        modalAddSel.innerHTML = '<option value="" disabled selected>-- Pilih Bandara --</option>';
+        BANDARA_OPTIONS.forEach(b => {
+          const opt = document.createElement('option');
+          opt.value = b.kode;
+          opt.textContent = `${b.nama} (${b.kode})`;
+          modalAddSel.appendChild(opt);
+        });
+        const manualOpt = document.createElement('option');
+        manualOpt.value = '__MANUAL__';
+        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
+        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
+        modalAddSel.appendChild(manualOpt);
+
+        if (curVal && Array.from(modalAddSel.options).some(o => o.value === curVal)) {
+          modalAddSel.value = curVal;
+        }
+      }
+    }
+
+    function handleBandaraSelectChange(selectEl, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const isManual = selectEl.value === '__MANUAL__';
+      if (isManual) {
+        container.classList.remove('hidden');
+        const inputs = container.querySelectorAll('input');
+        inputs.forEach(inp => inp.required = true);
+        const firstInput = container.querySelector('input');
+        if (firstInput) firstInput.focus();
+      } else {
+        container.classList.add('hidden');
+        const inputs = container.querySelectorAll('input');
+        inputs.forEach(inp => {
+          inp.required = false;
+          inp.value = '';
+        });
+      }
+    }
+
+    async function loadMasterBandara() {
+      try {
+        const res = await fetchWithTimeout(`${GAS_API_URL}?action=getBandara`, {}, 12000);
+        if (res && res.status === 'success' && Array.isArray(res.data) && res.data.length > 0) {
+          let updated = false;
+          res.data.forEach(item => {
+            let kode = '';
+            let nama = '';
+            if (Array.isArray(item)) {
+              kode = String(item[0] || '').trim().toUpperCase();
+              nama = String(item[1] || '').trim();
+            } else if (item && typeof item === 'object') {
+              kode = String(item.kode || item.kodeBandara || item.Kode || '').trim().toUpperCase();
+              nama = String(item.nama || item.namaBandara || item.Nama || '').trim();
+            }
+            if (kode && !BANDARA_OPTIONS.some(b => b.kode === kode)) {
+              BANDARA_OPTIONS.push({ kode, nama: nama || kode });
+              updated = true;
+            }
+          });
+          if (updated) {
+            initBandaraFilterBA();
+          }
+        }
+      } catch (e) {
+        console.warn("Gagal memuat master bandara dinamis, menggunakan daftar lokal:", e.message);
       }
     }
 
@@ -1413,10 +1518,32 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
-              <select name="bandaraSelect" id="bandaraSelect" required 
+              <select name="bandaraSelect" id="bandaraSelect" required onchange="handleBandaraSelectChange(this, 'manualBandaraContainer')"
                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
+                <option value="" disabled selected>-- Pilih Bandara --</option>
                 ${BANDARA_OPTIONS.map(b => `<option value="${escapeHtml(b.kode)}">${escapeHtml(b.nama)} (${escapeHtml(b.kode)})</option>`).join('')}
+                <option value="__MANUAL__" class="font-semibold text-blue-700 bg-blue-50">+ Input Bandara Baru (Manual)...</option>
               </select>
+            </div>
+          </div>
+          <!-- Kontainer Input Manual Master Bandara Baru (Modal Tambah) -->
+          <div id="manualBandaraContainer" class="hidden p-3.5 bg-blue-50/70 rounded-xl border border-blue-200/80 space-y-2.5">
+            <div class="text-[11px] font-semibold text-blue-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-plus text-blue-600"></i>
+              <span>Pendaftaran Master Bandara Baru</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label for="manualKodeBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Kode 3 Huruf (IATA) *</label>
+                <input type="text" id="manualKodeBandara" maxlength="4" placeholder="SUB" 
+                       oninput="this.value = this.value.toUpperCase()" 
+                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm font-mono font-bold uppercase border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label for="manualNamaBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Nama Lengkap Bandara & Kota *</label>
+                <input type="text" id="manualNamaBandara" placeholder="Juanda (Surabaya)" 
+                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+              </div>
             </div>
           </div>
           <div>
@@ -1456,6 +1583,14 @@
     function closeModal() {
       document.getElementById('formModal').classList.add('hidden');
       document.getElementById('mainForm').reset();
+      const manual = document.getElementById('manualBandaraContainer');
+      if (manual) {
+        manual.classList.add('hidden');
+        manual.querySelectorAll('input').forEach(inp => {
+          inp.required = false;
+          inp.value = '';
+        });
+      }
     }
 
     /* === Edit Modal: Surat Keluar === */
@@ -1532,7 +1667,7 @@
         let found = false;
         for (let i = 0; i < selBandara.options.length; i++) {
           const opt = selBandara.options[i];
-          if (opt.value && (bandaraStr.includes(opt.value) || opt.text.includes(bandaraStr))) {
+          if (opt.value && opt.value !== '__MANUAL__' && (bandaraStr.includes(opt.value) || opt.text.includes(bandaraStr))) {
             selBandara.selectedIndex = i;
             found = true;
             break;
@@ -1541,6 +1676,7 @@
         if (!found && selBandara.options.length > 0) {
           selBandara.selectedIndex = 0;
         }
+        handleBandaraSelectChange(selBandara, 'editManualBandaraContainer');
       }
 
       const badgeBA = document.getElementById('badgeExistingBA');
@@ -1563,6 +1699,14 @@
     function closeEditBAModal() {
       document.getElementById('editBAModal').classList.add('hidden');
       document.getElementById('editBAForm').reset();
+      const editManual = document.getElementById('editManualBandaraContainer');
+      if (editManual) {
+        editManual.classList.add('hidden');
+        editManual.querySelectorAll('input').forEach(inp => {
+          inp.required = false;
+          inp.value = '';
+        });
+      }
     }
 
     /* === File Reader dengan Validasi Ukuran (R-12) === */
@@ -1643,6 +1787,27 @@
       const namaPT = document.getElementById('editBANamaPT').value;
       const picList = document.getElementById('editBAPicList').value;
       const selBandara = document.getElementById('editBABandaraSelect');
+      const isManual = selBandara.value === '__MANUAL__';
+
+      let kodeBandara = selBandara.value;
+      let lokasiBandara = selBandara.options[selBandara.selectedIndex] ? selBandara.options[selBandara.selectedIndex].text : '';
+      let namaBandaraBaru = '';
+
+      if (isManual) {
+        const manualKodeInp = document.getElementById('editManualKodeBandara');
+        const manualNamaInp = document.getElementById('editManualNamaBandara');
+        const manualKode = (manualKodeInp ? manualKodeInp.value : '').trim().toUpperCase();
+        const manualNama = (manualNamaInp ? manualNamaInp.value : '').trim();
+
+        if (!manualKode || !manualNama) {
+          showToast("Harap isi Kode Bandara dan Nama Lengkap Bandara.", "error");
+          return;
+        }
+
+        kodeBandara = manualKode;
+        namaBandaraBaru = manualNama;
+        lokasiBandara = `${manualNama} (${manualKode})`;
+      }
 
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyimpan...`;
@@ -1655,11 +1820,16 @@
           noUrut: noUrut,
           nomorBA: nomorBA,
           namaPT: namaPT,
-          kodeBandara: selBandara.value,
-          lokasiBandara: selBandara.options[selBandara.selectedIndex].text,
+          kodeBandara: kodeBandara,
+          lokasiBandara: lokasiBandara,
           picList: picList,
           fileBA: base64BA
         };
+
+        if (isManual) {
+          payload.isManualBandara = true;
+          payload.namaBandaraBaru = namaBandaraBaru;
+        }
 
         const res = await fetchWithTimeout(GAS_API_URL, {
           method: "POST",
@@ -1668,6 +1838,12 @@
         });
 
         if (res.status === 'success') {
+          if (payload.isManualBandara) {
+            if (!BANDARA_OPTIONS.some(b => b.kode === payload.kodeBandara)) {
+              BANDARA_OPTIONS.push({ kode: payload.kodeBandara, nama: payload.namaBandaraBaru });
+              initBandaraFilterBA();
+            }
+          }
           showToast(res.message || "Data Berita Acara berhasil diperbarui.");
           closeEditBAModal();
           loadData();
@@ -1685,14 +1861,14 @@
     async function handleSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSubmit');
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyimpan...`;
-
       const form = e.target;
-      try {
-        let payload = {};
 
-        if (currentTab === 'surat-keluar') {
+      let payload = {};
+
+      if (currentTab === 'surat-keluar') {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyimpan...`;
+        try {
           const [base64ND, base64Surat] = await Promise.all([
             readFileAsBase64('fileND'),
             readFileAsBase64('fileSurat')
@@ -1706,39 +1882,96 @@
             fileNotaKasubdit: base64ND,
             fileSuratDirektur: base64Surat
           };
-        } else {
+
+          const res = await fetchWithTimeout(GAS_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.status === 'success') {
+            showToast(res.message);
+            closeModal();
+            loadData();
+          } else {
+            showToast("Galat: " + res.message, "error");
+          }
+        } catch (err) {
+          showToast("Gagal menyimpan: " + err.message, "error");
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `<span>Simpan</span>`;
+        }
+      } else {
+        const selBandara = document.getElementById('bandaraSelect');
+        const isManual = selBandara.value === '__MANUAL__';
+
+        let kodeBandara = selBandara.value;
+        let lokasiBandara = selBandara.options[selBandara.selectedIndex] ? selBandara.options[selBandara.selectedIndex].text : '';
+        let namaBandaraBaru = '';
+
+        if (isManual) {
+          const manualKodeInp = document.getElementById('manualKodeBandara');
+          const manualNamaInp = document.getElementById('manualNamaBandara');
+          const manualKode = (manualKodeInp ? manualKodeInp.value : '').trim().toUpperCase();
+          const manualNama = (manualNamaInp ? manualNamaInp.value : '').trim();
+
+          if (!manualKode || !manualNama) {
+            showToast("Harap isi Kode Bandara dan Nama Lengkap Bandara.", "error");
+            return;
+          }
+
+          kodeBandara = manualKode;
+          namaBandaraBaru = manualNama;
+          lokasiBandara = `${manualNama} (${manualKode})`;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyimpan...`;
+
+        try {
           const base64BA = await readFileAsBase64('fileBA');
-          const selBandara = document.getElementById('bandaraSelect');
 
           payload = {
             action: "addBAJasaTerkait",
             tanggal: form.tanggal.value,
             namaPT: form.namaPT.value,
-            kodeBandara: selBandara.value,
-            lokasiBandara: selBandara.options[selBandara.selectedIndex].text,
+            kodeBandara: kodeBandara,
+            lokasiBandara: lokasiBandara,
             picList: form.picList.value,
             fileBA: base64BA
           };
-        }
 
-        const res = await fetchWithTimeout(GAS_API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload)
-        });
+          if (isManual) {
+            payload.isManualBandara = true;
+            payload.namaBandaraBaru = namaBandaraBaru;
+          }
 
-        if (res.status === 'success') {
-          showToast(res.message);
-          closeModal();
-          loadData();
-        } else {
-          showToast("Galat: " + res.message, "error");
+          const res = await fetchWithTimeout(GAS_API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.status === 'success') {
+            if (payload.isManualBandara) {
+              if (!BANDARA_OPTIONS.some(b => b.kode === payload.kodeBandara)) {
+                BANDARA_OPTIONS.push({ kode: payload.kodeBandara, nama: payload.namaBandaraBaru });
+                initBandaraFilterBA();
+              }
+            }
+            showToast(res.message);
+            closeModal();
+            loadData();
+          } else {
+            showToast("Galat: " + res.message, "error");
+          }
+        } catch (err) {
+          showToast("Gagal menyimpan: " + err.message, "error");
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `<span>Simpan</span>`;
         }
-      } catch (err) {
-        showToast("Gagal menyimpan: " + err.message, "error");
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Simpan</span>`;
       }
     }
 
@@ -1752,6 +1985,7 @@
       initKonseptorFilter();
       initBandaraFilterBA();
       loadData();
+      loadMasterBandara();
     };
   </script>
 </body>

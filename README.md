@@ -12,7 +12,11 @@ Dibangun dengan arsitektur **Single Page Application (SPA) Murni** (HTML5, Tailw
   const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzFk3Lgw0kXLpqhFgrBgVDOZyCKYwANppBq6-AtVggCK5EzJYKsFm39Tyz07AN8JqG0/exec";
   ```
 - **Komunikasi Data**: POST payload `Content-Type: text/plain;charset=utf-8` (CORS-safe) dengan upload Base64 berkas PDF untuk Nota Dinas Kasubdit (`fileNotaKasubdit`), Surat Direktur (`fileSuratDirektur`), dan Dokumen BA (`fileBA`).
-- **GET Endpoint**: `?action=getSuratKeluar` dan `?action=getBAJasaTerkait`.
+- **GET Endpoint**: `?action=getSuratKeluar`, `?action=getBAJasaTerkait`, dan `?action=getBandara` (mengembalikan master bandara JSON).
+- **Master Bandara & Input Manual Dinamis**:
+  * Tab Spreadsheet: `Master Bandara` (Kolom: `Kode Bandara`, `Nama Lengkap Bandara`). Dibuat otomatis saat inisialisasi bila belum tersedia.
+  * Mutasi Data (`addBAJasaTerkait` & `updateBAJasaTerkait`): Jika flag `isManualBandara: true` dikirimkan, backend melakukan sanitasi data dan meng-append baris baru ke tab `Master Bandara` bila kode bandara belum terdaftar.
+  * Penomoran Berita Acara otomatis mengintegrasikan kode bandara: `BA.%03d/DBU.5/BA.SS/DOK-[KODE]/[TAHUN]`.
 - **Concurrency & Race Condition Guard (`LockService`) [R-14]**:
   Setiap fungsi penomoran surat dan mutasi baris spreadsheet di `Code.gs` dilindungi oleh `LockService` untuk mencegah bentrok nomor urut saat submit bersamaan:
   ```javascript
@@ -42,6 +46,7 @@ Dibangun dengan arsitektur **Single Page Application (SPA) Murni** (HTML5, Tailw
 
 ## Struktur Berkas
 - `index.html` — Antarmuka web portal SPA Enterprise.
+- `Code.gs` — Backend Google Apps Script Web App (penomoran otomatis, Drive auto-routing, LockService, & Master Bandara).
 - `manifest.json` — Konfigurasi PWA Web App Manifest.
 - `sw.js` — Service Worker untuk offline precache & network routing.
 - `icon.svg`, `icon-192.png`, `icon-512.png` — Aset ikon grafis aplikasi.
