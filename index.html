@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Persuratan & BA Subdit 5 - 2026</title>
-  <meta name="description" content="Sistem Informasi Persuratan dan Berita Acara Jasa Terkait Subdirektorat Standardisasi Kebandarudaraan 2026">
+  <meta name="description" content="Sistem Informasi Persuratan dan Berita Acara Jasa Terkait Subdirektorat Sistem Penyelenggaraan dan Pengusahaan Bandar Udara 2026">
   <meta name="theme-color" content="#020617">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
@@ -104,12 +104,12 @@
     <!-- ==================== Section: Surat Keluar Container ==================== -->
     <div id="containerSuratKeluar" class="space-y-6">
 
-      <!-- Executive KPI Tiles: Ringkasan Metrik Surat Keluar -->
+      <!-- Executive KPI Tiles: Ringkasan Metrik Surat Keluar (WCAG AA Compliant) -->
       <section aria-label="Ringkasan Metrik Surat Keluar" class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         <!-- Tile 1: Total Surat -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Total Surat</span>
+            <span class="text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Total Surat</span>
             <div class="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-700">
               <i class="fa-solid fa-envelopes-bulk text-xs"></i>
             </div>
@@ -117,60 +117,60 @@
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricTotalSurat" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">0</span>
-              <span class="text-xs font-medium text-slate-500">berkas</span>
+              <span class="text-xs font-semibold text-slate-600">berkas</span>
             </div>
-            <p class="text-[11px] text-slate-500 mt-1 font-medium">Seluruh surat teregistrasi 2026</p>
+            <p class="text-[11px] text-slate-600 mt-1 font-medium">Seluruh surat teregistrasi 2026</p>
           </div>
         </div>
 
         <!-- Tile 2: Selesai / Lengkap -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-emerald-200/80 p-4 sm:p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between bg-emerald-50/10">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-emerald-700 uppercase">Dokumen Lengkap</span>
-            <div class="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600">
+            <span class="text-[11px] font-semibold tracking-wider text-emerald-800 uppercase">Dokumen Lengkap</span>
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-700">
               <i class="fa-solid fa-circle-check text-xs"></i>
             </div>
           </div>
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricLengkap" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-emerald-800">0</span>
-              <span class="text-xs font-medium text-emerald-700">berkas</span>
+              <span class="text-xs font-semibold text-emerald-800">berkas</span>
             </div>
-            <p class="text-[11px] text-emerald-700 mt-1 font-medium">Nota Dinas & Surat Direktur siap</p>
+            <p class="text-[11px] text-emerald-800 mt-1 font-medium">Nota Dinas & Surat Direktur siap</p>
           </div>
         </div>
 
         <!-- Tile 3: Pending Surat Direktur -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-amber-200/80 p-4 sm:p-5 shadow-sm hover:border-amber-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between bg-amber-50/10">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-amber-700 uppercase">Pending Surat</span>
-            <div class="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-600">
+            <span class="text-[11px] font-semibold tracking-wider text-amber-800 uppercase">Pending Surat</span>
+            <div class="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-700">
               <i class="fa-solid fa-clock text-xs"></i>
             </div>
           </div>
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricPending" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-amber-800">0</span>
-              <span class="text-xs font-medium text-amber-700">berkas</span>
+              <span class="text-xs font-semibold text-amber-800">berkas</span>
             </div>
-            <p class="text-[11px] text-amber-700 mt-1 font-medium">Menunggu tanda tangan Direktur</p>
+            <p class="text-[11px] text-amber-800 mt-1 font-medium">Menunggu tanda tangan Direktur</p>
           </div>
         </div>
 
         <!-- Tile 4: Belum Ada Berkas -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-rose-200/80 p-4 sm:p-5 shadow-sm hover:border-rose-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between bg-rose-50/10">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-rose-700 uppercase">Belum Ada Berkas</span>
-            <div class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-rose-600">
+            <span class="text-[11px] font-semibold tracking-wider text-rose-800 uppercase">Belum Ada Berkas</span>
+            <div class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-rose-700">
               <i class="fa-solid fa-file-circle-xmark text-xs"></i>
             </div>
           </div>
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricDraft" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-rose-800">0</span>
-              <span class="text-xs font-medium text-rose-700">berkas</span>
+              <span class="text-xs font-semibold text-rose-800">berkas</span>
             </div>
-            <p class="text-[11px] text-rose-700 mt-1 font-medium">Dokumen ND & Surat masih kosong</p>
+            <p class="text-[11px] text-rose-800 mt-1 font-medium">Dokumen ND & Surat masih kosong</p>
           </div>
         </div>
       </section>
@@ -182,10 +182,10 @@
         <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
           <div class="relative flex-1">
             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm pointer-events-none"></i>
-            <input type="text" id="searchInput" oninput="applyFiltersAndSort()" 
+            <input type="text" id="searchInput" oninput="debouncedApplyFiltersAndSort()" 
                    placeholder="Cari perihal, nomor surat, atau konseptor..." 
-                   class="touch-target w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all shadow-xs">
-            <span class="hidden sm:inline-flex absolute right-3 top-3 text-[10px] font-mono font-semibold text-slate-400 border border-slate-200 bg-slate-50 px-1.5 py-0.5 rounded">Ctrl K</span>
+                   class="touch-target w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all shadow-xs">
+            <span class="hidden sm:inline-flex absolute right-3 top-3 text-[10px] font-mono font-semibold text-slate-600 border border-slate-200 bg-slate-100 px-1.5 py-0.5 rounded">Ctrl K</span>
           </div>
 
           <div class="flex items-center gap-2">
@@ -214,17 +214,17 @@
         <!-- Baris Bawah: Rentang Tanggal, Filter Status, Filter Konseptor -->
         <div class="pt-3.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           
-          <!-- Unified Date Range Cluster -->
+          <!-- Unified Date Range Cluster (Responsive Adaptif) -->
           <div class="lg:col-span-2">
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-[11px] font-semibold tracking-wider text-slate-500 uppercase">Rentang Tanggal Surat</label>
-              <button onclick="resetDateRange()" type="button" class="text-[10px] font-semibold text-blue-700 hover:text-blue-900 transition">Reset Tanggal</button>
+              <label class="text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Rentang Tanggal Surat</label>
+              <button onclick="resetDateRange()" type="button" class="text-[10px] font-semibold text-blue-700 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 rounded px-1 transition">Reset Tanggal</button>
             </div>
-            <div class="flex items-center bg-white border border-slate-300 rounded-xl px-3 py-1 shadow-xs focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-slate-900 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center bg-white border border-slate-300 rounded-xl px-3 py-1.5 shadow-xs focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-slate-900 transition-all gap-1 sm:gap-0">
               <input type="date" id="filterDateStart" onchange="applyFiltersAndSort()"
                      aria-label="Tanggal Mulai"
                      class="touch-target w-full text-xs bg-transparent border-0 focus:outline-none text-slate-700 font-mono">
-              <span class="text-slate-400 font-bold px-2">—</span>
+              <span class="hidden sm:inline text-slate-400 font-bold px-2">—</span>
               <input type="date" id="filterDateEnd" onchange="applyFiltersAndSort()"
                      aria-label="Tanggal Selesai"
                      class="touch-target w-full text-xs bg-transparent border-0 focus:outline-none text-slate-700 font-mono">
@@ -233,7 +233,7 @@
 
           <!-- Filter Status Kelengkapan -->
           <div>
-            <label for="filterStatusSelect" class="block text-[11px] font-semibold tracking-wider text-slate-500 uppercase mb-1.5">Status Berkas</label>
+            <label for="filterStatusSelect" class="block text-[11px] font-semibold tracking-wider text-slate-600 uppercase mb-1.5">Status Berkas</label>
             <select id="filterStatusSelect" onchange="applyFiltersAndSort()"
                     class="touch-target min-h-[44px] w-full text-xs font-medium border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 shadow-xs transition">
               <option value="all">Semua Status</option>
@@ -245,7 +245,7 @@
 
           <!-- Filter Konseptor (PIC) -->
           <div>
-            <label for="filterKonseptorSelect" class="block text-[11px] font-semibold tracking-wider text-slate-500 uppercase mb-1.5">Konseptor (PIC)</label>
+            <label for="filterKonseptorSelect" class="block text-[11px] font-semibold tracking-wider text-slate-600 uppercase mb-1.5">Konseptor (PIC)</label>
             <select id="filterKonseptorSelect" onchange="applyFiltersAndSort()"
                     class="touch-target min-h-[44px] w-full text-xs font-medium border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 shadow-xs transition">
               <option value="all">Semua Konseptor</option>
@@ -264,18 +264,18 @@
             <span class="w-2 h-2 rounded-full bg-blue-600"></span>
             <span class="font-semibold text-slate-800 tracking-tight">Daftar Registrasi Surat Keluar (2026)</span>
           </div>
-          <span id="countSurat" class="font-mono font-semibold text-slate-600 bg-slate-200/60 px-2 py-0.5 rounded-md">0 Berkas</span>
+          <span id="countSurat" class="font-mono font-semibold text-slate-700 bg-slate-200/60 px-2 py-0.5 rounded-md">0 Berkas</span>
         </div>
 
         <!-- Mobile Scroll Indicator -->
-        <div class="sm:hidden px-3.5 py-1.5 bg-slate-50 border-b border-slate-200/80 text-[10px] text-slate-500 flex items-center justify-between">
+        <div class="sm:hidden px-3.5 py-1.5 bg-slate-50 border-b border-slate-200/80 text-[10px] text-slate-600 flex items-center justify-between">
           <span><i class="fa-solid fa-arrows-left-right mr-1 text-slate-400"></i>Geser tabel untuk melihat rincian</span>
-          <span class="font-mono text-[10px] text-slate-400">← →</span>
+          <span class="font-mono text-[10px] text-slate-500">← →</span>
         </div>
 
         <div class="overflow-x-auto w-full">
           <table class="w-full text-left text-sm border-collapse">
-            <thead class="sticky top-[61px] bg-slate-100/95 backdrop-blur-sm z-10 text-slate-600 text-[11px] uppercase tracking-wider font-semibold border-b border-slate-200">
+            <thead class="sticky top-[108px] sm:top-[61px] bg-slate-100/95 backdrop-blur-sm z-10 text-slate-700 text-[11px] uppercase tracking-wider font-semibold border-b border-slate-200">
               <tr>
                 <th scope="col" class="px-3.5 py-3 w-12 text-center">No</th>
                 <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Tanggal</th>
@@ -289,7 +289,7 @@
               </tr>
             </thead>
             <tbody id="tbodySuratKeluar" class="divide-y divide-slate-100 text-slate-800">
-              <tr><td colspan="9" class="px-4 py-12 text-center text-slate-500">Memuat data persuratan...</td></tr>
+              <tr><td colspan="9" class="px-4 py-12 text-center text-slate-500 font-medium">Memuat data persuratan...</td></tr>
             </tbody>
           </table>
         </div>
@@ -300,12 +300,12 @@
     <!-- ==================== Section: BA Jasa Terkait Container ==================== -->
     <div id="containerBA" class="hidden space-y-6">
 
-      <!-- Executive KPI Tiles: Ringkasan Metrik Berita Acara -->
+      <!-- Executive KPI Tiles: Ringkasan Metrik Berita Acara (WCAG AA Compliant) -->
       <section aria-label="Ringkasan Metrik Berita Acara" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
         <!-- Tile 1: Total BA -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Total Berita Acara</span>
+            <span class="text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Total Berita Acara</span>
             <div class="w-8 h-8 rounded-xl bg-slate-100 border border-slate-200/80 flex items-center justify-center text-slate-700">
               <i class="fa-solid fa-file-invoice text-xs"></i>
             </div>
@@ -313,43 +313,43 @@
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricTotalBA" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">0</span>
-              <span class="text-xs font-medium text-slate-500">berkas</span>
+              <span class="text-xs font-semibold text-slate-600">berkas</span>
             </div>
-            <p class="text-[11px] text-slate-500 mt-1 font-medium">Seluruh BA jasa terkait terdata 2026</p>
+            <p class="text-[11px] text-slate-600 mt-1 font-medium">Seluruh BA jasa terkait terdata 2026</p>
           </div>
         </div>
 
         <!-- Tile 2: Dokumen Lengkap -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-emerald-200/80 p-4 sm:p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between bg-emerald-50/10">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-emerald-700 uppercase">Dokumen Lengkap</span>
-            <div class="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600">
+            <span class="text-[11px] font-semibold tracking-wider text-emerald-800 uppercase">Dokumen Lengkap</span>
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-700">
               <i class="fa-solid fa-circle-check text-xs"></i>
             </div>
           </div>
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricLengkapBA" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-emerald-800">0</span>
-              <span class="text-xs font-medium text-emerald-700">berkas</span>
+              <span class="text-xs font-semibold text-emerald-800">berkas</span>
             </div>
-            <p class="text-[11px] text-emerald-700 mt-1 font-medium">Berkas scan Google Drive tersedia</p>
+            <p class="text-[11px] text-emerald-800 mt-1 font-medium">Berkas scan Google Drive tersedia</p>
           </div>
         </div>
 
         <!-- Tile 3: Belum Upload Berkas -->
         <div class="bg-white/90 backdrop-blur-sm rounded-2xl border border-rose-200/80 p-4 sm:p-5 shadow-sm hover:border-rose-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between bg-rose-50/10">
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-semibold tracking-wider text-rose-700 uppercase">Belum Ada Berkas</span>
-            <div class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-rose-600">
+            <span class="text-[11px] font-semibold tracking-wider text-rose-800 uppercase">Belum Ada Berkas</span>
+            <div class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-rose-700">
               <i class="fa-solid fa-file-circle-xmark text-xs"></i>
             </div>
           </div>
           <div>
             <div class="flex items-baseline gap-2">
               <span id="metricBelumBA" class="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-rose-800">0</span>
-              <span class="text-xs font-medium text-rose-700">berkas</span>
+              <span class="text-xs font-semibold text-rose-800">berkas</span>
             </div>
-            <p class="text-[11px] text-rose-700 mt-1 font-medium">Dokumen BA fisik belum diunggah</p>
+            <p class="text-[11px] text-rose-800 mt-1 font-medium">Dokumen BA fisik belum diunggah</p>
           </div>
         </div>
       </section>
@@ -361,10 +361,10 @@
         <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
           <div class="relative flex-1">
             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm pointer-events-none"></i>
-            <input type="text" id="searchInputBA" oninput="applyBAFiltersAndSort()" 
+            <input type="text" id="searchInputBA" oninput="debouncedApplyBAFiltersAndSort()" 
                    placeholder="Cari nomor BA, badan usaha, bandara, atau PIC..." 
-                   class="touch-target w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all shadow-xs">
-            <span class="hidden sm:inline-flex absolute right-3 top-3 text-[10px] font-mono font-semibold text-slate-400 border border-slate-200 bg-slate-50 px-1.5 py-0.5 rounded">Ctrl K</span>
+                   class="touch-target w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-all shadow-xs">
+            <span class="hidden sm:inline-flex absolute right-3 top-3 text-[10px] font-mono font-semibold text-slate-600 border border-slate-200 bg-slate-100 px-1.5 py-0.5 rounded">Ctrl K</span>
           </div>
 
           <div class="flex items-center gap-2">
@@ -393,17 +393,17 @@
         <!-- Baris Bawah: Rentang Tanggal, Filter Status, Filter Bandara -->
         <div class="pt-3.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           
-          <!-- Unified Date Range Cluster BA -->
+          <!-- Unified Date Range Cluster BA (Responsive Adaptif) -->
           <div class="lg:col-span-2">
             <div class="flex items-center justify-between mb-1.5">
-              <label class="text-[11px] font-semibold tracking-wider text-slate-500 uppercase">Rentang Tanggal BA</label>
-              <button onclick="resetDateRangeBA()" type="button" class="text-[10px] font-semibold text-blue-700 hover:text-blue-900 transition">Reset Tanggal</button>
+              <label class="text-[11px] font-semibold tracking-wider text-slate-600 uppercase">Rentang Tanggal BA</label>
+              <button onclick="resetDateRangeBA()" type="button" class="text-[10px] font-semibold text-blue-700 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 rounded px-1 transition">Reset Tanggal</button>
             </div>
-            <div class="flex items-center bg-white border border-slate-300 rounded-xl px-3 py-1 shadow-xs focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-slate-900 transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center bg-white border border-slate-300 rounded-xl px-3 py-1.5 shadow-xs focus-within:ring-2 focus-within:ring-slate-900 focus-within:border-slate-900 transition-all gap-1 sm:gap-0">
               <input type="date" id="filterDateStartBA" onchange="applyBAFiltersAndSort()"
                      aria-label="Tanggal Mulai BA"
                      class="touch-target w-full text-xs bg-transparent border-0 focus:outline-none text-slate-700 font-mono">
-              <span class="text-slate-400 font-bold px-2">—</span>
+              <span class="hidden sm:inline text-slate-400 font-bold px-2">—</span>
               <input type="date" id="filterDateEndBA" onchange="applyBAFiltersAndSort()"
                      aria-label="Tanggal Selesai BA"
                      class="touch-target w-full text-xs bg-transparent border-0 focus:outline-none text-slate-700 font-mono">
@@ -412,7 +412,7 @@
 
           <!-- Filter Status Dokumen BA -->
           <div>
-            <label for="filterStatusSelectBA" class="block text-[11px] font-semibold tracking-wider text-slate-500 uppercase mb-1.5">Status Berkas</label>
+            <label for="filterStatusSelectBA" class="block text-[11px] font-semibold tracking-wider text-slate-600 uppercase mb-1.5">Status Berkas</label>
             <select id="filterStatusSelectBA" onchange="applyBAFiltersAndSort()"
                     class="touch-target min-h-[44px] w-full text-xs font-medium border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 shadow-xs transition">
               <option value="all">Semua Status</option>
@@ -423,7 +423,7 @@
 
           <!-- Filter Lokasi Bandara -->
           <div>
-            <label for="filterBandaraSelectBA" class="block text-[11px] font-semibold tracking-wider text-slate-500 uppercase mb-1.5">Lokasi Bandara</label>
+            <label for="filterBandaraSelectBA" class="block text-[11px] font-semibold tracking-wider text-slate-600 uppercase mb-1.5">Lokasi Bandara</label>
             <select id="filterBandaraSelectBA" onchange="applyBAFiltersAndSort()"
                     class="touch-target min-h-[44px] w-full text-xs font-medium border border-slate-300 rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 shadow-xs transition">
               <option value="all">Semua Bandara</option>
@@ -442,18 +442,18 @@
             <span class="w-2 h-2 rounded-full bg-blue-600"></span>
             <span class="font-semibold text-slate-800 tracking-tight">Daftar Berita Acara Jasa Terkait (2026)</span>
           </div>
-          <span id="countBA" class="font-mono font-semibold text-slate-600 bg-slate-200/60 px-2 py-0.5 rounded-md">0 Berkas</span>
+          <span id="countBA" class="font-mono font-semibold text-slate-700 bg-slate-200/60 px-2 py-0.5 rounded-md">0 Berkas</span>
         </div>
 
         <!-- Mobile Scroll Indicator -->
-        <div class="sm:hidden px-3.5 py-1.5 bg-slate-50 border-b border-slate-200/80 text-[10px] text-slate-500 flex items-center justify-between">
+        <div class="sm:hidden px-3.5 py-1.5 bg-slate-50 border-b border-slate-200/80 text-[10px] text-slate-600 flex items-center justify-between">
           <span><i class="fa-solid fa-arrows-left-right mr-1 text-slate-400"></i>Geser tabel untuk melihat rincian</span>
-          <span class="font-mono text-[10px] text-slate-400">← →</span>
+          <span class="font-mono text-[10px] text-slate-500">← →</span>
         </div>
 
         <div class="overflow-x-auto w-full">
           <table class="w-full text-left text-sm border-collapse">
-            <thead class="sticky top-[61px] bg-slate-100/95 backdrop-blur-sm z-10 text-slate-600 text-[11px] uppercase tracking-wider font-semibold border-b border-slate-200">
+            <thead class="sticky top-[108px] sm:top-[61px] bg-slate-100/95 backdrop-blur-sm z-10 text-slate-700 text-[11px] uppercase tracking-wider font-semibold border-b border-slate-200">
               <tr>
                 <th scope="col" class="px-3.5 py-3 w-12 text-center">No</th>
                 <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Tanggal</th>
@@ -466,7 +466,7 @@
               </tr>
             </thead>
             <tbody id="tbodyBA" class="divide-y divide-slate-100 text-slate-800">
-              <tr><td colspan="8" class="px-4 py-12 text-center text-slate-500">Memuat data Berita Acara...</td></tr>
+              <tr><td colspan="8" class="px-4 py-12 text-center text-slate-500 font-medium">Memuat data Berita Acara...</td></tr>
             </tbody>
           </table>
         </div>
@@ -476,275 +476,291 @@
 
   </main>
 
-  <!-- Footer Resmi Kedinasan -->
+  <!-- Footer Resmi Kedinasan (Sinkronisasi Nomenklatur Ditjen Hubud) -->
   <footer class="mt-auto border-t border-slate-200 bg-white py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-shield-halved text-slate-400"></i>
         <span>Direktorat Bandar Udara • Ditjen Hubud • Kementerian Perhubungan RI</span>
       </div>
-      <div class="font-mono text-[11px] text-slate-400">
-        Portal Persuratan & BA Subdit 5 v2.0 Enterprise • Tahun 2026
+      <div class="font-mono text-[11px] text-slate-500">
+        Portal Persuratan & BA Subdit 5 v2.0 Enterprise • Subdit Sistem Penyelenggaraan dan Pengusahaan Bandar Udara
       </div>
     </div>
   </footer>
 
   <!-- ==================== Modal Dialog: Input Data Baru ==================== -->
   <div id="formModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-100 ring-1 ring-slate-900/5">
-      <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
-        <div>
-          <h3 id="modalTitle" class="font-bold text-slate-900 text-base tracking-tight">Input Data Baru</h3>
-          <p class="text-xs text-slate-500 mt-0.5">Pengarsipan otomatis ke Google Drive Subdit 5</p>
+    <div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-100 ring-1 ring-slate-900/5 flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
+          <div>
+            <h3 id="modalTitle" class="font-bold text-slate-900 text-base tracking-tight">Input Data Baru</h3>
+            <p class="text-xs text-slate-600 mt-0.5">Pengarsipan otomatis ke Google Drive Subdit 5</p>
+          </div>
+          <button onclick="closeModal()" aria-label="Tutup Modal" 
+                  class="touch-target w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
         </div>
-        <button onclick="closeModal()" aria-label="Tutup Modal" 
-                class="touch-target w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
+
+        <form id="mainForm" onsubmit="handleSubmit(event)" class="mt-4 space-y-4">
+          <div id="dynamicFormFields" class="space-y-4"></div>
+
+          <!-- Sticky Bottom Action Footer untuk Thumb Zone Ponsel -->
+          <div class="sticky bottom-0 -mx-5 -mb-5 sm:-mx-6 sm:-mb-6 mt-6 pt-3.5 pb-4 px-5 sm:px-6 bg-white/95 backdrop-blur-sm border-t border-slate-100 rounded-b-2xl flex justify-end space-x-3 shadow-xs">
+            <button type="button" onclick="closeModal()" 
+                    class="touch-target px-4 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+              Batal
+            </button>
+            <button type="submit" id="btnSubmit" 
+                    class="touch-target px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+              <span>Simpan</span>
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form id="mainForm" onsubmit="handleSubmit(event)" class="mt-4 space-y-4">
-        <div id="dynamicFormFields" class="space-y-4"></div>
-
-        <div class="pt-4 border-t border-slate-100 flex justify-end space-x-3">
-          <button type="button" onclick="closeModal()" 
-                  class="touch-target px-4 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-            Batal
-          </button>
-          <button type="submit" id="btnSubmit" 
-                  class="touch-target px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
-            <span>Simpan</span>
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 
   <!-- ==================== Modal Dialog: Edit & Upload Susulan Surat Keluar ==================== -->
   <div id="editModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-100 ring-1 ring-slate-900/5">
-      <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
-        <div>
-          <h3 class="font-bold text-slate-900 text-base tracking-tight">Kelola Berkas & Upload Susulan</h3>
-          <p class="text-xs text-slate-500 mt-0.5">Lengkapi atau revisi dokumen Nota Dinas dan Surat Direktur</p>
+    <div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-100 ring-1 ring-slate-900/5 flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
+          <div>
+            <h3 class="font-bold text-slate-900 text-base tracking-tight">Kelola Berkas & Upload Susulan</h3>
+            <p class="text-xs text-slate-600 mt-0.5">Lengkapi atau revisi dokumen Nota Dinas dan Surat Direktur</p>
+          </div>
+          <button onclick="closeEditModal()" aria-label="Tutup Modal Edit" 
+                  class="touch-target w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
         </div>
-        <button onclick="closeEditModal()" aria-label="Tutup Modal Edit" 
-                class="touch-target w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
+
+        <form id="editForm" onsubmit="handleEditSubmit(event)" class="mt-4 space-y-4">
+          <input type="hidden" id="editNoUrut" value="">
+          <input type="hidden" id="editNomorSurat" value="">
+
+          <!-- Informasi Ringkas Surat (Read-only) -->
+          <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2.5 text-xs">
+            <div class="flex justify-between items-center border-b border-slate-200/80 pb-2">
+              <span class="text-slate-600 font-semibold tracking-wider uppercase text-[10px]">Nomor Surat:</span>
+              <span id="readNomorSurat" class="font-mono font-bold text-slate-900 text-sm">-</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 border-b border-slate-200/80 pb-2">
+              <div>
+                <span class="text-slate-600 block text-[10px] uppercase tracking-wider font-semibold">Tanggal Surat:</span>
+                <span id="readTanggalSurat" class="font-medium text-slate-800 font-mono">-</span>
+              </div>
+              <div>
+                <span class="text-slate-600 block text-[10px] uppercase tracking-wider font-semibold">Konseptor:</span>
+                <span id="readKonseptor" class="font-medium text-slate-800">-</span>
+              </div>
+            </div>
+            <div>
+              <span class="text-slate-600 block mb-1 text-[10px] uppercase tracking-wider font-semibold">Perihal:</span>
+              <p id="readPerihal" class="font-normal text-slate-800 leading-relaxed">-</p>
+            </div>
+          </div>
+
+          <!-- Status Berkas Eksisting -->
+          <div class="space-y-2 text-xs">
+            <span class="block font-semibold text-slate-700 tracking-wide">Status Berkas Tersimpan:</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between shadow-xs">
+                <div>
+                  <span class="text-slate-600 block text-[10px] font-semibold uppercase tracking-wider">Nota Dinas</span>
+                  <span id="badgeExistingND" class="text-xs font-semibold text-slate-700">-</span>
+                </div>
+                <div id="linkContainerND"></div>
+              </div>
+              <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between shadow-xs">
+                <div>
+                  <span class="text-slate-600 block text-[10px] font-semibold uppercase tracking-wider">Surat Direktur</span>
+                  <span id="badgeExistingSurat" class="text-xs font-semibold text-slate-700">-</span>
+                </div>
+                <div id="linkContainerSurat"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dropzone Upload Berkas Susulan / Pengganti (Keyboard Accessible) -->
+          <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-3">
+            <p class="text-xs text-slate-600 font-medium leading-relaxed">
+              Pilih berkas format PDF (maks. 10 MB) untuk melengkapi atau memperbarui dokumen di Google Drive:
+            </p>
+            
+            <!-- Dropzone ND -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                <i class="fa-solid fa-file-pdf text-blue-700 mr-1.5"></i>Upload Susulan Nota Dinas Kasubdit (PDF)
+              </label>
+              <div tabindex="0" role="button" aria-label="Pilih atau seret berkas Nota Dinas Kasubdit (PDF)"
+                   class="relative border-2 border-dashed border-slate-200 hover:border-blue-400 focus-visible:border-blue-600 focus-visible:ring-2 focus-visible:ring-blue-700 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group outline-none"
+                   onclick="document.getElementById('editFileND').click()"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('editFileND').click();}"
+                   ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
+                   ondragleave="this.classList.remove('dropzone-active')"
+                   ondrop="handleFileDrop(event, 'editFileND', 'previewEditND')">
+                <input type="file" id="editFileND" accept=".pdf" class="hidden" onchange="updateFilePreview('editFileND', 'previewEditND')">
+                <div id="previewEditND" class="flex flex-col items-center justify-center py-1">
+                  <i class="fa-solid fa-cloud-arrow-up text-blue-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                  <span class="text-xs font-medium text-slate-700">Pilih berkas ND baru atau seret ke sini</span>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dropzone Surat Direktur -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                <i class="fa-solid fa-file-signature text-emerald-700 mr-1.5"></i>Upload Susulan Surat Direktur / Final (PDF)
+              </label>
+              <div tabindex="0" role="button" aria-label="Pilih atau seret berkas Surat Direktur (PDF)"
+                   class="relative border-2 border-dashed border-slate-200 hover:border-emerald-400 focus-visible:border-emerald-600 focus-visible:ring-2 focus-visible:ring-emerald-700 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group outline-none"
+                   onclick="document.getElementById('editFileSurat').click()"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('editFileSurat').click();}"
+                   ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
+                   ondragleave="this.classList.remove('dropzone-active')"
+                   ondrop="handleFileDrop(event, 'editFileSurat', 'previewEditSurat')">
+                <input type="file" id="editFileSurat" accept=".pdf" class="hidden" onchange="updateFilePreview('editFileSurat', 'previewEditSurat')">
+                <div id="previewEditSurat" class="flex flex-col items-center justify-center py-1">
+                  <i class="fa-solid fa-cloud-arrow-up text-emerald-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                  <span class="text-xs font-medium text-slate-700">Pilih berkas Surat Direktur baru atau seret ke sini</span>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sticky Bottom Action Footer untuk Thumb Zone Ponsel -->
+          <div class="sticky bottom-0 -mx-5 -mb-5 sm:-mx-6 sm:-mb-6 mt-6 pt-3.5 pb-4 px-5 sm:px-6 bg-white/95 backdrop-blur-sm border-t border-slate-100 rounded-b-2xl flex justify-end space-x-3 shadow-xs">
+            <button type="button" onclick="closeEditModal()" 
+                    class="touch-target px-4 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+              Batal
+            </button>
+            <button type="submit" id="btnEditSubmit" 
+                    class="touch-target px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+              <span>Simpan Pembaruan</span>
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form id="editForm" onsubmit="handleEditSubmit(event)" class="mt-4 space-y-4">
-        <input type="hidden" id="editNoUrut" value="">
-        <input type="hidden" id="editNomorSurat" value="">
-
-        <!-- Informasi Ringkas Surat (Read-only) -->
-        <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2.5 text-xs">
-          <div class="flex justify-between items-center border-b border-slate-200/80 pb-2">
-            <span class="text-slate-500 font-semibold tracking-wider uppercase text-[10px]">Nomor Surat:</span>
-            <span id="readNomorSurat" class="font-mono font-bold text-slate-900 text-sm">-</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2 border-b border-slate-200/80 pb-2">
-            <div>
-              <span class="text-slate-500 block text-[10px] uppercase tracking-wider font-semibold">Tanggal Surat:</span>
-              <span id="readTanggalSurat" class="font-medium text-slate-800 font-mono">-</span>
-            </div>
-            <div>
-              <span class="text-slate-500 block text-[10px] uppercase tracking-wider font-semibold">Konseptor:</span>
-              <span id="readKonseptor" class="font-medium text-slate-800">-</span>
-            </div>
-          </div>
-          <div>
-            <span class="text-slate-500 block mb-1 text-[10px] uppercase tracking-wider font-semibold">Perihal:</span>
-            <p id="readPerihal" class="font-normal text-slate-800 leading-relaxed">-</p>
-          </div>
-        </div>
-
-        <!-- Status Berkas Eksisting -->
-        <div class="space-y-2 text-xs">
-          <span class="block font-semibold text-slate-700 tracking-wide">Status Berkas Tersimpan:</span>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between shadow-xs">
-              <div>
-                <span class="text-slate-400 block text-[10px] font-semibold uppercase tracking-wider">Nota Dinas</span>
-                <span id="badgeExistingND" class="text-xs font-semibold text-slate-700">-</span>
-              </div>
-              <div id="linkContainerND"></div>
-            </div>
-            <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between shadow-xs">
-              <div>
-                <span class="text-slate-400 block text-[10px] font-semibold uppercase tracking-wider">Surat Direktur</span>
-                <span id="badgeExistingSurat" class="text-xs font-semibold text-slate-700">-</span>
-              </div>
-              <div id="linkContainerSurat"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Dropzone Upload Berkas Susulan / Pengganti -->
-        <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-3">
-          <p class="text-xs text-slate-600 font-medium leading-relaxed">
-            Pilih berkas format PDF untuk melengkapi atau memperbarui dokumen di Google Drive:
-          </p>
-          
-          <!-- Dropzone ND -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-              <i class="fa-solid fa-file-pdf text-blue-700 mr-1.5"></i>Upload Susulan Nota Dinas Kasubdit (PDF)
-            </label>
-            <div class="relative border-2 border-dashed border-slate-200 hover:border-blue-400 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group"
-                 onclick="document.getElementById('editFileND').click()"
-                 ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
-                 ondragleave="this.classList.remove('dropzone-active')"
-                 ondrop="handleFileDrop(event, 'editFileND', 'previewEditND')">
-              <input type="file" id="editFileND" accept=".pdf" class="hidden" onchange="updateFilePreview('editFileND', 'previewEditND')">
-              <div id="previewEditND" class="flex flex-col items-center justify-center py-1">
-                <i class="fa-solid fa-cloud-arrow-up text-blue-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs font-medium text-slate-700">Pilih berkas ND baru atau seret ke sini</span>
-                <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dropzone Surat Direktur -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-              <i class="fa-solid fa-file-signature text-emerald-700 mr-1.5"></i>Upload Susulan Surat Direktur / Final (PDF)
-            </label>
-            <div class="relative border-2 border-dashed border-slate-200 hover:border-emerald-400 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group"
-                 onclick="document.getElementById('editFileSurat').click()"
-                 ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
-                 ondragleave="this.classList.remove('dropzone-active')"
-                 ondrop="handleFileDrop(event, 'editFileSurat', 'previewEditSurat')">
-              <input type="file" id="editFileSurat" accept=".pdf" class="hidden" onchange="updateFilePreview('editFileSurat', 'previewEditSurat')">
-              <div id="previewEditSurat" class="flex flex-col items-center justify-center py-1">
-                <i class="fa-solid fa-cloud-arrow-up text-emerald-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
-                <span class="text-xs font-medium text-slate-700">Pilih berkas Surat Direktur baru atau seret ke sini</span>
-                <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100 flex justify-end space-x-3">
-          <button type="button" onclick="closeEditModal()" 
-                  class="touch-target px-4 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-            Batal
-          </button>
-          <button type="submit" id="btnEditSubmit" 
-                  class="touch-target px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
-            <span>Simpan Pembaruan</span>
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 
   <!-- ==================== Modal Dialog: Edit & Upload Susulan Berita Acara ==================== -->
   <div id="editBAModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
-    <div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-100 ring-1 ring-slate-900/5">
-      <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
-        <div>
-          <h3 class="font-bold text-slate-900 text-base tracking-tight">Kelola & Revisi Berita Acara</h3>
-          <p class="text-xs text-slate-500 mt-0.5">Pembaruan data teknis dan upload susulan dokumen BA</p>
+    <div class="bg-white rounded-2xl max-w-xl w-full p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto border border-slate-100 ring-1 ring-slate-900/5 flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
+          <div>
+            <h3 class="font-bold text-slate-900 text-base tracking-tight">Kelola & Revisi Berita Acara</h3>
+            <p class="text-xs text-slate-600 mt-0.5">Pembaruan data teknis dan upload susulan dokumen BA</p>
+          </div>
+          <button onclick="closeEditBAModal()" aria-label="Tutup Modal Edit BA" 
+                  class="touch-target w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
         </div>
-        <button onclick="closeEditBAModal()" aria-label="Tutup Modal Edit BA" 
-                class="touch-target w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
+
+        <form id="editBAForm" onsubmit="handleEditBASubmit(event)" class="mt-4 space-y-4">
+          <input type="hidden" id="editBANoUrut" value="">
+          <input type="hidden" id="editBANomorBA" value="">
+
+          <!-- Informasi Ringkas BA (Read-only) -->
+          <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2.5 text-xs">
+            <div class="flex justify-between items-center border-b border-slate-200/80 pb-2">
+              <span class="text-slate-600 font-semibold tracking-wider uppercase text-[10px]">Nomor Berita Acara:</span>
+              <span id="readBANomorBA" class="font-mono font-bold text-slate-900 text-sm">-</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <span class="text-slate-600 block text-[10px] uppercase tracking-wider font-semibold">Tanggal BA:</span>
+                <span id="readBATanggal" class="font-medium text-slate-800 font-mono">-</span>
+              </div>
+              <div>
+                <span class="text-slate-600 block text-[10px] uppercase tracking-wider font-semibold">No. Urut:</span>
+                <span id="readBANoUrut" class="font-mono font-bold text-slate-800">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Field Edit Data Teks -->
+          <div class="space-y-3.5">
+            <div>
+              <label for="editBANamaPT" class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Badan Usaha (PT) *</label>
+              <input type="text" id="editBANamaPT" required 
+                     class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs">
+            </div>
+
+            <div>
+              <label for="editBABandaraSelect" class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
+              <select id="editBABandaraSelect" required 
+                      class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white transition shadow-xs">
+                <!-- Diisi dinamis via initBandaraFilterBA -->
+              </select>
+            </div>
+
+            <div>
+              <label for="editBAPicList" class="block text-xs font-semibold text-slate-700 mb-1.5">Tim PIC Pemeriksa *</label>
+              <input type="text" id="editBAPicList" required 
+                     placeholder="Contoh: 1. Andy Bastian  2. Tony Fredrik" 
+                     class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs">
+            </div>
+          </div>
+
+          <!-- Status Berkas Eksisting -->
+          <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between text-xs shadow-xs">
+            <div>
+              <span class="text-slate-600 block text-[10px] font-semibold uppercase tracking-wider">Dokumen BA Tersimpan:</span>
+              <span id="badgeExistingBA" class="text-xs font-semibold text-slate-700">-</span>
+            </div>
+            <div id="linkContainerBA"></div>
+          </div>
+
+          <!-- Dropzone Input Berkas Susulan BA (Keyboard Accessible) -->
+          <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2">
+            <label class="block text-xs font-semibold text-slate-700">
+              <i class="fa-solid fa-file-pdf text-rose-700 mr-1.5"></i>Upload Dokumen Berita Acara (PDF)
+            </label>
+            <div tabindex="0" role="button" aria-label="Pilih atau seret berkas Berita Acara (PDF)"
+                 class="relative border-2 border-dashed border-slate-200 hover:border-rose-400 focus-visible:border-rose-600 focus-visible:ring-2 focus-visible:ring-rose-700 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group outline-none"
+                 onclick="document.getElementById('editFileBA').click()"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('editFileBA').click();}"
+                 ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
+                 ondragleave="this.classList.remove('dropzone-active')"
+                 ondrop="handleFileDrop(event, 'editFileBA', 'previewEditBA')">
+              <input type="file" id="editFileBA" accept=".pdf" class="hidden" onchange="updateFilePreview('editFileBA', 'previewEditBA')">
+              <div id="previewEditBA" class="flex flex-col items-center justify-center py-1">
+                <i class="fa-solid fa-cloud-arrow-up text-rose-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                <span class="text-xs font-medium text-slate-700">Pilih berkas BA baru atau seret ke sini</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sticky Bottom Action Footer untuk Thumb Zone Ponsel -->
+          <div class="sticky bottom-0 -mx-5 -mb-5 sm:-mx-6 sm:-mb-6 mt-6 pt-3.5 pb-4 px-5 sm:px-6 bg-white/95 backdrop-blur-sm border-t border-slate-100 rounded-b-2xl flex justify-end space-x-3 shadow-xs">
+            <button type="button" onclick="closeEditBAModal()" 
+                    class="touch-target px-4 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+              Batal
+            </button>
+            <button type="submit" id="btnEditBASubmit" 
+                    class="touch-target px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+              <span>Simpan Perubahan</span>
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form id="editBAForm" onsubmit="handleEditBASubmit(event)" class="mt-4 space-y-4">
-        <input type="hidden" id="editBANoUrut" value="">
-        <input type="hidden" id="editBANomorBA" value="">
-
-        <!-- Informasi Ringkas BA (Read-only) -->
-        <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2.5 text-xs">
-          <div class="flex justify-between items-center border-b border-slate-200/80 pb-2">
-            <span class="text-slate-500 font-semibold tracking-wider uppercase text-[10px]">Nomor Berita Acara:</span>
-            <span id="readBANomorBA" class="font-mono font-bold text-slate-900 text-sm">-</span>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <span class="text-slate-500 block text-[10px] uppercase tracking-wider font-semibold">Tanggal BA:</span>
-              <span id="readBATanggal" class="font-medium text-slate-800 font-mono">-</span>
-            </div>
-            <div>
-              <span class="text-slate-500 block text-[10px] uppercase tracking-wider font-semibold">No. Urut:</span>
-              <span id="readBANoUrut" class="font-mono font-bold text-slate-800">-</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Field Edit Data Teks -->
-        <div class="space-y-3.5">
-          <div>
-            <label for="editBANamaPT" class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Badan Usaha (PT) *</label>
-            <input type="text" id="editBANamaPT" required 
-                   class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs">
-          </div>
-
-          <div>
-            <label for="editBABandaraSelect" class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
-            <select id="editBABandaraSelect" required 
-                    class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white transition shadow-xs">
-              <!-- Diisi dinamis via initBandaraFilterBA -->
-            </select>
-          </div>
-
-          <div>
-            <label for="editBAPicList" class="block text-xs font-semibold text-slate-700 mb-1.5">Tim PIC Pemeriksa *</label>
-            <input type="text" id="editBAPicList" required 
-                   placeholder="Contoh: 1. Andy Bastian  2. Tony Fredrik" 
-                   class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs">
-          </div>
-        </div>
-
-        <!-- Status Berkas Eksisting -->
-        <div class="p-3 rounded-xl border border-slate-200 bg-white flex items-center justify-between text-xs shadow-xs">
-          <div>
-            <span class="text-slate-400 block text-[10px] font-semibold uppercase tracking-wider">Dokumen BA Tersimpan:</span>
-            <span id="badgeExistingBA" class="text-xs font-semibold text-slate-700">-</span>
-          </div>
-          <div id="linkContainerBA"></div>
-        </div>
-
-        <!-- Dropzone Input Berkas Susulan BA -->
-        <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2">
-          <label class="block text-xs font-semibold text-slate-700">
-            <i class="fa-solid fa-file-pdf text-rose-700 mr-1.5"></i>Upload Dokumen Berita Acara (PDF)
-          </label>
-          <div class="relative border-2 border-dashed border-slate-200 hover:border-rose-400 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group"
-               onclick="document.getElementById('editFileBA').click()"
-               ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
-               ondragleave="this.classList.remove('dropzone-active')"
-               ondrop="handleFileDrop(event, 'editFileBA', 'previewEditBA')">
-            <input type="file" id="editFileBA" accept=".pdf" class="hidden" onchange="updateFilePreview('editFileBA', 'previewEditBA')">
-            <div id="previewEditBA" class="flex flex-col items-center justify-center py-1">
-              <i class="fa-solid fa-cloud-arrow-up text-rose-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
-              <span class="text-xs font-medium text-slate-700">Pilih berkas BA baru atau seret ke sini</span>
-              <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100 flex justify-end space-x-3">
-          <button type="button" onclick="closeEditBAModal()" 
-                  class="touch-target px-4 py-2.5 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
-            Batal
-          </button>
-          <button type="submit" id="btnEditBASubmit" 
-                  class="touch-target px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
-            <span>Simpan Perubahan</span>
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 
   <!-- ==================== JavaScript: Logika Aplikasi & Integrasi Backend ==================== -->
   <script>
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzFk3Lgw0kXLpqhFgrBgVDOZyCKYwANppBq6-AtVggCK5EzJYKsFm39Tyz07AN8JqG0/exec";
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB Batas Maksimal PDF
 
     let currentTab = 'surat-keluar';
     let dataSurat = [];
@@ -798,6 +814,61 @@
       { kode: "BIK", nama: "Frans Kaisiepo (Biak)" }
     ];
 
+    /* === Utilitas Sanitasi XSS (R-11) === */
+    function escapeHtml(val) {
+      if (val === null || val === undefined) return '';
+      const str = String(val);
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function sanitizeUrl(url) {
+      if (!url) return '';
+      const str = String(url).trim();
+      if (str.startsWith('https://') || str.startsWith('http://')) {
+        return encodeURI(str);
+      }
+      return '';
+    }
+
+    /* === Utilitas Debounce Pencarian (R-08) === */
+    function debounce(func, wait = 180) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    const debouncedApplyFiltersAndSort = debounce(() => applyFiltersAndSort(), 180);
+    const debouncedApplyBAFiltersAndSort = debounce(() => applyBAFiltersAndSort(), 180);
+
+    /* === Utilitas Fetch dengan Timeout & Safe JSON (R-13) === */
+    async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(timeoutId);
+        const text = await response.text();
+        try {
+          return JSON.parse(text);
+        } catch (jsonErr) {
+          throw new Error("Server mengembalikan respons non-JSON. Periksa izin atau kuota Apps Script.");
+        }
+      } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') {
+          throw new Error("Koneksi ke backend Apps Script batas waktu (timeout 30 detik). Silakan coba lagi.");
+        }
+        throw err;
+      }
+    }
+
     function showToast(message, type = 'success') {
       const box = document.getElementById('toastBox');
       const toast = document.createElement('div');
@@ -805,7 +876,7 @@
       toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg border text-xs sm:text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 ${
         isOk ? 'bg-slate-950 border-slate-800 text-white' : 'bg-red-950 border-red-800 text-red-100'
       }`;
-      toast.innerHTML = `<i class="fa-solid ${isOk ? 'fa-circle-check text-emerald-400' : 'fa-circle-exclamation text-rose-400'} text-base shrink-0"></i><span class="leading-snug">${message}</span>`;
+      toast.innerHTML = `<i class="fa-solid ${isOk ? 'fa-circle-check text-emerald-400' : 'fa-circle-exclamation text-rose-400'} text-base shrink-0"></i><span class="leading-snug">${escapeHtml(message)}</span>`;
       box.appendChild(toast);
       requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
       setTimeout(() => {
@@ -817,7 +888,7 @@
     function formatDate(val) {
       if (!val) return '-';
       const d = new Date(val);
-      return isNaN(d.getTime()) ? val : d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+      return isNaN(d.getTime()) ? escapeHtml(val) : d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
     function formatISODateOnly(val) {
@@ -827,20 +898,31 @@
       return d.toISOString().split('T')[0];
     }
 
-    /* === Dropzone & File Preview Handlers === */
+    /* === Dropzone & File Preview Handlers dengan Validasi Ukuran (R-02, R-12) === */
     function updateFilePreview(inputId, previewId) {
       const input = document.getElementById(inputId);
       const container = document.getElementById(previewId);
       if (!input || !container) return;
       if (input.files && input.files[0]) {
         const f = input.files[0];
+        if (f.size > MAX_FILE_SIZE) {
+          showToast(`Ukuran berkas "${f.name}" melampaui batas maksimum 10 MB.`, "error");
+          input.value = '';
+          container.innerHTML = `
+            <div class="flex items-center justify-center gap-2 text-rose-700">
+              <i class="fa-solid fa-circle-exclamation text-rose-600 text-sm shrink-0"></i>
+              <span class="text-xs font-semibold text-rose-700">Berkas ditolak (maksimal 10 MB)</span>
+            </div>
+          `;
+          return;
+        }
         const sizeKB = (f.size / 1024).toFixed(1);
         const sizeStr = f.size > 1024 * 1024 ? `${(f.size / (1024 * 1024)).toFixed(2)} MB` : `${sizeKB} KB`;
         container.innerHTML = `
           <div class="flex items-center justify-center gap-2 text-emerald-800">
             <i class="fa-solid fa-circle-check text-emerald-600 text-sm shrink-0"></i>
             <div class="text-left overflow-hidden">
-              <p class="text-xs font-semibold text-slate-800 truncate max-w-[220px]">${f.name}</p>
+              <p class="text-xs font-semibold text-slate-800 truncate max-w-[220px]">${escapeHtml(f.name)}</p>
               <p class="text-[10px] text-slate-500 font-mono">${sizeStr}</p>
             </div>
           </div>
@@ -855,6 +937,10 @@
       if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
         const file = e.dataTransfer.files[0];
         if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+          if (file.size > MAX_FILE_SIZE) {
+            showToast(`Ukuran berkas "${file.name}" melampaui batas maksimum 10 MB.`, "error");
+            return;
+          }
           const dataTransfer = new DataTransfer();
           dataTransfer.items.add(file);
           input.files = dataTransfer.files;
@@ -872,8 +958,8 @@
       if (container) {
         container.innerHTML = `
           <i class="fa-solid fa-cloud-arrow-up text-slate-500 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
-          <span class="text-xs font-medium text-slate-700">${placeholderText}</span>
-          <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
+          <span class="text-xs font-medium text-slate-700">${escapeHtml(placeholderText)}</span>
+          <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
         `;
       }
     }
@@ -998,22 +1084,24 @@
       renderSurat(filtered);
     }
 
+    /* === Status Badge Berseragam & Berkontras WCAG AA (R-01, R-07) === */
     function renderStatusBadge(status) {
       if (status === 'lengkap') {
-        return `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/80">
+        return `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>Lengkap
         </span>`;
       }
       if (status === 'pending') {
-        return `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200/80">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>Pending Surat
+        return `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200/80">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>Menunggu Surat Direktur
         </span>`;
       }
-      return `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium bg-rose-50 text-rose-800 border border-rose-200/80">
+      return `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-rose-50 text-rose-800 border border-rose-200/80">
         <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>Belum Ada Berkas
       </span>`;
     }
 
+    /* === Render Tabel Surat Keluar dengan Sanitasi XSS (R-11) === */
     function renderSurat(rows) {
       const tbody = document.getElementById('tbodySuratKeluar');
       if (!rows.length) {
@@ -1022,24 +1110,27 @@
       }
       tbody.innerHTML = rows.map(r => {
         const status = getSuratStatus(r);
+        const safeUrlND = sanitizeUrl(r[7]);
+        const safeUrlSurat = sanitizeUrl(r[8]);
+
         return `
         <tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100">
-          <td class="px-3.5 py-3.5 text-center font-mono text-xs text-slate-500 font-bold">${r[0]}</td>
+          <td class="px-3.5 py-3.5 text-center font-mono text-xs text-slate-600 font-bold">${escapeHtml(r[0])}</td>
           <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
-          <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${r[2] || '-'}</td>
-          <td class="px-3.5 py-3.5 text-slate-800 text-xs sm:text-sm leading-relaxed">${r[3] || '-'}</td>
-          <td class="px-3.5 py-3.5 whitespace-nowrap"><span class="px-2.5 py-1 bg-slate-100/90 border border-slate-200/80 text-slate-700 rounded-lg text-xs font-medium">${r[6] || '-'}</span></td>
+          <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
+          <td class="px-3.5 py-3.5 text-slate-800 text-xs sm:text-sm leading-relaxed">${escapeHtml(r[3] || '-')}</td>
+          <td class="px-3.5 py-3.5 whitespace-nowrap"><span class="px-2.5 py-1 bg-slate-100/90 border border-slate-200/80 text-slate-700 rounded-lg text-xs font-medium">${escapeHtml(r[6] || '-')}</span></td>
           <td class="px-3.5 py-3.5 text-center whitespace-nowrap">${renderStatusBadge(status)}</td>
           <td class="px-3 py-3.5 text-center whitespace-nowrap">
-            ${r[7] ? `<a href="${r[7]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 text-xs font-semibold bg-blue-50/80 hover:bg-blue-100/80 border border-blue-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-pdf"></i> ND</a>` : '<span class="text-slate-300 text-xs font-mono">-</span>'}
+            ${safeUrlND ? `<a href="${safeUrlND}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 text-xs font-semibold bg-blue-50/80 hover:bg-blue-100/80 border border-blue-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-pdf"></i> ND</a>` : '<span class="text-slate-400 text-xs font-mono font-medium">-</span>'}
           </td>
           <td class="px-3 py-3.5 text-center whitespace-nowrap">
-            ${r[8] ? `<a href="${r[8]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-emerald-800 hover:text-emerald-950 text-xs font-semibold bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-signature"></i> Surat</a>` : '<span class="text-slate-300 text-xs font-mono">-</span>'}
+            ${safeUrlSurat ? `<a href="${safeUrlSurat}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-emerald-800 hover:text-emerald-950 text-xs font-semibold bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-signature"></i> Surat</a>` : '<span class="text-slate-400 text-xs font-mono font-medium">-</span>'}
           </td>
           <td class="px-3 py-3.5 text-center whitespace-nowrap">
-            <button onclick="openEditModal('${r[0]}')" title="Kelola / Upload Susulan" 
+            <button onclick="openEditModal('${escapeHtml(r[0])}')" title="Kelola / Upload Susulan" 
                     class="touch-target inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 hover:text-blue-700 text-slate-700 border border-slate-200/90 transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 active:scale-95">
-              <i class="fa-solid fa-pen-to-square text-[11px] text-slate-400"></i>
+              <i class="fa-solid fa-pen-to-square text-[11px] text-slate-500"></i>
               <span>Kelola</span>
             </button>
           </td>
@@ -1168,6 +1259,7 @@
       renderBA(filtered);
     }
 
+    /* === Render Tabel BA dengan Sanitasi XSS (R-07, R-11) === */
     function renderBA(rows) {
       const tbody = document.getElementById('tbodyBA');
       if (!rows.length) {
@@ -1175,24 +1267,24 @@
         return;
       }
       tbody.innerHTML = rows.map(r => {
-        const hasDoc = r[5] && String(r[5]).trim().startsWith('http');
-        const docHtml = hasDoc 
-          ? `<a href="${r[5]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-rose-700 hover:text-rose-900 text-xs font-semibold bg-rose-50/80 hover:bg-rose-100/80 border border-rose-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-pdf"></i> Dokumen</a>`
-          : `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-medium text-rose-800 bg-rose-50/80 border border-rose-200/80"><span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>Belum Ada</span>`;
+        const safeUrlBA = sanitizeUrl(r[5]);
+        const docHtml = safeUrlBA 
+          ? `<a href="${safeUrlBA}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-rose-700 hover:text-rose-900 text-xs font-semibold bg-rose-50/80 hover:bg-rose-100/80 border border-rose-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-pdf"></i> Dokumen</a>`
+          : `<span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-rose-800 bg-rose-50/80 border border-rose-200/80"><span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>Belum Ada Berkas</span>`;
 
         return `
           <tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100">
-            <td class="px-3.5 py-3.5 text-center font-mono text-xs text-slate-500 font-bold">${r[0]}</td>
+            <td class="px-3.5 py-3.5 text-center font-mono text-xs text-slate-600 font-bold">${escapeHtml(r[0])}</td>
             <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
-            <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${r[2] || '-'}</td>
-            <td class="px-3.5 py-3.5 font-semibold text-slate-900 text-xs sm:text-sm">${r[3] || '-'}</td>
-            <td class="px-3.5 py-3.5 text-xs text-slate-700">${r[4] || '-'}</td>
-            <td class="px-3.5 py-3.5 text-xs text-slate-700 whitespace-pre-line">${r[6] || '-'}</td>
+            <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
+            <td class="px-3.5 py-3.5 font-semibold text-slate-900 text-xs sm:text-sm">${escapeHtml(r[3] || '-')}</td>
+            <td class="px-3.5 py-3.5 text-xs text-slate-700">${escapeHtml(r[4] || '-')}</td>
+            <td class="px-3.5 py-3.5 text-xs text-slate-700 whitespace-pre-line">${escapeHtml(r[6] || '-')}</td>
             <td class="px-3.5 py-3.5 text-center whitespace-nowrap">${docHtml}</td>
             <td class="px-3.5 py-3.5 text-center whitespace-nowrap">
-              <button onclick="openEditBAModal('${r[0]}')" title="Kelola / Revisi Data BA" 
+              <button onclick="openEditBAModal('${escapeHtml(r[0])}')" title="Kelola / Revisi Data BA" 
                       class="touch-target inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 hover:text-blue-700 text-slate-700 border border-slate-200/90 transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 active:scale-95">
-                <i class="fa-solid fa-pen-to-square text-[11px] text-slate-400"></i>
+                <i class="fa-solid fa-pen-to-square text-[11px] text-slate-500"></i>
                 <span>Kelola</span>
               </button>
             </td>
@@ -1223,8 +1315,8 @@
 
       try {
         const [resSurat, resBA] = await Promise.all([
-          fetch(`${GAS_API_URL}?action=getSuratKeluar`).then(r => r.json()),
-          fetch(`${GAS_API_URL}?action=getBAJasaTerkait`).then(r => r.json())
+          fetchWithTimeout(`${GAS_API_URL}?action=getSuratKeluar`),
+          fetchWithTimeout(`${GAS_API_URL}?action=getBAJasaTerkait`)
         ]);
 
         dataSurat = (resSurat.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
@@ -1261,7 +1353,7 @@
               <select name="konseptor" required 
                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
                 <option value="" disabled selected>-- Pilih Konseptor --</option>
-                ${PIC_OPTIONS.map(p => `<option value="${p}">${p}</option>`).join('')}
+                ${PIC_OPTIONS.map(p => `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')}
               </select>
             </div>
           </div>
@@ -1275,8 +1367,10 @@
               <label class="block text-xs font-semibold text-slate-700 mb-1.5">
                 <i class="fa-solid fa-file-pdf text-blue-700 mr-1.5"></i>Upload Nota Dinas Kasubdit (PDF)
               </label>
-              <div class="relative border-2 border-dashed border-slate-200 hover:border-blue-400 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group"
+              <div tabindex="0" role="button" aria-label="Unggah Nota Dinas Kasubdit (PDF)"
+                   class="relative border-2 border-dashed border-slate-200 hover:border-blue-400 focus-visible:border-blue-600 focus-visible:ring-2 focus-visible:ring-blue-700 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group outline-none"
                    onclick="document.getElementById('fileND').click()"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('fileND').click();}"
                    ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
                    ondragleave="this.classList.remove('dropzone-active')"
                    ondrop="handleFileDrop(event, 'fileND', 'previewModalND')">
@@ -1284,7 +1378,7 @@
                 <div id="previewModalND" class="flex flex-col items-center justify-center py-1">
                   <i class="fa-solid fa-cloud-arrow-up text-blue-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
                   <span class="text-xs font-medium text-slate-700">Pilih berkas ND atau seret ke sini</span>
-                  <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
                 </div>
               </div>
             </div>
@@ -1292,8 +1386,10 @@
               <label class="block text-xs font-semibold text-slate-700 mb-1.5">
                 <i class="fa-solid fa-file-signature text-emerald-700 mr-1.5"></i>Upload Surat Direktur / Final (PDF)
               </label>
-              <div class="relative border-2 border-dashed border-slate-200 hover:border-emerald-400 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group"
+              <div tabindex="0" role="button" aria-label="Unggah Surat Direktur (PDF)"
+                   class="relative border-2 border-dashed border-slate-200 hover:border-emerald-400 focus-visible:border-emerald-600 focus-visible:ring-2 focus-visible:ring-emerald-700 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group outline-none"
                    onclick="document.getElementById('fileSurat').click()"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('fileSurat').click();}"
                    ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
                    ondragleave="this.classList.remove('dropzone-active')"
                    ondrop="handleFileDrop(event, 'fileSurat', 'previewModalSurat')">
@@ -1301,7 +1397,7 @@
                 <div id="previewModalSurat" class="flex flex-col items-center justify-center py-1">
                   <i class="fa-solid fa-cloud-arrow-up text-emerald-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
                   <span class="text-xs font-medium text-slate-700">Pilih berkas Surat Direktur atau seret ke sini</span>
-                  <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
+                  <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
                 </div>
               </div>
             </div>
@@ -1319,7 +1415,7 @@
               <label class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
               <select name="bandaraSelect" id="bandaraSelect" required 
                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
-                ${BANDARA_OPTIONS.map(b => `<option value="${b.kode}">${b.nama} (${b.kode})</option>`).join('')}
+                ${BANDARA_OPTIONS.map(b => `<option value="${escapeHtml(b.kode)}">${escapeHtml(b.nama)} (${escapeHtml(b.kode)})</option>`).join('')}
               </select>
             </div>
           </div>
@@ -1337,8 +1433,10 @@
             <label class="block text-xs font-semibold text-slate-700 mb-1.5">
               <i class="fa-solid fa-file-pdf text-rose-700 mr-1.5"></i>Upload Berita Acara (PDF)
             </label>
-            <div class="relative border-2 border-dashed border-slate-200 hover:border-rose-400 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group"
+            <div tabindex="0" role="button" aria-label="Unggah Berita Acara (PDF)"
+                 class="relative border-2 border-dashed border-slate-200 hover:border-rose-400 focus-visible:border-rose-600 focus-visible:ring-2 focus-visible:ring-rose-700 bg-white rounded-xl p-3 text-center transition-all cursor-pointer group outline-none"
                  onclick="document.getElementById('fileBA').click()"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); document.getElementById('fileBA').click();}"
                  ondragover="event.preventDefault(); this.classList.add('dropzone-active')"
                  ondragleave="this.classList.remove('dropzone-active')"
                  ondrop="handleFileDrop(event, 'fileBA', 'previewModalBA')">
@@ -1346,7 +1444,7 @@
               <div id="previewModalBA" class="flex flex-col items-center justify-center py-1">
                 <i class="fa-solid fa-cloud-arrow-up text-rose-600 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
                 <span class="text-xs font-medium text-slate-700">Pilih berkas BA atau seret ke sini</span>
-                <span class="text-[10px] text-slate-400 mt-0.5">Format dokumen PDF</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Format dokumen PDF (Maks. 10 MB)</span>
               </div>
             </div>
           </div>
@@ -1377,25 +1475,27 @@
 
       const badgeND = document.getElementById('badgeExistingND');
       const containerND = document.getElementById('linkContainerND');
-      if (row[7] && String(row[7]).trim().startsWith('http')) {
+      const safeND = sanitizeUrl(row[7]);
+      if (safeND) {
         badgeND.textContent = "Tersedia";
         badgeND.className = "text-xs font-semibold text-emerald-800";
-        containerND.innerHTML = `<a href="${row[7]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 hover:text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200/80 shadow-xs"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka</a>`;
+        containerND.innerHTML = `<a href="${safeND}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 hover:text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200/80 shadow-xs"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka</a>`;
       } else {
         badgeND.textContent = "Belum diunggah";
-        badgeND.className = "text-xs font-medium text-slate-400";
+        badgeND.className = "text-xs font-medium text-slate-600";
         containerND.innerHTML = '';
       }
 
       const badgeSurat = document.getElementById('badgeExistingSurat');
       const containerSurat = document.getElementById('linkContainerSurat');
-      if (row[8] && String(row[8]).trim().startsWith('http')) {
+      const safeSurat = sanitizeUrl(row[8]);
+      if (safeSurat) {
         badgeSurat.textContent = "Tersedia";
         badgeSurat.className = "text-xs font-semibold text-emerald-800";
-        containerSurat.innerHTML = `<a href="${row[8]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 hover:text-emerald-950 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/80 shadow-xs"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka</a>`;
+        containerSurat.innerHTML = `<a href="${safeSurat}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 hover:text-emerald-950 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200/80 shadow-xs"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka</a>`;
       } else {
         badgeSurat.textContent = "Belum diunggah";
-        badgeSurat.className = "text-xs font-medium text-slate-400";
+        badgeSurat.className = "text-xs font-medium text-slate-600";
         containerSurat.innerHTML = '';
       }
 
@@ -1445,13 +1545,14 @@
 
       const badgeBA = document.getElementById('badgeExistingBA');
       const containerBA = document.getElementById('linkContainerBA');
-      if (row[5] && String(row[5]).trim().startsWith('http')) {
+      const safeBA = sanitizeUrl(row[5]);
+      if (safeBA) {
         badgeBA.textContent = "Dokumen Tersedia";
         badgeBA.className = "text-xs font-semibold text-emerald-800";
-        containerBA.innerHTML = `<a href="${row[5]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 hover:text-rose-900 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200/80 shadow-xs"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka</a>`;
+        containerBA.innerHTML = `<a href="${safeBA}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 hover:text-rose-900 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200/80 shadow-xs"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Buka</a>`;
       } else {
         badgeBA.textContent = "Belum diunggah";
-        badgeBA.className = "text-xs font-medium text-slate-400";
+        badgeBA.className = "text-xs font-medium text-slate-600";
         containerBA.innerHTML = '';
       }
 
@@ -1464,13 +1565,21 @@
       document.getElementById('editBAForm').reset();
     }
 
+    /* === File Reader dengan Validasi Ukuran (R-12) === */
     function readFileAsBase64(fileInputId) {
       const el = document.getElementById(fileInputId);
       if (!el || !el.files || !el.files[0]) return Promise.resolve(null);
-      return new Promise((resolve) => {
+      const file = el.files[0];
+      if (file.size > MAX_FILE_SIZE) {
+        showToast(`Ukuran berkas "${file.name}" melampaui batas 10 MB.`, "error");
+        el.value = '';
+        return Promise.reject(new Error(`Ukuran berkas ${file.name} melampaui batas 10 MB`));
+      }
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(el.files[0]);
+        reader.onerror = () => reject(new Error("Gagal membaca berkas."));
+        reader.readAsDataURL(file);
       });
     }
 
@@ -1505,11 +1614,11 @@
           fileSuratDirektur: base64Surat
         };
 
-        const res = await fetch(GAS_API_URL, {
+        const res = await fetchWithTimeout(GAS_API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
-        }).then(r => r.json());
+        });
 
         if (res.status === 'success') {
           showToast(res.message || "Dokumen surat berhasil diperbarui.");
@@ -1552,11 +1661,11 @@
           fileBA: base64BA
         };
 
-        const res = await fetch(GAS_API_URL, {
+        const res = await fetchWithTimeout(GAS_API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
-        }).then(r => r.json());
+        });
 
         if (res.status === 'success') {
           showToast(res.message || "Data Berita Acara berhasil diperbarui.");
@@ -1612,11 +1721,11 @@
           };
         }
 
-        const res = await fetch(GAS_API_URL, {
+        const res = await fetchWithTimeout(GAS_API_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
-        }).then(r => r.json());
+        });
 
         if (res.status === 'success') {
           showToast(res.message);
