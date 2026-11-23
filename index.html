@@ -178,7 +178,7 @@
           <div>
             <label for="filterKonseptorSelect" class="block text-[11px] font-semibold text-slate-600 mb-1">Konseptor (PIC)</label>
             <select id="filterKonseptorSelect" onchange="applyFiltersAndSort()"
-                    class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+                    class="touch-target min-h-[44px] w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
               <option value="all">Semua Konseptor</option>
               <!-- Opsi konseptor diinjeksi via script -->
             </select>
@@ -409,7 +409,35 @@
     let dataBA = [];
     let currentSortOrder = 'desc';
 
-    const PIC_OPTIONS = ["Tony Fredrik", "Novrinanda", "Hanif A", "Aspar", "Farhan Rafiqi", "Andy Bastian", "Dedi Santoso", "Rosadianita", "Sadewo"];
+    const PIC_OPTIONS = [
+      "Cece Tarya",
+      "Andy Bastian",
+      "Hendri Saputra",
+      "Amy Triyana Harmawanti",
+      "Tris Gumiharto",
+      "Amelia",
+      "Mohammad Arifin",
+      "Dedi Santoso",
+      "Budiyono",
+      "Rosa Dianita Permata",
+      "Tony Fredrik Hutabarat",
+      "Prayoga Nugraha",
+      "Sintha Alpaningrum",
+      "Sadewo Agung Prabowo",
+      "Puti Langgawani Jakub",
+      "Fathur Rahman DKA.",
+      "Aspar Mala Amri",
+      "Rosdiana Siagian",
+      "Agnes Prastika Vioandani",
+      "Atie Yulianti",
+      "Hafizh Nur Rafi Sarputra",
+      "Farhan Rafiqi",
+      "Novrinanda Trita Gemintang",
+      "Amelia Tirta Rahmadani",
+      "Hanif Abdillah",
+      "Siti Halimah",
+      "Fauziah Israyani Putri"
+    ];
     const BANDARA_OPTIONS = [
       { kode: "CGK", nama: "Soekarno-Hatta (Tangerang)" },
       { kode: "HLP", nama: "Halim Perdanakusuma (Jakarta)" },
@@ -704,7 +732,8 @@
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1">Konseptor (PIC) *</label>
-              <select name="konseptor" required class="touch-target w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+              <select name="konseptor" required class="touch-target min-h-[44px] w-full text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
+                <option value="" disabled selected>-- Pilih Konseptor --</option>
                 ${PIC_OPTIONS.map(p => `<option value="${p}">${p}</option>`).join('')}
               </select>
             </div>
