@@ -50,82 +50,229 @@
   <!-- Konten Utama -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-6 flex-1 w-full space-y-4">
 
-    <!-- Action Toolbar -->
-    <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-      <div class="relative flex-1 max-w-md">
-        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm pointer-events-none"></i>
-        <input type="text" id="searchInput" onkeyup="handleFilter()" 
-               placeholder="Cari perihal, nomor, PT, atau PIC..." 
-               class="touch-target w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-slate-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700 transition">
-      </div>
+    <!-- Section: Surat Keluar Container -->
+    <div id="containerSuratKeluar" class="space-y-4">
 
-      <div class="flex items-center gap-2">
-        <button onclick="loadData()" title="Segarkan Data" 
-                class="touch-target px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg text-slate-700 shadow-sm text-sm transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
-          <i id="refreshIcon" class="fa-solid fa-rotate-right"></i>
-        </button>
-        <button onclick="openModal()" 
-                class="touch-target flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
-          <i class="fa-solid fa-plus text-xs"></i>
-          <span id="btnAddText">Catat Surat Keluar</span>
-        </button>
-      </div>
+      <!-- Master Card / Ringkasan Metrik (KPI Bar) -->
+      <section aria-label="Ringkasan Metrik Surat Keluar" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Card 1: Total Surat -->
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-500 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Total Surat</span>
+            <i class="fa-solid fa-envelopes-bulk text-slate-400"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricTotalSurat" class="text-2xl sm:text-3xl font-bold font-mono text-slate-900">0</span>
+            <span class="text-xs text-slate-500">berkas</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Seluruh data teregistrasi 2026</p>
+        </div>
+
+        <!-- Card 2: Selesai / Lengkap -->
+        <div class="bg-white rounded-xl border border-emerald-200 p-4 shadow-sm flex flex-col justify-between bg-emerald-50/20">
+          <div class="flex items-center justify-between text-emerald-800 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Lengkap</span>
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricLengkap" class="text-2xl sm:text-3xl font-bold font-mono text-emerald-800">0</span>
+            <span class="text-xs text-emerald-700">berkas</span>
+          </div>
+          <p class="text-[11px] text-emerald-800 mt-1">ND & Surat Direktur tersedia</p>
+        </div>
+
+        <!-- Card 3: Pending Surat Direktur -->
+        <div class="bg-white rounded-xl border border-amber-200 p-4 shadow-sm flex flex-col justify-between bg-amber-50/20">
+          <div class="flex items-center justify-between text-amber-800 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Pending Surat</span>
+            <i class="fa-solid fa-clock text-amber-600"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricPending" class="text-2xl sm:text-3xl font-bold font-mono text-amber-800">0</span>
+            <span class="text-xs text-amber-700">berkas</span>
+          </div>
+          <p class="text-[11px] text-amber-800 mt-1">Menunggu upload Surat Direktur</p>
+        </div>
+
+        <!-- Card 4: Belum Ada Berkas -->
+        <div class="bg-white rounded-xl border border-rose-200 p-4 shadow-sm flex flex-col justify-between bg-rose-50/20">
+          <div class="flex items-center justify-between text-rose-800 mb-1">
+            <span class="text-xs font-semibold uppercase tracking-wider">Belum Ada Berkas</span>
+            <i class="fa-solid fa-file-circle-xmark text-rose-600"></i>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="metricDraft" class="text-2xl sm:text-3xl font-bold font-mono text-rose-800">0</span>
+            <span class="text-xs text-rose-700">berkas</span>
+          </div>
+          <p class="text-[11px] text-rose-800 mt-1">Dokumen ND & Surat masih kosong</p>
+        </div>
+      </section>
+
+      <!-- Bar Kontrol Fungsional: Filter, Urutan & Rentang Waktu -->
+      <section aria-label="Kontrol Filter dan Urutan" class="bg-white rounded-xl border border-slate-200 p-3.5 sm:p-4 shadow-sm space-y-3">
+        
+        <!-- Baris Atas: Pencarian Teks & Tombol Catat -->
+        <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+          <div class="relative flex-1">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm pointer-events-none"></i>
+            <input type="text" id="searchInput" oninput="applyFiltersAndSort()" 
+                   placeholder="Cari perihal, nomor surat, atau konseptor..." 
+                   class="touch-target w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700 transition">
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Toggle Sorting -->
+            <button onclick="toggleSortOrder()" id="btnSortToggle" title="Ubah Urutan Data"
+                    class="touch-target px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-xs sm:text-sm font-medium transition flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+              <i id="sortIcon" class="fa-solid fa-arrow-down-wide-short text-xs"></i>
+              <span id="sortLabelText">Terbaru ↓</span>
+            </button>
+
+            <!-- Segarkan Data -->
+            <button onclick="loadData()" title="Segarkan Data" 
+                    class="touch-target px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-sm transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+              <i id="refreshIcon" class="fa-solid fa-rotate-right"></i>
+            </button>
+
+            <!-- Catat Surat Baru -->
+            <button onclick="openModal()" 
+                    class="touch-target flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span>Catat Surat Keluar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Baris Bawah: Rentang Tanggal, Filter Status, Filter Konseptor -->
+        <div class="pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <!-- Rentang Tanggal Mulai -->
+          <div>
+            <label for="filterDateStart" class="block text-[11px] font-semibold text-slate-600 mb-1">Tanggal Mulai</label>
+            <input type="date" id="filterDateStart" onchange="applyFiltersAndSort()"
+                   class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+          </div>
+
+          <!-- Rentang Tanggal Selesai -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="filterDateEnd" class="block text-[11px] font-semibold text-slate-600">Tanggal Selesai</label>
+              <button onclick="resetDateRange()" type="button" class="text-[10px] text-blue-700 hover:underline">Reset Tanggal</button>
+            </div>
+            <input type="date" id="filterDateEnd" onchange="applyFiltersAndSort()"
+                   class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+          </div>
+
+          <!-- Filter Status Kelengkapan -->
+          <div>
+            <label for="filterStatusSelect" class="block text-[11px] font-semibold text-slate-600 mb-1">Status Berkas</label>
+            <select id="filterStatusSelect" onchange="applyFiltersAndSort()"
+                    class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+              <option value="all">Semua Status</option>
+              <option value="lengkap">Lengkap (Selesai)</option>
+              <option value="pending">Belum Upload Surat Direktur</option>
+              <option value="draft">Belum Ada Berkas</option>
+            </select>
+          </div>
+
+          <!-- Filter Konseptor (PIC) -->
+          <div>
+            <label for="filterKonseptorSelect" class="block text-[11px] font-semibold text-slate-600 mb-1">Konseptor (PIC)</label>
+            <select id="filterKonseptorSelect" onchange="applyFiltersAndSort()"
+                    class="touch-target w-full text-xs border border-slate-300 rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-700">
+              <option value="all">Semua Konseptor</option>
+              <!-- Opsi konseptor diinjeksi via script -->
+            </select>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Section 1: Tabel Surat Keluar -->
+      <section id="secSuratKeluar" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600 font-medium">
+          <span>Daftar Registrasi Surat Keluar (2026)</span>
+          <span id="countSurat" class="font-semibold text-slate-800">0 Berkas</span>
+        </div>
+        <div class="overflow-x-auto w-full">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-semibold border-b border-slate-200">
+              <tr>
+                <th scope="col" class="px-3.5 py-3 w-12 text-center">No</th>
+                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Tanggal</th>
+                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Nomor Surat</th>
+                <th scope="col" class="px-3.5 py-3 min-w-[260px]">Perihal</th>
+                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Konseptor</th>
+                <th scope="col" class="px-3.5 py-3 text-center whitespace-nowrap">Status Dokumen</th>
+                <th scope="col" class="px-3 py-3 text-center whitespace-nowrap">ND Kasubdit</th>
+                <th scope="col" class="px-3 py-3 text-center whitespace-nowrap">Surat Direktur</th>
+                <th scope="col" class="px-3 py-3 text-center whitespace-nowrap">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tbodySuratKeluar" class="divide-y divide-slate-200 text-slate-800">
+              <tr><td colspan="9" class="px-4 py-12 text-center text-slate-500">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
     </div>
 
-    <!-- Section 1: Tabel Surat Keluar -->
-    <section id="secSuratKeluar" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600 font-medium">
-        <span>Daftar Registrasi Surat Keluar (2026)</span>
-        <span id="countSurat" class="font-semibold text-slate-800">0 Berkas</span>
-      </div>
-      <div class="overflow-x-auto w-full">
-        <table class="w-full text-left text-sm border-collapse">
-          <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-semibold border-b border-slate-200">
-            <tr>
-              <th scope="col" class="px-4 py-3 w-14 text-center">No</th>
-              <th scope="col" class="px-4 py-3 whitespace-nowrap">Tanggal</th>
-              <th scope="col" class="px-4 py-3 whitespace-nowrap">Nomor Surat</th>
-              <th scope="col" class="px-4 py-3 min-w-[280px]">Perihal</th>
-              <th scope="col" class="px-4 py-3 whitespace-nowrap">Konseptor</th>
-              <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">ND Kasubdit</th>
-              <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Surat Direktur</th>
-            </tr>
-          </thead>
-          <tbody id="tbodySuratKeluar" class="divide-y divide-slate-200 text-slate-800">
-            <tr><td colspan="7" class="px-4 py-12 text-center text-slate-500">Memuat data...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <!-- Section: BA Jasa Terkait Container -->
+    <div id="containerBA" class="hidden space-y-4">
+      
+      <!-- Action Toolbar BA -->
+      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+        <div class="relative flex-1 max-w-md">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-500 text-sm pointer-events-none"></i>
+          <input type="text" id="searchInputBA" oninput="handleFilterBA()" 
+                 placeholder="Cari nomor BA, PT, bandara, atau PIC..." 
+                 class="touch-target w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-slate-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-blue-700 transition">
+        </div>
 
-    <!-- Section 2: Tabel BA Jasa Terkait -->
-    <section id="secBA" class="hidden bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600 font-medium">
-        <span>Daftar Berita Acara Jasa Terkait (2026)</span>
-        <span id="countBA" class="font-semibold text-slate-800">0 Berkas</span>
+        <div class="flex items-center gap-2">
+          <button onclick="loadData()" title="Segarkan Data" 
+                  class="touch-target px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg text-slate-700 shadow-sm text-sm transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+          <button onclick="openModal()" 
+                  class="touch-target flex-1 sm:flex-none inline-flex items-center justify-center space-x-2 px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-sm font-semibold rounded-lg shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Catat BA Jasa Terkait</span>
+          </button>
+        </div>
       </div>
-      <div class="overflow-x-auto w-full">
-        <table class="w-full text-left text-sm border-collapse">
-          <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-semibold border-b border-slate-200">
-            <tr>
-              <th scope="col" class="px-4 py-3 w-14 text-center">No</th>
-              <th scope="col" class="px-4 py-3 whitespace-nowrap">Tanggal</th>
-              <th scope="col" class="px-4 py-3 whitespace-nowrap">Nomor Berita Acara</th>
-              <th scope="col" class="px-4 py-3 min-w-[220px]">Badan Usaha (PT)</th>
-              <th scope="col" class="px-4 py-3 min-w-[200px]">Bandara</th>
-              <th scope="col" class="px-4 py-3 min-w-[180px]">Tim PIC</th>
-              <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Dokumen BA</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyBA" class="divide-y divide-slate-200 text-slate-800">
-            <tr><td colspan="7" class="px-4 py-12 text-center text-slate-500">Memuat data...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+
+      <!-- Tabel BA Jasa Terkait -->
+      <section id="secBA" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600 font-medium">
+          <span>Daftar Berita Acara Jasa Terkait (2026)</span>
+          <span id="countBA" class="font-semibold text-slate-800">0 Berkas</span>
+        </div>
+        <div class="overflow-x-auto w-full">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-semibold border-b border-slate-200">
+              <tr>
+                <th scope="col" class="px-4 py-3 w-14 text-center">No</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Tanggal</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Nomor Berita Acara</th>
+                <th scope="col" class="px-4 py-3 min-w-[220px]">Badan Usaha (PT)</th>
+                <th scope="col" class="px-4 py-3 min-w-[200px]">Bandara</th>
+                <th scope="col" class="px-4 py-3 min-w-[180px]">Tim PIC</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Dokumen BA</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyBA" class="divide-y divide-slate-200 text-slate-800">
+              <tr><td colspan="7" class="px-4 py-12 text-center text-slate-500">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
   </main>
 
-  <!-- Modal Dialog Input Data -->
+  <!-- Modal Dialog Input Data Baru -->
   <div id="formModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
     <div class="bg-white rounded-xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto border border-slate-200">
       <div class="flex justify-between items-center pb-3 border-b border-slate-200">
@@ -156,12 +303,111 @@
     </div>
   </div>
 
+  <!-- Modal Dialog Edit & Upload Susulan (editModal) -->
+  <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-xl max-w-xl w-full p-5 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto border border-slate-200">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base">Kelola Berkas & Upload Susulan</h3>
+          <p class="text-xs text-slate-500">Lengkapi atau revisi dokumen Nota Dinas dan Surat Direktur</p>
+        </div>
+        <button onclick="closeEditModal()" aria-label="Tutup Modal Edit" 
+                class="touch-target w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="editForm" onsubmit="handleEditSubmit(event)" class="mt-4 space-y-4">
+        <input type="hidden" id="editNoUrut" value="">
+        <input type="hidden" id="editNomorSurat" value="">
+
+        <!-- Informasi Ringkas Surat (Read-only) -->
+        <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs">
+          <div class="flex justify-between items-center border-b border-slate-200/80 pb-1.5">
+            <span class="text-slate-500 font-medium">Nomor Surat:</span>
+            <span id="readNomorSurat" class="font-mono font-bold text-slate-900 text-sm">-</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 border-b border-slate-200/80 pb-1.5">
+            <div>
+              <span class="text-slate-500 block">Tanggal Surat:</span>
+              <span id="readTanggalSurat" class="font-medium text-slate-800">-</span>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Konseptor:</span>
+              <span id="readKonseptor" class="font-medium text-slate-800">-</span>
+            </div>
+          </div>
+          <div>
+            <span class="text-slate-500 block mb-0.5">Perihal:</span>
+            <p id="readPerihal" class="font-normal text-slate-800 leading-snug">-</p>
+          </div>
+        </div>
+
+        <!-- Status Berkas Eksisting -->
+        <div class="space-y-2 text-xs">
+          <span class="block font-semibold text-slate-800">Status Berkas Eksisting:</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="p-2.5 rounded-lg border border-slate-200 bg-white flex items-center justify-between">
+              <div>
+                <span class="text-slate-500 block text-[11px]">Nota Dinas Kasubdit</span>
+                <span id="badgeExistingND" class="text-xs font-medium text-slate-700">-</span>
+              </div>
+              <div id="linkContainerND"></div>
+            </div>
+            <div class="p-2.5 rounded-lg border border-slate-200 bg-white flex items-center justify-between">
+              <div>
+                <span class="text-slate-500 block text-[11px]">Surat Direktur</span>
+                <span id="badgeExistingSurat" class="text-xs font-medium text-slate-700">-</span>
+              </div>
+              <div id="linkContainerSurat"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Berkas Susulan / Pengganti -->
+        <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-3">
+          <p class="text-xs text-slate-600 font-medium">
+            Unggah berkas baru dalam format PDF untuk melengkapi atau merevisi dokumen di Google Drive:
+          </p>
+          
+          <div>
+            <label for="editFileND" class="block text-xs font-semibold text-slate-800 mb-1">
+              <i class="fa-solid fa-file-pdf text-blue-700 mr-1.5"></i>Upload Susulan Nota Dinas Kasubdit (PDF)
+            </label>
+            <input type="file" id="editFileND" accept=".pdf" 
+                   class="touch-target w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-800 hover:file:bg-blue-100">
+          </div>
+
+          <div>
+            <label for="editFileSurat" class="block text-xs font-semibold text-slate-800 mb-1">
+              <i class="fa-solid fa-file-signature text-emerald-700 mr-1.5"></i>Upload Susulan Surat Direktur / Final (PDF)
+            </label>
+            <input type="file" id="editFileSurat" accept=".pdf" 
+                   class="touch-target w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-800 hover:file:bg-emerald-100">
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-200 flex justify-end space-x-3">
+          <button type="button" onclick="closeEditModal()" 
+                  class="touch-target px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+            Batal
+          </button>
+          <button type="submit" id="btnEditSubmit" 
+                  class="touch-target px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-sm font-semibold shadow-sm transition flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-700">
+            <span>Simpan Pembaruan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzFk3Lgw0kXLpqhFgrBgVDOZyCKYwANppBq6-AtVggCK5EzJYKsFm39Tyz07AN8JqG0/exec";
 
     let currentTab = 'surat-keluar';
     let dataSurat = [];
     let dataBA = [];
+    let currentSortOrder = 'desc';
 
     const PIC_OPTIONS = ["Tony Fredrik", "Novrinanda", "Hanif A", "Aspar", "Farhan Rafiqi", "Andy Bastian", "Dedi Santoso", "Rosadianita", "Sadewo"];
     const BANDARA_OPTIONS = [
@@ -202,12 +448,58 @@
       return isNaN(d.getTime()) ? val : d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
+    function formatISODateOnly(val) {
+      if (!val) return '';
+      const d = new Date(val);
+      if (isNaN(d.getTime())) return '';
+      return d.toISOString().split('T')[0];
+    }
+
+    function getSuratStatus(r) {
+      const hasND = r[7] && String(r[7]).trim().startsWith('http');
+      const hasSurat = r[8] && String(r[8]).trim().startsWith('http');
+      if (hasND && hasSurat) return 'lengkap';
+      if (hasND && !hasSurat) return 'pending';
+      return 'draft';
+    }
+
+    function calculateMetrics() {
+      let total = dataSurat.length;
+      let lengkap = 0;
+      let pending = 0;
+      let draft = 0;
+
+      dataSurat.forEach(r => {
+        const s = getSuratStatus(r);
+        if (s === 'lengkap') lengkap++;
+        else if (s === 'pending') pending++;
+        else draft++;
+      });
+
+      document.getElementById('metricTotalSurat').textContent = total.toLocaleString('id-ID');
+      document.getElementById('metricLengkap').textContent = lengkap.toLocaleString('id-ID');
+      document.getElementById('metricPending').textContent = pending.toLocaleString('id-ID');
+      document.getElementById('metricDraft').textContent = draft.toLocaleString('id-ID');
+    }
+
+    function initKonseptorFilter() {
+      const sel = document.getElementById('filterKonseptorSelect');
+      if (!sel) return;
+      sel.innerHTML = '<option value="all">Semua Konseptor</option>';
+      PIC_OPTIONS.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+      });
+    }
+
     function switchTab(tab) {
       currentTab = tab;
       const isSurat = tab === 'surat-keluar';
 
-      document.getElementById('secSuratKeluar').classList.toggle('hidden', !isSurat);
-      document.getElementById('secBA').classList.toggle('hidden', isSurat);
+      document.getElementById('containerSuratKeluar').classList.toggle('hidden', !isSurat);
+      document.getElementById('containerBA').classList.toggle('hidden', isSurat);
 
       document.getElementById('tabBtnSurat').className = isSurat
         ? "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md bg-blue-700 text-white shadow-sm transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
@@ -216,10 +508,26 @@
       document.getElementById('tabBtnBA').className = !isSurat
         ? "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md bg-blue-700 text-white shadow-sm transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
         : "touch-target px-4 py-2 text-xs sm:text-sm font-medium rounded-md text-slate-300 hover:text-white transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white";
+    }
 
-      document.getElementById('btnAddText').innerText = isSurat ? "Catat Surat Keluar" : "Catat BA Jasa Terkait";
-      document.getElementById('searchInput').value = "";
-      handleFilter();
+    function toggleSortOrder() {
+      currentSortOrder = currentSortOrder === 'desc' ? 'asc' : 'desc';
+      const label = document.getElementById('sortLabelText');
+      const icon = document.getElementById('sortIcon');
+      if (currentSortOrder === 'desc') {
+        label.textContent = "Terbaru ↓";
+        icon.className = "fa-solid fa-arrow-down-wide-short text-xs";
+      } else {
+        label.textContent = "Terlama ↑";
+        icon.className = "fa-solid fa-arrow-up-wide-short text-xs";
+      }
+      applyFiltersAndSort();
+    }
+
+    function resetDateRange() {
+      document.getElementById('filterDateStart').value = '';
+      document.getElementById('filterDateEnd').value = '';
+      applyFiltersAndSort();
     }
 
     async function loadData() {
@@ -234,11 +542,11 @@
 
         dataSurat = (resSurat.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
         dataBA = (resBA.data || []).filter(r => r[0] !== 'No.' && r[0] !== 'No');
-        
-        document.getElementById('countSurat').textContent = `${dataSurat.length} Berkas`;
-        document.getElementById('countBA').textContent = `${dataBA.length} Berkas`;
 
-        renderSurat(dataSurat);
+        calculateMetrics();
+        applyFiltersAndSort();
+
+        document.getElementById('countBA').textContent = `${dataBA.length} Berkas`;
         renderBA(dataBA);
       } catch (err) {
         showToast("Gagal menyinkronkan data: " + err.message, "error");
@@ -247,27 +555,105 @@
       }
     }
 
+    function applyFiltersAndSort() {
+      const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const dateStart = document.getElementById('filterDateStart')?.value;
+      const dateEnd = document.getElementById('filterDateEnd')?.value;
+      const statusFilter = document.getElementById('filterStatusSelect')?.value || 'all';
+      const konseptorFilter = document.getElementById('filterKonseptorSelect')?.value || 'all';
+
+      let filtered = dataSurat.filter(r => {
+        // Filter Kata Kunci
+        if (q) {
+          const matchNo = String(r[0] || '').toLowerCase().includes(q);
+          const matchTanggal = String(r[1] || '').toLowerCase().includes(q);
+          const matchNomor = String(r[2] || '').toLowerCase().includes(q);
+          const matchPerihal = String(r[3] || '').toLowerCase().includes(q);
+          const matchKonseptor = String(r[6] || '').toLowerCase().includes(q);
+          if (!matchNo && !matchTanggal && !matchNomor && !matchPerihal && !matchKonseptor) return false;
+        }
+
+        // Filter Rentang Tanggal
+        if (dateStart || dateEnd) {
+          const rDateOnly = formatISODateOnly(r[1]);
+          if (rDateOnly) {
+            if (dateStart && rDateOnly < dateStart) return false;
+            if (dateEnd && rDateOnly > dateEnd) return false;
+          }
+        }
+
+        // Filter Status Kelengkapan
+        if (statusFilter !== 'all') {
+          const s = getSuratStatus(r);
+          if (s !== statusFilter) return false;
+        }
+
+        // Filter Konseptor
+        if (konseptorFilter !== 'all') {
+          if (String(r[6] || '').trim() !== konseptorFilter) return false;
+        }
+
+        return true;
+      });
+
+      // Sorting
+      filtered.sort((a, b) => {
+        const noA = parseInt(a[0]) || 0;
+        const noB = parseInt(b[0]) || 0;
+        return currentSortOrder === 'desc' ? noB - noA : noA - noB;
+      });
+
+      document.getElementById('countSurat').textContent = `${filtered.length} Berkas (dari ${dataSurat.length})`;
+      renderSurat(filtered);
+    }
+
+    function renderStatusBadge(status) {
+      if (status === 'lengkap') {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-300">
+          <i class="fa-solid fa-circle-check text-[10px] text-emerald-600"></i>Lengkap
+        </span>`;
+      }
+      if (status === 'pending') {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-300">
+          <i class="fa-solid fa-clock text-[10px] text-amber-600"></i>Pending Surat
+        </span>`;
+      }
+      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold text-rose-800 bg-rose-50 border border-rose-300">
+        <i class="fa-solid fa-circle-exclamation text-[10px] text-rose-600"></i>Draft Tanpa Berkas
+      </span>`;
+    }
+
     function renderSurat(rows) {
       const tbody = document.getElementById('tbodySuratKeluar');
       if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-10 text-center text-slate-500">Tidak ada data persuratan ditemukan</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="px-4 py-10 text-center text-slate-500">Tidak ada data persuratan ditemukan sesuai filter</td></tr>`;
         return;
       }
-      tbody.innerHTML = rows.map(r => `
+      tbody.innerHTML = rows.map(r => {
+        const status = getSuratStatus(r);
+        return `
         <tr class="hover:bg-slate-50 transition-colors border-b border-slate-200">
-          <td class="px-4 py-3 text-center font-mono text-xs text-slate-600 font-semibold">${r[0]}</td>
-          <td class="px-4 py-3 whitespace-nowrap text-xs text-slate-700">${formatDate(r[1])}</td>
-          <td class="px-4 py-3 whitespace-nowrap font-medium text-slate-900">${r[2] || '-'}</td>
-          <td class="px-4 py-3 text-slate-800 leading-snug">${r[3] || '-'}</td>
-          <td class="px-4 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-slate-100 border border-slate-200 text-slate-700 rounded text-xs font-medium">${r[6] || '-'}</span></td>
-          <td class="px-4 py-3 text-center whitespace-nowrap">
-            ${r[7] ? `<a href="${r[7]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 text-xs font-semibold bg-blue-50 border border-blue-200 px-2.5 py-1 rounded"><i class="fa-solid fa-file-pdf"></i> Draf ND</a>` : '<span class="text-slate-400">-</span>'}
+          <td class="px-3.5 py-3 text-center font-mono text-xs text-slate-600 font-semibold">${r[0]}</td>
+          <td class="px-3.5 py-3 whitespace-nowrap text-xs text-slate-700">${formatDate(r[1])}</td>
+          <td class="px-3.5 py-3 whitespace-nowrap font-medium text-slate-900 font-mono text-xs">${r[2] || '-'}</td>
+          <td class="px-3.5 py-3 text-slate-800 leading-snug">${r[3] || '-'}</td>
+          <td class="px-3.5 py-3 whitespace-nowrap"><span class="px-2 py-1 bg-slate-100 border border-slate-200 text-slate-700 rounded text-xs font-medium">${r[6] || '-'}</span></td>
+          <td class="px-3.5 py-3 text-center whitespace-nowrap">${renderStatusBadge(status)}</td>
+          <td class="px-3 py-3 text-center whitespace-nowrap">
+            ${r[7] ? `<a href="${r[7]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1 text-blue-700 hover:text-blue-900 text-xs font-semibold bg-blue-50 border border-blue-200 px-2 py-1 rounded"><i class="fa-solid fa-file-pdf"></i> ND</a>` : '<span class="text-slate-400 text-xs">-</span>'}
           </td>
-          <td class="px-4 py-3 text-center whitespace-nowrap">
-            ${r[8] ? `<a href="${r[8]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-emerald-800 hover:text-emerald-950 text-xs font-semibold bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded"><i class="fa-solid fa-file-signature"></i> Surat</a>` : '<span class="text-slate-400">-</span>'}
+          <td class="px-3 py-3 text-center whitespace-nowrap">
+            ${r[8] ? `<a href="${r[8]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1 text-emerald-800 hover:text-emerald-950 text-xs font-semibold bg-emerald-50 border border-emerald-200 px-2 py-1 rounded"><i class="fa-solid fa-file-signature"></i> Surat</a>` : '<span class="text-slate-400 text-xs">-</span>'}
+          </td>
+          <td class="px-3 py-3 text-center whitespace-nowrap">
+            <button onclick="openEditModal('${r[0]}')" title="Kelola / Upload Susulan" 
+                    class="touch-target inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700">
+              <i class="fa-solid fa-pen-to-square text-[11px]"></i>
+              <span>Kelola</span>
+            </button>
           </td>
         </tr>
-      `).join('');
+      `}).join('');
     }
 
     function renderBA(rows) {
@@ -280,7 +666,7 @@
         <tr class="hover:bg-slate-50 transition-colors border-b border-slate-200">
           <td class="px-4 py-3 text-center font-mono text-xs text-slate-600 font-semibold">${r[0]}</td>
           <td class="px-4 py-3 whitespace-nowrap text-xs text-slate-700">${formatDate(r[1])}</td>
-          <td class="px-4 py-3 whitespace-nowrap font-medium text-slate-900">${r[2] || '-'}</td>
+          <td class="px-4 py-3 whitespace-nowrap font-medium text-slate-900 font-mono text-xs">${r[2] || '-'}</td>
           <td class="px-4 py-3 font-semibold text-slate-900">${r[3] || '-'}</td>
           <td class="px-4 py-3 text-xs text-slate-700">${r[4] || '-'}</td>
           <td class="px-4 py-3 text-xs text-slate-700 whitespace-pre-line">${r[6] || '-'}</td>
@@ -289,6 +675,17 @@
           </td>
         </tr>
       `).join('');
+    }
+
+    function handleFilterBA() {
+      const q = (document.getElementById('searchInputBA')?.value || '').toLowerCase().trim();
+      const filtered = dataBA.filter(r => 
+        String(r[2] || '').toLowerCase().includes(q) || 
+        String(r[3] || '').toLowerCase().includes(q) || 
+        String(r[4] || '').toLowerCase().includes(q) ||
+        String(r[6] || '').toLowerCase().includes(q)
+      );
+      renderBA(filtered);
     }
 
     function openModal() {
@@ -369,6 +766,56 @@
       document.getElementById('mainForm').reset();
     }
 
+    function openEditModal(noUrut) {
+      const row = dataSurat.find(item => String(item[0]) === String(noUrut));
+      if (!row) {
+        showToast("Data surat tidak ditemukan.", "error");
+        return;
+      }
+
+      document.getElementById('editNoUrut').value = row[0];
+      document.getElementById('editNomorSurat').value = row[2] || '';
+      document.getElementById('readNomorSurat').textContent = row[2] || '-';
+      document.getElementById('readTanggalSurat').textContent = formatDate(row[1]);
+      document.getElementById('readKonseptor').textContent = row[6] || '-';
+      document.getElementById('readPerihal').textContent = row[3] || '-';
+
+      // Status ND
+      const badgeND = document.getElementById('badgeExistingND');
+      const containerND = document.getElementById('linkContainerND');
+      if (row[7] && String(row[7]).trim().startsWith('http')) {
+        badgeND.textContent = "Tersedia";
+        badgeND.className = "text-xs font-semibold text-emerald-800";
+        containerND.innerHTML = `<a href="${row[7]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>`;
+      } else {
+        badgeND.textContent = "Belum diunggah";
+        badgeND.className = "text-xs font-medium text-slate-400";
+        containerND.innerHTML = '';
+      }
+
+      // Status Surat
+      const badgeSurat = document.getElementById('badgeExistingSurat');
+      const containerSurat = document.getElementById('linkContainerSurat');
+      if (row[8] && String(row[8]).trim().startsWith('http')) {
+        badgeSurat.textContent = "Tersedia";
+        badgeSurat.className = "text-xs font-semibold text-emerald-800";
+        containerSurat.innerHTML = `<a href="${row[8]}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 hover:underline"><i class="fa-solid fa-arrow-up-right-from-square"></i> Buka</a>`;
+      } else {
+        badgeSurat.textContent = "Belum diunggah";
+        badgeSurat.className = "text-xs font-medium text-slate-400";
+        containerSurat.innerHTML = '';
+      }
+
+      document.getElementById('editFileND').value = '';
+      document.getElementById('editFileSurat').value = '';
+      document.getElementById('editModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.add('hidden');
+      document.getElementById('editForm').reset();
+    }
+
     function readFileAsBase64(fileInputId) {
       const el = document.getElementById(fileInputId);
       if (!el || !el.files || !el.files[0]) return Promise.resolve(null);
@@ -377,6 +824,58 @@
         reader.onload = () => resolve(reader.result);
         reader.readAsDataURL(el.files[0]);
       });
+    }
+
+    async function handleEditSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnEditSubmit');
+      const noUrut = document.getElementById('editNoUrut').value;
+      const nomorSurat = document.getElementById('editNomorSurat').value;
+
+      const fileND = document.getElementById('editFileND');
+      const fileSurat = document.getElementById('editFileSurat');
+
+      if ((!fileND.files || !fileND.files[0]) && (!fileSurat.files || !fileSurat.files[0])) {
+        showToast("Pilih setidaknya satu berkas PDF baru untuk diunggah susulan.", "error");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Mengunggah...`;
+
+      try {
+        const [base64ND, base64Surat] = await Promise.all([
+          readFileAsBase64('editFileND'),
+          readFileAsBase64('editFileSurat')
+        ]);
+
+        const payload = {
+          action: "updateSuratKeluar",
+          noUrut: noUrut,
+          nomorSurat: nomorSurat,
+          fileNotaKasubdit: base64ND,
+          fileSuratDirektur: base64Surat
+        };
+
+        const res = await fetch(GAS_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        }).then(r => r.json());
+
+        if (res.status === 'success') {
+          showToast(res.message || "Dokumen surat berhasil diperbarui.");
+          closeEditModal();
+          loadData();
+        } else {
+          showToast("Galat: " + res.message, "error");
+        }
+      } catch (err) {
+        showToast("Gagal memperbarui: " + err.message, "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `Simpan Pembaruan`;
+      }
     }
 
     async function handleSubmit(e) {
@@ -439,33 +938,16 @@
       }
     }
 
-    function handleFilter() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      if (currentTab === 'surat-keluar') {
-        const filtered = dataSurat.filter(r => 
-          String(r[2] || '').toLowerCase().includes(q) || 
-          String(r[3] || '').toLowerCase().includes(q) || 
-          String(r[6] || '').toLowerCase().includes(q)
-        );
-        renderSurat(filtered);
-      } else {
-        const filtered = dataBA.filter(r => 
-          String(r[2] || '').toLowerCase().includes(q) || 
-          String(r[3] || '').toLowerCase().includes(q) || 
-          String(r[4] || '').toLowerCase().includes(q) ||
-          String(r[6] || '').toLowerCase().includes(q)
-        );
-        renderBA(filtered);
-      }
-    }
-
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW register failed:', err));
       });
     }
 
-    window.onload = loadData;
+    window.onload = () => {
+      initKonseptorFilter();
+      loadData();
+    };
   </script>
 </body>
 </html>
