@@ -274,18 +274,18 @@
         </div>
 
         <div class="overflow-x-auto w-full">
-          <table class="w-full text-left text-sm border-collapse">
-            <thead class="sticky top-[108px] sm:top-[61px] bg-slate-100/95 backdrop-blur-sm z-10 text-slate-700 text-[11px] uppercase tracking-wider font-semibold border-b border-slate-200">
+          <table class="w-full min-w-[720px] text-left text-sm border-collapse">
+            <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-bold border-b border-slate-200">
               <tr>
-                <th scope="col" class="px-3.5 py-3 w-12 text-center">No</th>
-                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Tanggal</th>
-                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Nomor Surat</th>
-                <th scope="col" class="px-3.5 py-3 min-w-[260px]">Perihal</th>
-                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Konseptor</th>
-                <th scope="col" class="px-3.5 py-3 text-center whitespace-nowrap">Status Dokumen</th>
-                <th scope="col" class="px-3 py-3 text-center whitespace-nowrap">ND Kasubdit</th>
-                <th scope="col" class="px-3 py-3 text-center whitespace-nowrap">Surat Direktur</th>
-                <th scope="col" class="px-3 py-3 text-center whitespace-nowrap">Aksi</th>
+                <th scope="col" class="px-4 py-3 w-12 text-center whitespace-nowrap">No</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Tanggal</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Nomor Surat</th>
+                <th scope="col" class="px-4 py-3 min-w-[260px] whitespace-nowrap">Perihal</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Konseptor</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Status Dokumen</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">ND Kasubdit</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Surat Direktur</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody id="tbodySuratKeluar" class="divide-y divide-slate-100 text-slate-800">
@@ -452,17 +452,17 @@
         </div>
 
         <div class="overflow-x-auto w-full">
-          <table class="w-full text-left text-sm border-collapse">
-            <thead class="sticky top-[108px] sm:top-[61px] bg-slate-100/95 backdrop-blur-sm z-10 text-slate-700 text-[11px] uppercase tracking-wider font-semibold border-b border-slate-200">
+          <table class="w-full min-w-[720px] text-left text-sm border-collapse">
+            <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-bold border-b border-slate-200">
               <tr>
-                <th scope="col" class="px-3.5 py-3 w-12 text-center">No</th>
-                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Tanggal</th>
-                <th scope="col" class="px-3.5 py-3 whitespace-nowrap">Nomor Berita Acara</th>
-                <th scope="col" class="px-3.5 py-3 min-w-[200px]">Badan Usaha (PT)</th>
-                <th scope="col" class="px-3.5 py-3 min-w-[180px]">Bandara</th>
-                <th scope="col" class="px-3.5 py-3 min-w-[160px]">Tim PIC</th>
-                <th scope="col" class="px-3.5 py-3 text-center whitespace-nowrap">Dokumen BA</th>
-                <th scope="col" class="px-3.5 py-3 text-center whitespace-nowrap">Aksi</th>
+                <th scope="col" class="px-4 py-3 w-12 text-center whitespace-nowrap">No</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Tanggal</th>
+                <th scope="col" class="px-4 py-3 whitespace-nowrap">Nomor Berita Acara</th>
+                <th scope="col" class="px-4 py-3 min-w-[200px] whitespace-nowrap">Badan Usaha (PT)</th>
+                <th scope="col" class="px-4 py-3 min-w-[180px] whitespace-nowrap">Bandara</th>
+                <th scope="col" class="px-4 py-3 min-w-[160px] whitespace-nowrap">Tim PIC</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Dokumen BA</th>
+                <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody id="tbodyBA" class="divide-y divide-slate-100 text-slate-800">
@@ -1115,19 +1115,19 @@
 
         return `
         <tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100">
-          <td class="px-3.5 py-3.5 text-center font-mono text-xs text-slate-600 font-bold">${escapeHtml(r[0])}</td>
-          <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
-          <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
-          <td class="px-3.5 py-3.5 text-slate-800 text-xs sm:text-sm leading-relaxed">${escapeHtml(r[3] || '-')}</td>
-          <td class="px-3.5 py-3.5 whitespace-nowrap"><span class="px-2.5 py-1 bg-slate-100/90 border border-slate-200/80 text-slate-700 rounded-lg text-xs font-medium">${escapeHtml(r[6] || '-')}</span></td>
-          <td class="px-3.5 py-3.5 text-center whitespace-nowrap">${renderStatusBadge(status)}</td>
-          <td class="px-3 py-3.5 text-center whitespace-nowrap">
+          <td class="px-4 py-3 text-center font-mono text-xs text-slate-600 font-bold">${escapeHtml(r[0])}</td>
+          <td class="px-4 py-3 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
+          <td class="px-4 py-3 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
+          <td class="px-4 py-3 text-slate-800 text-xs sm:text-sm leading-relaxed">${escapeHtml(r[3] || '-')}</td>
+          <td class="px-4 py-3 whitespace-nowrap"><span class="px-2.5 py-1 bg-slate-100/90 border border-slate-200/80 text-slate-700 rounded-lg text-xs font-medium">${escapeHtml(r[6] || '-')}</span></td>
+          <td class="px-4 py-3 text-center whitespace-nowrap">${renderStatusBadge(status)}</td>
+          <td class="px-4 py-3 text-center whitespace-nowrap">
             ${safeUrlND ? `<a href="${safeUrlND}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 text-xs font-semibold bg-blue-50/80 hover:bg-blue-100/80 border border-blue-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-pdf"></i> ND</a>` : '<span class="text-slate-400 text-xs font-mono font-medium">-</span>'}
           </td>
-          <td class="px-3 py-3.5 text-center whitespace-nowrap">
+          <td class="px-4 py-3 text-center whitespace-nowrap">
             ${safeUrlSurat ? `<a href="${safeUrlSurat}" target="_blank" rel="noopener noreferrer" class="touch-target inline-flex items-center gap-1.5 text-emerald-800 hover:text-emerald-950 text-xs font-semibold bg-emerald-50/80 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-all shadow-xs"><i class="fa-solid fa-file-signature"></i> Surat</a>` : '<span class="text-slate-400 text-xs font-mono font-medium">-</span>'}
           </td>
-          <td class="px-3 py-3.5 text-center whitespace-nowrap">
+          <td class="px-4 py-3 text-center whitespace-nowrap">
             <button onclick="openEditModal('${escapeHtml(r[0])}')" title="Kelola / Upload Susulan" 
                     class="touch-target inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 hover:text-blue-700 text-slate-700 border border-slate-200/90 transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 active:scale-95">
               <i class="fa-solid fa-pen-to-square text-[11px] text-slate-500"></i>
@@ -1274,14 +1274,14 @@
 
         return `
           <tr class="hover:bg-blue-50/40 transition-colors border-b border-slate-100">
-            <td class="px-3.5 py-3.5 text-center font-mono text-xs text-slate-600 font-bold">${escapeHtml(r[0])}</td>
-            <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
-            <td class="px-3.5 py-3.5 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
-            <td class="px-3.5 py-3.5 font-semibold text-slate-900 text-xs sm:text-sm">${escapeHtml(r[3] || '-')}</td>
-            <td class="px-3.5 py-3.5 text-xs text-slate-700">${escapeHtml(r[4] || '-')}</td>
-            <td class="px-3.5 py-3.5 text-xs text-slate-700 whitespace-pre-line">${escapeHtml(r[6] || '-')}</td>
-            <td class="px-3.5 py-3.5 text-center whitespace-nowrap">${docHtml}</td>
-            <td class="px-3.5 py-3.5 text-center whitespace-nowrap">
+            <td class="px-4 py-3 text-center font-mono text-xs text-slate-600 font-bold">${escapeHtml(r[0])}</td>
+            <td class="px-4 py-3 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
+            <td class="px-4 py-3 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
+            <td class="px-4 py-3 font-semibold text-slate-900 text-xs sm:text-sm">${escapeHtml(r[3] || '-')}</td>
+            <td class="px-4 py-3 text-xs text-slate-700">${escapeHtml(r[4] || '-')}</td>
+            <td class="px-4 py-3 text-xs text-slate-700 whitespace-pre-line">${escapeHtml(r[6] || '-')}</td>
+            <td class="px-4 py-3 text-center whitespace-nowrap">${docHtml}</td>
+            <td class="px-4 py-3 text-center whitespace-nowrap">
               <button onclick="openEditBAModal('${escapeHtml(r[0])}')" title="Kelola / Revisi Data BA" 
                       class="touch-target inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 hover:text-blue-700 text-slate-700 border border-slate-200/90 transition shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 active:scale-95">
                 <i class="fa-solid fa-pen-to-square text-[11px] text-slate-500"></i>
