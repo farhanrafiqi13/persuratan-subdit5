@@ -1,7 +1,7 @@
 {
   "name": "Portal Persuratan Subdit 5",
   "short_name": "Persuratan",
-  "description": "Aplikasi Pengelolaan Surat Keluar & Berita Acara Jasa Terkait Subdit 5",
+  "description": "Sistem Informasi Persuratan & Berita Acara Jasa Terkait Subdit 5 Tahun 2026",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
@@ -9,14 +9,19 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2875/2875338.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2875/2875338.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ]
 }

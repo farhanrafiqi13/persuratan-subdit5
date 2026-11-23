@@ -1,7 +1,10 @@
-const CACHE_NAME = 'persuratan-subdit5-v1';
+const CACHE_NAME = 'persuratan-subdit5-v2';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
 ];
@@ -27,7 +30,6 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Hanya simpan aset statis lokal ke cache, request API Google Script selalu direct network
   if (event.request.url.includes('script.google.com')) {
     event.respondWith(fetch(event.request));
     return;
@@ -35,7 +37,13 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
+      return cachedResponse || fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return networkResponse;
+      });
     })
   );
 });
