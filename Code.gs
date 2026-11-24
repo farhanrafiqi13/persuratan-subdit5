@@ -13,6 +13,28 @@ const PARENT_FOLDER_ND_ID = '1-PARENT_FOLDER_ND_KASUBDIT';
 const PARENT_FOLDER_SURAT_ID = '1-PARENT_FOLDER_SURAT_DIREKTUR';
 const PARENT_FOLDER_BA_ID = '1-PARENT_FOLDER_DOKUMEN_BA';
 
+const MASTER_BANDARA_BAKU = [
+  ["SUB", "Bandar Udara Juanda - Surabaya"],
+  ["TKG", "Bandar Udara Radin Inten II - Bandar Lampung"],
+  ["KDI", "Bandar Udara Haluoleo - Kendari"],
+  ["MKQ", "Bandar Udara Mopah - Merauke"],
+  ["LOP", "Bandar Udara Zainuddin Abdul Madjid - Lombok"],
+  ["DPS", "Bandar Udara I Gusti Ngurah Rai - Denpasar"],
+  ["CGK", "Bandar Udara Internasional Soekarno-Hatta - Tangerang"],
+  ["HLP", "Bandar Udara Halim Perdanakusuma - Jakarta"],
+  ["GTO", "Bandar Udara Djalaluddin - Gorontalo"],
+  ["TIM", "Bandar Udara Mozes Kilangin - Timika"],
+  ["BDO", "Bandar Udara Husein Sastranegara - Bandung"],
+  ["TRK", "Bandar Udara Juwata - Tarakan"],
+  ["BWX", "Bandar Udara Banyuwangi - Banyuwangi"],
+  ["PLM", "Bandar Udara Sultan Mahmud Badaruddin II - Palembang"],
+  ["SRG", "Bandar Udara Jenderal Ahmad Yani - Semarang"],
+  ["LBJ", "Bandar Udara Komodo - Labuan Bajo"],
+  ["UPG", "Bandar Udara Internasional Sultan Hasanuddin - Makassar"],
+  ["KNO", "Bandar Udara Kualanamu - Deli Serdang"],
+  ["BIK", "Bandar Udara Frans Kaisiepo - Biak"]
+];
+
 /**
  * Inisialisasi Sheet Master Bandara jika belum tersedia
  */
@@ -20,29 +42,43 @@ function getOrCreateMasterBandaraSheet(ss) {
   let sheet = ss.getSheetByName(SHEET_MASTER_BANDARA);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_MASTER_BANDARA);
-    const headers = ['Kode Bandara', 'Nama Lengkap Bandara'];
+    const headers = ['Kode IATA', 'Nama Bandara'];
     sheet.appendRow(headers);
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
-    
-    // Seed data master bandara awal
-    const defaultBandara = [
-      ['CGK', 'Soekarno-Hatta (Tangerang)'],
-      ['HLP', 'Halim Perdanakusuma (Jakarta)'],
-      ['GTO', 'Djalaluddin (Gorontalo)'],
-      ['TIM', 'Mozes Kilangin (Timika)'],
-      ['BDO', 'Husein Sastranegara (Bandung)'],
-      ['TRK', 'Juwata (Tarakan)'],
-      ['BWX', 'Banyuwangi'],
-      ['PLM', 'Sultan Mahmud Badaruddin II (Palembang)'],
-      ['SRG', 'Jenderal Ahmad Yani (Semarang)'],
-      ['LBJ', 'Komodo (Labuan Bajo)'],
-      ['UPG', 'Sultan Hasanuddin (Makassar)'],
-      ['KNO', 'Kualanamu (Medan)'],
-      ['BIK', 'Frans Kaisiepo (Biak)']
-    ];
-    defaultBandara.forEach(row => sheet.appendRow(row));
+    MASTER_BANDARA_BAKU.forEach(row => sheet.appendRow(row));
   }
   return sheet;
+}
+
+/**
+ * Normalisasi dan pembersihan nama bandara agar bersih dari kode IATA dan tanda kurung
+ */
+function cleanNamaBandara(nama) {
+  if (!nama) return '';
+  let str = String(nama).trim();
+  str = str.replace(/\s*[\(\[][A-Z0-9]{3,4}[\)\]]\s*/gi, " ").trim();
+  str = str.replace(/^[A-Z0-9]{3,4}\s*[-–:]\s*/i, "").trim();
+
+  if (!str.toLowerCase().startsWith("bandar udara") && !str.toLowerCase().startsWith("bandara")) {
+    str = "Bandar Udara " + str;
+  } else if (str.toLowerCase().startsWith("bandara ")) {
+    str = str.replace(/^bandara\s+/i, "Bandar Udara ");
+  }
+  return str.trim();
+}
+
+/**
+ * Format Nomor Berita Acara resmi kedinasan
+ * Contoh: 064/BA.SS/DOK-TKG/XI/2026
+ */
+function formatNomorBA(noUrut, kodeBandara, dateInput) {
+  const d = dateInput ? new Date(dateInput) : new Date();
+  const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+  const bulanRomawi = roman[d.getMonth()] || "I";
+  const tahun = d.getFullYear() || new Date().getFullYear();
+  const noPad = String(noUrut).padStart(3, '0');
+  const kode = String(kodeBandara || 'SUB').trim().toUpperCase();
+  return `${noPad}/BA.SS/DOK-${kode}/${bulanRomawi}/${tahun}`;
 }
 
 /**
@@ -51,7 +87,7 @@ function getOrCreateMasterBandaraSheet(ss) {
 function registerBandaraIfNew(ss, kodeBandara, namaBandara) {
   if (!kodeBandara) return;
   const kodeClean = String(kodeBandara).trim().toUpperCase();
-  const namaClean = String(namaBandara || kodeClean).trim();
+  const namaClean = cleanNamaBandara(namaBandara || kodeClean);
 
   const sheet = getOrCreateMasterBandaraSheet(ss);
   const data = sheet.getDataRange().getValues();
@@ -204,18 +240,17 @@ function doPost(e) {
       const sheet = ss.getSheetByName(SHEET_BA_JASA);
       const lastRow = sheet.getLastRow();
       const noUrut = lastRow;
-      const tahun = new Date().getFullYear();
       
       const kodeBandara = String(payload.kodeBandara || 'SUB').trim().toUpperCase();
-      const lokasiBandara = payload.lokasiBandara || kodeBandara;
+      const lokasiBandara = cleanNamaBandara(payload.lokasiBandara || kodeBandara);
 
       // Otomatis daftarkan bandara baru bila flag isManualBandara aktif
       if (payload.isManualBandara) {
         registerBandaraIfNew(ss, kodeBandara, payload.namaBandaraBaru || lokasiBandara);
       }
 
-      // Format Nomor BA otomatis kedinasan
-      const nomorBA = Utilities.formatString("BA.%03d/DBU.5/BA.SS/DOK-%s/%s", noUrut, kodeBandara, tahun);
+      // Format Nomor BA otomatis kedinasan: [NO_URUT]/BA.SS/DOK-[KODE_IATA]/[BULAN_ROMAWI]/[TAHUN]
+      const nomorBA = formatNomorBA(noUrut, kodeBandara, payload.tanggal);
 
       let linkBA = '';
       if (payload.fileBA) {
@@ -258,7 +293,7 @@ function doPost(e) {
       }
 
       const kodeBandara = String(payload.kodeBandara || '').trim().toUpperCase();
-      const lokasiBandara = payload.lokasiBandara || '';
+      const lokasiBandara = payload.lokasiBandara ? cleanNamaBandara(payload.lokasiBandara) : '';
 
       if (payload.isManualBandara && kodeBandara) {
         registerBandaraIfNew(ss, kodeBandara, payload.namaBandaraBaru || lokasiBandara);
@@ -267,6 +302,7 @@ function doPost(e) {
       if (payload.namaPT) sheet.getRange(targetRowIndex, 4).setValue(payload.namaPT);
       if (lokasiBandara) sheet.getRange(targetRowIndex, 5).setValue(lokasiBandara);
       if (payload.picList) sheet.getRange(targetRowIndex, 7).setValue(formatPicList(payload.picList));
+      if (payload.updatedNomorBA) sheet.getRange(targetRowIndex, 3).setValue(payload.updatedNomorBA);
 
       if (payload.fileBA) {
         const linkBA = saveBase64File(payload.fileBA, PARENT_FOLDER_BA_ID, `BA_${payload.noUrut}_update.pdf`);
@@ -332,3 +368,59 @@ function formatPicList(raw) {
   }
   return lines.map((name, idx) => `${idx + 1}. ${name}`).join('\n');
 }
+
+/**
+ * Utility: Normalisasi data nama bandara lama agar bersih dari kode IATA
+ * dan mengikuti format "Bandar Udara [Nama] - [Kota]"
+ */
+function normalizeDatabaseBandara() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const masterSheet = getOrCreateMasterBandaraSheet(ss);
+  
+  // Map master untuk pencarian cepat
+  const iataMap = new Map();
+  MASTER_BANDARA_BAKU.forEach(([kode, nama]) => iataMap.set(kode, nama));
+
+  // Tulis ulang masterDataBaku ke Master Bandara agar sinkron
+  masterSheet.clearContents();
+  masterSheet.appendRow(['Kode IATA', 'Nama Bandara']);
+  masterSheet.getRange(1, 1, 1, 2).setFontWeight('bold');
+  MASTER_BANDARA_BAKU.forEach(row => masterSheet.appendRow(row));
+
+  // Bersihkan Kolom E pada Tab 'BA DOC Jasa Terkait 2026'
+  const baSheet = ss.getSheetByName(SHEET_BA_JASA);
+  if (baSheet) {
+    const lastRow = baSheet.getLastRow();
+    let startRow = 2;
+    for (let r = 1; r <= Math.min(5, lastRow); r++) {
+      const val = baSheet.getRange(r, 1).getValue();
+      if (!isNaN(val) && val !== '' && Number(val) >= 1) {
+        startRow = r;
+        break;
+      }
+    }
+
+    const numRows = lastRow - startRow + 1;
+    if (numRows > 0) {
+      const range = baSheet.getRange(startRow, 1, numRows, 7);
+      const values = range.getValues();
+
+      for (let i = 0; i < values.length; i++) {
+        const noBA = String(values[i][2]);
+        let namaBandara = String(values[i][4]);
+
+        const match = noBA.match(/DOK-([A-Z0-9]+)\//i);
+        if (match && match[1]) {
+          const kode = match[1].toUpperCase();
+          if (iataMap.has(kode)) {
+            values[i][4] = iataMap.get(kode);
+            continue;
+          }
+        }
+        values[i][4] = cleanNamaBandara(namaBandara);
+      }
+      range.setValues(values);
+    }
+  }
+}
+

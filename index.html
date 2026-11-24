@@ -687,6 +687,15 @@
             </div>
           </div>
 
+          <!-- Realtime Preview Nomor BA Kedinasan (Modal Edit) -->
+          <div class="p-3 bg-slate-900 text-white rounded-xl flex items-center justify-between border border-slate-800 shadow-sm">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-stamp text-blue-400 text-xs"></i>
+              <span class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Preview Nomor BA:</span>
+            </div>
+            <span id="editPreviewNomorBA" class="font-mono font-bold text-xs sm:text-sm text-blue-300 tracking-wide">-</span>
+          </div>
+
           <!-- Field Edit Data Teks -->
           <div class="space-y-3.5">
             <div>
@@ -707,7 +716,7 @@
               <div class="relative">
                 <input type="text" id="editInputBandaraBA" list="listBandaraDatalist" autocomplete="off" required 
                        placeholder="Cari kode IATA (CGK) / nama bandara..."
-                       oninput="handleBandaraComboboxChange(this, 'editManualBandaraContainer', 'editHiddenKodeBandaraBA', 'editHiddenLokasiBandaraBA')"
+                       oninput="handleBandaraComboboxChange(this, 'editManualBandaraContainer', 'editHiddenKodeBandaraBA', 'editHiddenLokasiBandaraBA'); updateEditRealtimeBANumberPreview();"
                        class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 pr-9 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white transition shadow-xs">
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
                   <i class="fa-solid fa-magnifying-glass text-xs"></i>
@@ -727,12 +736,13 @@
                 <div>
                   <label for="editManualKodeBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Kode 3 Huruf (IATA) *</label>
                   <input type="text" id="editManualKodeBandara" maxlength="4" placeholder="SUB" 
-                         oninput="this.value = this.value.toUpperCase()" 
+                         oninput="this.value = this.value.toUpperCase(); updateEditRealtimeBANumberPreview();" 
                          class="touch-target min-h-[44px] w-full text-xs sm:text-sm font-mono font-bold uppercase border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
                 </div>
                 <div class="sm:col-span-2">
                   <label for="editManualNamaBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Nama Lengkap Bandara & Kota *</label>
-                  <input type="text" id="editManualNamaBandara" placeholder="Juanda (Surabaya)" 
+                  <input type="text" id="editManualNamaBandara" placeholder="Contoh: Juanda - Surabaya" 
+                         onblur="handleManualNamaBandaraBlur(this)"
                          class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
                 </div>
               </div>
@@ -847,22 +857,28 @@
     ];
 
     const BANDARA_OPTIONS = [
-      { kode: "CGK", nama: "Soekarno-Hatta (Tangerang)" },
-      { kode: "HLP", nama: "Halim Perdanakusuma (Jakarta)" },
-      { kode: "GTO", nama: "Djalaluddin (Gorontalo)" },
-      { kode: "TIM", nama: "Mozes Kilangin (Timika)" },
-      { kode: "BDO", nama: "Husein Sastranegara (Bandung)" },
-      { kode: "TRK", nama: "Juwata (Tarakan)" },
-      { kode: "BWX", nama: "Banyuwangi" },
-      { kode: "PLM", nama: "Sultan Mahmud Badaruddin II (Palembang)" },
-      { kode: "SRG", nama: "Jenderal Ahmad Yani (Semarang)" },
-      { kode: "LBJ", nama: "Komodo (Labuan Bajo)" },
-      { kode: "UPG", nama: "Sultan Hasanuddin (Makassar)" },
-      { kode: "KNO", nama: "Kualanamu (Medan)" },
-      { kode: "BIK", nama: "Frans Kaisiepo (Biak)" }
+      { kode: "SUB", nama: "Bandar Udara Juanda - Surabaya" },
+      { kode: "TKG", nama: "Bandar Udara Radin Inten II - Bandar Lampung" },
+      { kode: "KDI", nama: "Bandar Udara Haluoleo - Kendari" },
+      { kode: "MKQ", nama: "Bandar Udara Mopah - Merauke" },
+      { kode: "LOP", nama: "Bandar Udara Zainuddin Abdul Madjid - Lombok" },
+      { kode: "DPS", nama: "Bandar Udara I Gusti Ngurah Rai - Denpasar" },
+      { kode: "CGK", nama: "Bandar Udara Internasional Soekarno-Hatta - Tangerang" },
+      { kode: "HLP", nama: "Bandar Udara Halim Perdanakusuma - Jakarta" },
+      { kode: "GTO", nama: "Bandar Udara Djalaluddin - Gorontalo" },
+      { kode: "TIM", nama: "Bandar Udara Mozes Kilangin - Timika" },
+      { kode: "BDO", nama: "Bandar Udara Husein Sastranegara - Bandung" },
+      { kode: "TRK", nama: "Bandar Udara Juwata - Tarakan" },
+      { kode: "BWX", nama: "Bandar Udara Banyuwangi - Banyuwangi" },
+      { kode: "PLM", nama: "Bandar Udara Sultan Mahmud Badaruddin II - Palembang" },
+      { kode: "SRG", nama: "Bandar Udara Jenderal Ahmad Yani - Semarang" },
+      { kode: "LBJ", nama: "Bandar Udara Komodo - Labuan Bajo" },
+      { kode: "UPG", nama: "Bandar Udara Internasional Sultan Hasanuddin - Makassar" },
+      { kode: "KNO", nama: "Bandar Udara Kualanamu - Deli Serdang" },
+      { kode: "BIK", nama: "Bandar Udara Frans Kaisiepo - Biak" }
     ];
 
-    /* === Utilitas Sanitasi XSS (R-11) === */
+    /* === Utilitas Sanitasi XSS & Normalisasi Bandara (R-11) === */
     function escapeHtml(val) {
       if (val === null || val === undefined) return '';
       const str = String(val);
@@ -872,6 +888,34 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    /**
+     * Normalisasi string nama bandara murni kedinasan:
+     * Menghapus kode IATA inline (contoh: (SUB), [SUB], SUB -)
+     * dan memastikan diawali "Bandar Udara "
+     */
+    function cleanNamaBandara(nama) {
+      if (!nama) return '';
+      let str = String(nama).trim();
+      str = str.replace(/\s*[\(\[][A-Z0-9]{3,4}[\)\]]\s*/gi, ' ').trim();
+      str = str.replace(/^[A-Z0-9]{3,4}\s*[-–:]\s*/i, '').trim();
+
+      if (!str.toLowerCase().startsWith('bandar udara') && !str.toLowerCase().startsWith('bandara')) {
+        str = 'Bandar Udara ' + str;
+      } else if (str.toLowerCase().startsWith('bandara ')) {
+        str = str.replace(/^bandara\s+/i, 'Bandar Udara ');
+      }
+      return str.trim();
+    }
+
+    /**
+     * Helper render tabel: sanitasi XSS dan pastikan nama bandara bersih
+     */
+    function cleanNamaBandaraDisplay(val) {
+      if (!val) return '-';
+      const clean = cleanNamaBandara(val);
+      return escapeHtml(clean || '-');
     }
 
     function sanitizeUrl(url) {
@@ -1231,7 +1275,8 @@
       if (!dl) return;
       let html = '<option value="+ Input Bandara Baru (Manual)">';
       BANDARA_OPTIONS.forEach(b => {
-        html += `<option value="${escapeHtml(b.kode)} - ${escapeHtml(b.nama)}"></option>`;
+        html += `<option value="${escapeHtml(b.nama)}" label="${escapeHtml(b.kode)} - ${escapeHtml(b.nama)}"></option>`;
+        html += `<option value="${escapeHtml(b.kode)}" label="${escapeHtml(b.nama)}"></option>`;
       });
       dl.innerHTML = html;
     }
@@ -1246,7 +1291,7 @@
         BANDARA_OPTIONS.forEach(b => {
           const opt = document.createElement('option');
           opt.value = b.kode;
-          opt.textContent = `${b.nama} (${b.kode})`;
+          opt.textContent = `${b.nama}`;
           filterSel.appendChild(opt);
         });
         if (curVal && Array.from(filterSel.options).some(o => o.value === curVal)) {
@@ -1273,16 +1318,15 @@
         return;
       }
 
-      // Cari kecocokan di BANDARA_OPTIONS
+      // Cari kecocokan di BANDARA_OPTIONS berdasarkan IATA atau Nama
       const valLower = val.toLowerCase();
       const match = BANDARA_OPTIONS.find(b => {
         const combined = `${b.kode} - ${b.nama}`.toLowerCase();
-        const reverse = `${b.nama} (${b.kode})`.toLowerCase();
         return b.kode.toLowerCase() === valLower || 
+               b.nama.toLowerCase() === valLower || 
                combined === valLower || 
-               reverse === valLower || 
-               combined.startsWith(valLower) ||
-               b.kode.toLowerCase() === valLower.split(' - ')[0].trim();
+               b.nama.toLowerCase().includes(valLower) ||
+               valLower.includes(b.nama.toLowerCase());
       });
 
       if (match) {
@@ -1293,12 +1337,123 @@
             inp.value = '';
           });
         }
+        // Jika pengguna memilih atau mengetik kode IATA persis, ubah teks input jadi nama bandara murni
+        if (val.toUpperCase() === match.kode) {
+          inputEl.value = match.nama;
+        }
         if (hiddenKode) hiddenKode.value = match.kode;
-        if (hiddenLokasi) hiddenLokasi.value = `${match.nama} (${match.kode})`;
+        // Kolom bandara murni hanya berisi nama lengkap tanpa tanda kurung/IATA
+        if (hiddenLokasi) hiddenLokasi.value = match.nama;
       } else if (val) {
         if (hiddenKode) hiddenKode.value = '';
-        if (hiddenLokasi) hiddenLokasi.value = val;
+        if (hiddenLokasi) hiddenLokasi.value = cleanNamaBandara(val);
       }
+    }
+
+    function handleManualNamaBandaraBlur(inputEl) {
+      if (!inputEl || !inputEl.value) return;
+      const clean = cleanNamaBandara(inputEl.value);
+      if (clean) inputEl.value = clean;
+    }
+
+    function updateRealtimeBANumberPreview() {
+      const dateInp = document.querySelector('#dynamicFormFields input[name="tanggal"]');
+      const dateVal = dateInp ? dateInp.value : '';
+      const d = dateVal ? new Date(dateVal) : new Date();
+      const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+      const bulanRomawi = roman[d.getMonth()] || "I";
+      const tahun = d.getFullYear() || new Date().getFullYear();
+
+      // Cari No Urut berikutnya
+      let nextNo = 1;
+      if (dataBA && dataBA.length > 0) {
+        const maxNo = dataBA.reduce((max, r) => {
+          const n = parseInt(r[0]) || 0;
+          return n > max ? n : max;
+        }, 0);
+        nextNo = maxNo + 1;
+      }
+
+      // Ambil kode IATA
+      let kode = 'SUB';
+      const manualCont = document.getElementById('manualBandaraContainer');
+      const isManual = manualCont && !manualCont.classList.contains('hidden');
+      if (isManual) {
+        const manualKode = document.getElementById('manualKodeBandara')?.value.trim().toUpperCase();
+        if (manualKode) kode = manualKode;
+      } else {
+        const hiddenKode = document.getElementById('hiddenKodeBandaraBA')?.value.trim().toUpperCase();
+        if (hiddenKode && hiddenKode !== '__MANUAL__') {
+          kode = hiddenKode;
+        } else {
+          const inputVal = document.getElementById('inputBandaraBA')?.value.trim() || '';
+          const match = BANDARA_OPTIONS.find(b => 
+            b.kode.toLowerCase() === inputVal.toLowerCase() || 
+            b.nama.toLowerCase() === inputVal.toLowerCase() ||
+            inputVal.toLowerCase().includes(b.nama.toLowerCase())
+          );
+          if (match) {
+            kode = match.kode;
+          } else if (inputVal.length >= 3 && inputVal.length <= 4) {
+            kode = inputVal.toUpperCase();
+          }
+        }
+      }
+
+      const previewStr = `${String(nextNo).padStart(3, '0')}/BA.SS/DOK-${kode}/${bulanRomawi}/${tahun}`;
+      const previewEl = document.getElementById('previewNomorBA');
+      if (previewEl) previewEl.textContent = previewStr;
+    }
+
+    function updateEditRealtimeBANumberPreview() {
+      const noUrut = document.getElementById('editBANoUrut')?.value || '1';
+      const rawDate = document.getElementById('readBATanggal')?.textContent || '';
+      let d = new Date();
+      if (rawDate && rawDate !== '-') {
+        const parts = rawDate.split('/');
+        if (parts.length === 3) {
+          d = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+        } else {
+          d = new Date(rawDate);
+        }
+      }
+      if (isNaN(d.getTime())) d = new Date();
+
+      const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+      const bulanRomawi = roman[d.getMonth()] || "I";
+      const tahun = d.getFullYear() || new Date().getFullYear();
+
+      let kode = 'SUB';
+      const manualCont = document.getElementById('editManualBandaraContainer');
+      const isManual = manualCont && !manualCont.classList.contains('hidden');
+      if (isManual) {
+        const manualKode = document.getElementById('editManualKodeBandara')?.value.trim().toUpperCase();
+        if (manualKode) kode = manualKode;
+      } else {
+        const hiddenKode = document.getElementById('editHiddenKodeBandaraBA')?.value.trim().toUpperCase();
+        if (hiddenKode && hiddenKode !== '__MANUAL__') {
+          kode = hiddenKode;
+        } else {
+          const inputVal = document.getElementById('editInputBandaraBA')?.value.trim() || '';
+          const match = BANDARA_OPTIONS.find(b => 
+            b.kode.toLowerCase() === inputVal.toLowerCase() || 
+            b.nama.toLowerCase() === inputVal.toLowerCase() ||
+            inputVal.toLowerCase().includes(b.nama.toLowerCase())
+          );
+          if (match) {
+            kode = match.kode;
+          } else {
+            const noBAMatch = (document.getElementById('editBANomorBA')?.value || '').match(/DOK-([A-Z0-9]+)\//i);
+            if (noBAMatch && noBAMatch[1]) kode = noBAMatch[1].toUpperCase();
+          }
+        }
+      }
+
+      const previewStr = `${String(noUrut).padStart(3, '0')}/BA.SS/DOK-${kode}/${bulanRomawi}/${tahun}`;
+      const previewEl = document.getElementById('editPreviewNomorBA');
+      if (previewEl) previewEl.textContent = previewStr;
+      const readEl = document.getElementById('readBANomorBA');
+      if (readEl) readEl.textContent = previewStr;
     }
 
     function handleBandaraSelectChange(selectEl, containerId) {
@@ -1432,14 +1587,22 @@
             let nama = '';
             if (Array.isArray(item)) {
               kode = String(item[0] || '').trim().toUpperCase();
-              nama = String(item[1] || '').trim();
+              nama = cleanNamaBandara(String(item[1] || '').trim());
             } else if (item && typeof item === 'object') {
               kode = String(item.kode || item.kodeBandara || item.Kode || '').trim().toUpperCase();
-              nama = String(item.nama || item.namaBandara || item.Nama || '').trim();
+              nama = cleanNamaBandara(String(item.nama || item.namaBandara || item.Nama || '').trim());
             }
-            if (kode && !BANDARA_OPTIONS.some(b => b.kode === kode)) {
-              BANDARA_OPTIONS.push({ kode, nama: nama || kode });
-              updated = true;
+            if (kode) {
+              const existing = BANDARA_OPTIONS.find(b => b.kode === kode);
+              if (existing) {
+                if (nama && existing.nama !== nama) {
+                  existing.nama = nama;
+                  updated = true;
+                }
+              } else {
+                BANDARA_OPTIONS.push({ kode, nama: nama || `Bandar Udara ${kode}` });
+                updated = true;
+              }
             }
           });
           if (updated) {
@@ -1505,8 +1668,12 @@
         }
 
         if (bandaraFilter !== 'all') {
+          const bObj = BANDARA_OPTIONS.find(b => b.kode === bandaraFilter);
           const bandaraText = String(r[4] || '').toUpperCase();
-          if (!bandaraText.includes(bandaraFilter.toUpperCase())) return false;
+          const noBAText = String(r[2] || '').toUpperCase();
+          const matchCode = noBAText.includes(`DOK-${bandaraFilter}`) || bandaraText.includes(bandaraFilter);
+          const matchName = bObj ? bandaraText.includes(bObj.nama.toUpperCase()) : false;
+          if (!matchCode && !matchName) return false;
         }
 
         return true;
@@ -1559,7 +1726,7 @@
             <td class="px-4 py-3 whitespace-nowrap font-mono text-xs text-slate-700 font-medium">${formatDate(r[1])}</td>
             <td class="px-4 py-3 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
             <td class="px-4 py-3 font-semibold text-slate-900 text-xs sm:text-sm">${escapeHtml(r[3] || '-')}</td>
-            <td class="px-4 py-3 text-xs text-slate-700">${escapeHtml(r[4] || '-')}</td>
+            <td class="px-4 py-3 text-xs text-slate-700 font-medium whitespace-normal min-w-[200px] leading-relaxed align-top">${cleanNamaBandaraDisplay(r[4])}</td>
             <td class="px-4 py-3 text-xs text-slate-700 font-medium leading-relaxed align-top">${formatPicCell(r[6])}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap">${docHtml}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap">
@@ -1691,17 +1858,18 @@
             <div>
               <label class="block text-xs font-semibold text-slate-700 mb-1.5">Tanggal BA *</label>
               <input type="date" name="tanggal" value="${todayStr}" required 
+                     onchange="updateRealtimeBANumberPreview()"
                      class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none font-mono shadow-xs">
             </div>
             <div>
               <label for="inputBandaraBA" class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
                 <span>Lokasi Bandara *</span>
-                <span class="text-[10px] font-normal text-slate-500">Ketik IATA / Kota</span>
+                <span class="text-[10px] font-normal text-slate-500">Ketik IATA / Nama Bandara</span>
               </label>
               <div class="relative">
                 <input type="text" id="inputBandaraBA" list="listBandaraDatalist" autocomplete="off" required 
-                       placeholder="Cari kode IATA (CGK) / nama..."
-                       oninput="handleBandaraComboboxChange(this, 'manualBandaraContainer', 'hiddenKodeBandaraBA', 'hiddenLokasiBandaraBA')"
+                       placeholder="Cari kode IATA (CGK) / nama bandara..."
+                       oninput="handleBandaraComboboxChange(this, 'manualBandaraContainer', 'hiddenKodeBandaraBA', 'hiddenLokasiBandaraBA'); updateRealtimeBANumberPreview();"
                        class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 pr-9 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
                   <i class="fa-solid fa-magnifying-glass text-xs"></i>
@@ -1711,6 +1879,16 @@
               <input type="hidden" id="hiddenLokasiBandaraBA" value="">
             </div>
           </div>
+
+          <!-- Realtime Preview Nomor BA Kedinasan -->
+          <div class="p-3 bg-slate-900 text-white rounded-xl flex items-center justify-between border border-slate-800 shadow-sm">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-stamp text-blue-400 text-xs"></i>
+              <span class="text-[11px] font-semibold text-slate-300 uppercase tracking-wider">Preview Nomor BA:</span>
+            </div>
+            <span id="previewNomorBA" class="font-mono font-bold text-xs sm:text-sm text-blue-300 tracking-wide">001/BA.SS/DOK-SUB/I/2026</span>
+          </div>
+
           <!-- Kontainer Input Manual Master Bandara Baru (Modal Tambah) -->
           <div id="manualBandaraContainer" class="hidden p-3.5 bg-blue-50/70 rounded-xl border border-blue-200/80 space-y-2.5">
             <div class="text-[11px] font-semibold text-blue-900 flex items-center gap-1.5">
@@ -1721,12 +1899,13 @@
               <div>
                 <label for="manualKodeBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Kode 3 Huruf (IATA) *</label>
                 <input type="text" id="manualKodeBandara" maxlength="4" placeholder="SUB" 
-                       oninput="this.value = this.value.toUpperCase()" 
+                       oninput="this.value = this.value.toUpperCase(); updateRealtimeBANumberPreview();" 
                        class="touch-target min-h-[44px] w-full text-xs sm:text-sm font-mono font-bold uppercase border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
               </div>
               <div class="sm:col-span-2">
                 <label for="manualNamaBandara" class="block text-[10px] font-semibold text-slate-700 uppercase mb-1">Nama Lengkap Bandara & Kota *</label>
-                <input type="text" id="manualNamaBandara" placeholder="Juanda (Surabaya)" 
+                <input type="text" id="manualNamaBandara" placeholder="Contoh: Juanda - Surabaya" 
+                       onblur="handleManualNamaBandaraBlur(this)"
                        class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-700 outline-none bg-white">
               </div>
             </div>
@@ -1775,6 +1954,7 @@
           </div>
         `;
         addPicRow('picContainer', '');
+        updateRealtimeBANumberPreview();
       }
       document.getElementById('formModal').classList.remove('hidden');
     }
@@ -1870,23 +2050,32 @@
       const hiddenKode = document.getElementById('editHiddenKodeBandaraBA');
       const hiddenLokasi = document.getElementById('editHiddenLokasiBandaraBA');
 
+      // Cari kode dari nomor BA jika ada: misal 064/BA.SS/DOK-TKG/XI/2026
+      let iataFromBA = '';
+      const noBAMatch = String(row[2] || '').match(/DOK-([A-Z0-9]+)\//i);
+      if (noBAMatch && noBAMatch[1]) {
+        iataFromBA = noBAMatch[1].toUpperCase();
+      }
+
       const match = BANDARA_OPTIONS.find(b => {
+        if (iataFromBA && b.kode === iataFromBA) return true;
         return bandaraStr.toUpperCase().includes(b.kode) || bandaraStr.toLowerCase().includes(b.nama.toLowerCase());
       });
 
       if (match) {
-        if (inputBandara) inputBandara.value = `${match.kode} - ${match.nama}`;
+        if (inputBandara) inputBandara.value = match.nama;
         if (hiddenKode) hiddenKode.value = match.kode;
-        if (hiddenLokasi) hiddenLokasi.value = `${match.nama} (${match.kode})`;
+        if (hiddenLokasi) hiddenLokasi.value = match.nama;
         const manualCont = document.getElementById('editManualBandaraContainer');
         if (manualCont) {
           manualCont.classList.add('hidden');
           manualCont.querySelectorAll('input').forEach(i => { i.required = false; i.value = ''; });
         }
       } else {
-        if (inputBandara) inputBandara.value = bandaraStr;
-        if (hiddenKode) hiddenKode.value = '';
-        if (hiddenLokasi) hiddenLokasi.value = bandaraStr;
+        const cleanStr = cleanNamaBandara(bandaraStr);
+        if (inputBandara) inputBandara.value = cleanStr;
+        if (hiddenKode) hiddenKode.value = iataFromBA || '';
+        if (hiddenLokasi) hiddenLokasi.value = cleanStr;
       }
 
       const badgeBA = document.getElementById('badgeExistingBA');
@@ -1903,6 +2092,7 @@
       }
 
       resetFilePreview('editFileBA', 'previewEditBA', 'Pilih berkas BA baru atau seret ke sini');
+      updateEditRealtimeBANumberPreview();
       document.getElementById('editBAModal').classList.remove('hidden');
     }
 
@@ -2028,8 +2218,8 @@
         }
 
         kodeBandara = manualKode;
-        namaBandaraBaru = manualNama;
-        lokasiBandara = `${manualNama} (${manualKode})`;
+        namaBandaraBaru = cleanNamaBandara(manualNama);
+        lokasiBandara = cleanNamaBandara(manualNama);
       } else if (!kodeBandara && inputBandara) {
         const typedVal = inputBandara.value.trim();
         const match = BANDARA_OPTIONS.find(b => {
@@ -2039,11 +2229,13 @@
         });
         if (match) {
           kodeBandara = match.kode;
-          lokasiBandara = `${match.nama} (${match.kode})`;
+          lokasiBandara = match.nama;
         } else {
           kodeBandara = typedVal.substring(0, 3).toUpperCase();
-          lokasiBandara = typedVal;
+          lokasiBandara = cleanNamaBandara(typedVal);
         }
+      } else {
+        lokasiBandara = cleanNamaBandara(lokasiBandara);
       }
 
       btn.disabled = true;
@@ -2051,11 +2243,14 @@
 
       try {
         const base64BA = await readFileAsBase64('editFileBA');
+        const previewEl = document.getElementById('editPreviewNomorBA');
+        const updatedNomorBA = previewEl ? previewEl.textContent : nomorBA;
 
         const payload = {
           action: "updateBAJasaTerkait",
           noUrut: noUrut,
           nomorBA: nomorBA,
+          updatedNomorBA: updatedNomorBA,
           namaPT: namaPT,
           kodeBandara: kodeBandara,
           lokasiBandara: lokasiBandara,
@@ -2170,8 +2365,8 @@
           }
 
           kodeBandara = manualKode;
-          namaBandaraBaru = manualNama;
-          lokasiBandara = `${manualNama} (${manualKode})`;
+          namaBandaraBaru = cleanNamaBandara(manualNama);
+          lokasiBandara = cleanNamaBandara(manualNama);
         } else if (!kodeBandara && inputBandara) {
           const typedVal = inputBandara.value.trim();
           const match = BANDARA_OPTIONS.find(b => {
@@ -2181,11 +2376,13 @@
           });
           if (match) {
             kodeBandara = match.kode;
-            lokasiBandara = `${match.nama} (${match.kode})`;
+            lokasiBandara = match.nama;
           } else {
             kodeBandara = typedVal.substring(0, 3).toUpperCase();
-            lokasiBandara = typedVal;
+            lokasiBandara = cleanNamaBandara(typedVal);
           }
+        } else {
+          lokasiBandara = cleanNamaBandara(lokasiBandara);
         }
 
         btn.disabled = true;
