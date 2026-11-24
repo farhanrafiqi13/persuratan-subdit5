@@ -229,7 +229,7 @@ function doPost(e) {
         payload.namaPT,
         lokasiBandara,
         linkBA,
-        payload.picList
+        formatPicList(payload.picList)
       ]);
 
       return ContentService.createTextOutput(JSON.stringify({
@@ -266,7 +266,7 @@ function doPost(e) {
 
       if (payload.namaPT) sheet.getRange(targetRowIndex, 4).setValue(payload.namaPT);
       if (lokasiBandara) sheet.getRange(targetRowIndex, 5).setValue(lokasiBandara);
-      if (payload.picList) sheet.getRange(targetRowIndex, 7).setValue(payload.picList);
+      if (payload.picList) sheet.getRange(targetRowIndex, 7).setValue(formatPicList(payload.picList));
 
       if (payload.fileBA) {
         const linkBA = saveBase64File(payload.fileBA, PARENT_FOLDER_BA_ID, `BA_${payload.noUrut}_update.pdf`);
@@ -314,4 +314,21 @@ function saveBase64File(base64Data, parentFolderId, fileName) {
     Logger.log('Gagal menyimpan file: ' + err.toString());
     return '';
   }
+}
+
+/**
+ * Utilitas untuk membersihkan dan menomori ulang Tim PIC vertikal (\n)
+ */
+function formatPicList(raw) {
+  if (!raw) return '';
+  const str = String(raw).trim();
+  if (!str) return '';
+  let lines = [];
+  if (str.includes('\n')) {
+    lines = str.split('\n').map(l => l.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+  } else {
+    const parts = str.split(/(?=\b\d+[\.\)]\s*)/g).map(l => l.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+    lines = parts.length > 0 ? parts : [str];
+  }
+  return lines.map((name, idx) => `${idx + 1}. ${name}`).join('\n');
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'persuratan-subdit5-v5';
+const CACHE_NAME = 'persuratan-subdit5-v6';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',

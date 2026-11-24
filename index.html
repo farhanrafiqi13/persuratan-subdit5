@@ -690,17 +690,31 @@
           <!-- Field Edit Data Teks -->
           <div class="space-y-3.5">
             <div>
-              <label for="editBANamaPT" class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Badan Usaha (PT) *</label>
-              <input type="text" id="editBANamaPT" required 
-                     class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs">
+              <label for="editBANamaPT" class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>Nama Badan Usaha (PT) *</span>
+                <span class="text-[10px] font-normal text-slate-500">Pilih / Ketik PT Baru</span>
+              </label>
+              <input type="text" id="editBANamaPT" list="listPtDatalist" autocomplete="off" required 
+                     placeholder="Ketik atau pilih nama PT..."
+                     class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs bg-white">
             </div>
 
             <div>
-              <label for="editBABandaraSelect" class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
-              <select id="editBABandaraSelect" required onchange="handleBandaraSelectChange(this, 'editManualBandaraContainer')"
-                      class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white transition shadow-xs">
-                <!-- Diisi dinamis via initBandaraFilterBA -->
-              </select>
+              <label for="editInputBandaraBA" class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>Lokasi Bandara *</span>
+                <span class="text-[10px] font-normal text-slate-500">Ketik IATA / Nama Bandara</span>
+              </label>
+              <div class="relative">
+                <input type="text" id="editInputBandaraBA" list="listBandaraDatalist" autocomplete="off" required 
+                       placeholder="Cari kode IATA (CGK) / nama bandara..."
+                       oninput="handleBandaraComboboxChange(this, 'editManualBandaraContainer', 'editHiddenKodeBandaraBA', 'editHiddenLokasiBandaraBA')"
+                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 pr-9 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white transition shadow-xs">
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                  <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </div>
+              </div>
+              <input type="hidden" id="editHiddenKodeBandaraBA" value="">
+              <input type="hidden" id="editHiddenLokasiBandaraBA" value="">
             </div>
 
             <!-- Kontainer Input Manual Master Bandara Baru (Modal Edit) -->
@@ -725,10 +739,18 @@
             </div>
 
             <div>
-              <label for="editBAPicList" class="block text-xs font-semibold text-slate-700 mb-1.5">Tim PIC Pemeriksa *</label>
-              <input type="text" id="editBAPicList" required 
-                     placeholder="Contoh: 1. Andy Bastian  2. Tony Fredrik" 
-                     class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs">
+              <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>Tim PIC Pemeriksa *</span>
+                <span class="text-[10px] font-normal text-slate-500">Auto-numbering vertikal</span>
+              </label>
+              <div id="editPicContainer" class="space-y-2">
+                <!-- Diisi dinamis via populatePicRows -->
+              </div>
+              <button type="button" onclick="addPicRow('editPicContainer')"
+                      class="mt-2 w-full py-2.5 border-2 border-dashed border-slate-200 hover:border-blue-400 text-blue-600 rounded-xl text-xs font-semibold hover:bg-blue-50/40 transition flex items-center justify-center gap-1.5 touch-target min-h-[44px]">
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span>Tambah Personil PIC</span>
+              </button>
             </div>
           </div>
 
@@ -777,6 +799,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Datalist Autocomplete: Pegawai Subdit 5, Badan Usaha (PT), dan Lokasi Bandara -->
+  <datalist id="listPegawaiDatalist"></datalist>
+  <datalist id="listPtDatalist"></datalist>
+  <datalist id="listBandaraDatalist"></datalist>
 
   <!-- ==================== JavaScript: Logika Aplikasi & Integrasi Backend ==================== -->
   <script>
@@ -1184,7 +1211,34 @@
       if (elBelum) elBelum.textContent = belum.toLocaleString('id-ID');
     }
 
+    const LIST_PEGAWAI = PIC_OPTIONS;
+
+    function initPegawaiDatalist() {
+      const dl = document.getElementById('listPegawaiDatalist');
+      if (!dl) return;
+      dl.innerHTML = PIC_OPTIONS.map(p => `<option value="${escapeHtml(p)}"></option>`).join('');
+    }
+
+    function updatePtDatalist() {
+      const dl = document.getElementById('listPtDatalist');
+      if (!dl) return;
+      const uniquePTs = [...new Set(dataBA.map(r => String(r[3] || '').trim()))].filter(Boolean).sort();
+      dl.innerHTML = uniquePTs.map(pt => `<option value="${escapeHtml(pt)}"></option>`).join('');
+    }
+
+    function initBandaraDatalist() {
+      const dl = document.getElementById('listBandaraDatalist');
+      if (!dl) return;
+      let html = '<option value="+ Input Bandara Baru (Manual)">';
+      BANDARA_OPTIONS.forEach(b => {
+        html += `<option value="${escapeHtml(b.kode)} - ${escapeHtml(b.nama)}"></option>`;
+      });
+      dl.innerHTML = html;
+    }
+
     function initBandaraFilterBA() {
+      initBandaraDatalist();
+
       const filterSel = document.getElementById('filterBandaraSelectBA');
       if (filterSel) {
         const curVal = filterSel.value;
@@ -1199,49 +1253,51 @@
           filterSel.value = curVal;
         }
       }
+    }
 
-      const editSel = document.getElementById('editBABandaraSelect');
-      if (editSel) {
-        const curVal = editSel.value;
-        editSel.innerHTML = '<option value="" disabled selected>-- Pilih Bandara --</option>';
-        const manualOpt = document.createElement('option');
-        manualOpt.value = '__MANUAL__';
-        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
-        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
-        editSel.appendChild(manualOpt);
+    function handleBandaraComboboxChange(inputEl, containerId, hiddenKodeId, hiddenLokasiId) {
+      const val = inputEl.value.trim();
+      const container = document.getElementById(containerId);
+      const hiddenKode = document.getElementById(hiddenKodeId);
+      const hiddenLokasi = document.getElementById(hiddenLokasiId);
 
-        BANDARA_OPTIONS.forEach(b => {
-          const opt = document.createElement('option');
-          opt.value = b.kode;
-          opt.textContent = `${b.nama} (${b.kode})`;
-          editSel.appendChild(opt);
-        });
-
-        if (curVal && Array.from(editSel.options).some(o => o.value === curVal)) {
-          editSel.value = curVal;
+      if (val.startsWith('+') || val.toLowerCase().includes('manual')) {
+        if (container) {
+          container.classList.remove('hidden');
+          container.querySelectorAll('input').forEach(inp => inp.required = true);
+          const firstInput = container.querySelector('input');
+          if (firstInput) firstInput.focus();
         }
+        if (hiddenKode) hiddenKode.value = '__MANUAL__';
+        if (hiddenLokasi) hiddenLokasi.value = '';
+        return;
       }
 
-      const modalAddSel = document.getElementById('bandaraSelect');
-      if (modalAddSel) {
-        const curVal = modalAddSel.value;
-        modalAddSel.innerHTML = '<option value="" disabled selected>-- Pilih Bandara --</option>';
-        const manualOpt = document.createElement('option');
-        manualOpt.value = '__MANUAL__';
-        manualOpt.className = 'font-semibold text-blue-700 bg-blue-50';
-        manualOpt.textContent = '+ Input Bandara Baru (Manual)...';
-        modalAddSel.appendChild(manualOpt);
+      // Cari kecocokan di BANDARA_OPTIONS
+      const valLower = val.toLowerCase();
+      const match = BANDARA_OPTIONS.find(b => {
+        const combined = `${b.kode} - ${b.nama}`.toLowerCase();
+        const reverse = `${b.nama} (${b.kode})`.toLowerCase();
+        return b.kode.toLowerCase() === valLower || 
+               combined === valLower || 
+               reverse === valLower || 
+               combined.startsWith(valLower) ||
+               b.kode.toLowerCase() === valLower.split(' - ')[0].trim();
+      });
 
-        BANDARA_OPTIONS.forEach(b => {
-          const opt = document.createElement('option');
-          opt.value = b.kode;
-          opt.textContent = `${b.nama} (${b.kode})`;
-          modalAddSel.appendChild(opt);
-        });
-
-        if (curVal && Array.from(modalAddSel.options).some(o => o.value === curVal)) {
-          modalAddSel.value = curVal;
+      if (match) {
+        if (container) {
+          container.classList.add('hidden');
+          container.querySelectorAll('input').forEach(inp => {
+            inp.required = false;
+            inp.value = '';
+          });
         }
+        if (hiddenKode) hiddenKode.value = match.kode;
+        if (hiddenLokasi) hiddenLokasi.value = `${match.nama} (${match.kode})`;
+      } else if (val) {
+        if (hiddenKode) hiddenKode.value = '';
+        if (hiddenLokasi) hiddenLokasi.value = val;
       }
     }
 
@@ -1263,6 +1319,107 @@
           inp.value = '';
         });
       }
+    }
+
+    /* === Dynamic Tim PIC Pemeriksa Builder === */
+    function addPicRow(containerId, initialValue = '') {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      const rowDiv = document.createElement('div');
+      rowDiv.className = 'pic-row flex items-center gap-2';
+
+      const numSpan = document.createElement('span');
+      numSpan.className = 'pic-number w-6 text-center font-bold text-slate-700 font-mono text-xs select-none';
+      numSpan.textContent = '1.';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.setAttribute('list', 'listPegawaiDatalist');
+      input.className = 'pic-input flex-1 text-xs sm:text-sm border border-slate-300 rounded-xl p-2.5 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none transition shadow-xs touch-target min-h-[44px] bg-white';
+      input.placeholder = 'Ketik nama pemeriksa...';
+      input.value = initialValue;
+      input.required = true;
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'pic-delete-btn touch-target min-w-[44px] min-h-[44px] flex items-center justify-center text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition';
+      delBtn.title = 'Hapus personil ini';
+      delBtn.innerHTML = '<i class="fa-solid fa-trash-can text-sm"></i>';
+      delBtn.onclick = () => removePicRow(delBtn, containerId);
+
+      rowDiv.appendChild(numSpan);
+      rowDiv.appendChild(input);
+      rowDiv.appendChild(delBtn);
+
+      container.appendChild(rowDiv);
+      renumberPicRows(containerId);
+    }
+
+    function removePicRow(btnElement, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const rows = container.querySelectorAll('.pic-row');
+      if (rows.length <= 1) {
+        showToast("Minimal harus ada 1 personil PIC.", "error");
+        return;
+      }
+      const row = btnElement.closest('.pic-row');
+      if (row) {
+        row.remove();
+        renumberPicRows(containerId);
+      }
+    }
+
+    function renumberPicRows(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const rows = container.querySelectorAll('.pic-row');
+      rows.forEach((row, idx) => {
+        const numSpan = row.querySelector('.pic-number');
+        if (numSpan) numSpan.textContent = `${idx + 1}.`;
+        const delBtn = row.querySelector('.pic-delete-btn');
+        if (delBtn) {
+          if (rows.length === 1) {
+            delBtn.classList.add('opacity-30', 'pointer-events-none');
+            delBtn.tabIndex = -1;
+          } else {
+            delBtn.classList.remove('opacity-30', 'pointer-events-none');
+            delBtn.tabIndex = 0;
+          }
+        }
+      });
+    }
+
+    function populatePicRows(containerId, formattedString) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+
+      const str = String(formattedString || '').trim();
+      let names = [];
+      if (str) {
+        if (str.includes('\n')) {
+          names = str.split('\n').map(l => l.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+        } else {
+          const parts = str.split(/(?=\b\d+[\.\)]\s*)/g).map(l => l.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+          names = parts.length > 0 ? parts : [str];
+        }
+      }
+
+      if (names.length === 0) {
+        addPicRow(containerId, '');
+      } else {
+        names.forEach(name => addPicRow(containerId, name));
+      }
+    }
+
+    function getFormattedPicString(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return '';
+      const inputs = container.querySelectorAll('.pic-input');
+      const names = Array.from(inputs).map(inp => inp.value.trim()).filter(Boolean);
+      return names.map((name, idx) => `${idx + 1}. ${name}`).join('\n');
     }
 
     async function loadMasterBandara() {
@@ -1366,6 +1523,23 @@
       renderBA(filtered);
     }
 
+    /* === Format Tampilan Tim PIC Vertikal pada Sel Tabel === */
+    function formatPicCell(rawPic) {
+      if (!rawPic) return '<span class="text-slate-400">-</span>';
+      const str = String(rawPic).trim();
+      if (!str) return '<span class="text-slate-400">-</span>';
+
+      let lines = [];
+      if (str.includes('\n')) {
+        lines = str.split('\n').map(l => l.trim()).filter(Boolean);
+      } else {
+        const matched = str.split(/(?=\b\d+[\.\)]\s*)/g).map(l => l.trim()).filter(Boolean);
+        lines = matched.length > 1 ? matched : [str];
+      }
+
+      return lines.map(line => `<div class="py-0.5 leading-snug whitespace-nowrap">${escapeHtml(line)}</div>`).join('');
+    }
+
     /* === Render Tabel BA dengan Sanitasi XSS (R-07, R-11) === */
     function renderBA(rows) {
       const tbody = document.getElementById('tbodyBA');
@@ -1386,7 +1560,7 @@
             <td class="px-4 py-3 whitespace-nowrap font-mono text-xs font-bold text-slate-900 tracking-tight">${escapeHtml(r[2] || '-')}</td>
             <td class="px-4 py-3 font-semibold text-slate-900 text-xs sm:text-sm">${escapeHtml(r[3] || '-')}</td>
             <td class="px-4 py-3 text-xs text-slate-700">${escapeHtml(r[4] || '-')}</td>
-            <td class="px-4 py-3 text-xs text-slate-700 whitespace-pre-line">${escapeHtml(r[6] || '-')}</td>
+            <td class="px-4 py-3 text-xs text-slate-700 font-medium leading-relaxed align-top">${formatPicCell(r[6])}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap">${docHtml}</td>
             <td class="px-4 py-3 text-center whitespace-nowrap">
               <button onclick="openEditBAModal('${escapeHtml(r[0])}')" title="Kelola / Revisi Data BA" 
@@ -1431,6 +1605,7 @@
 
         calculateMetrics();
         calculateBAMetrics();
+        updatePtDatalist();
         applyFiltersAndSort();
         applyBAFiltersAndSort();
       } catch (err) {
@@ -1519,13 +1694,21 @@
                      class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none font-mono shadow-xs">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1.5">Lokasi Bandara *</label>
-              <select name="bandaraSelect" id="bandaraSelect" required onchange="handleBandaraSelectChange(this, 'manualBandaraContainer')"
-                      class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
-                <option value="" disabled selected>-- Pilih Bandara --</option>
-                <option value="__MANUAL__" class="font-semibold text-blue-700 bg-blue-50">+ Input Bandara Baru (Manual)...</option>
-                ${BANDARA_OPTIONS.map(b => `<option value="${escapeHtml(b.kode)}">${escapeHtml(b.nama)} (${escapeHtml(b.kode)})</option>`).join('')}
-              </select>
+              <label for="inputBandaraBA" class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>Lokasi Bandara *</span>
+                <span class="text-[10px] font-normal text-slate-500">Ketik IATA / Kota</span>
+              </label>
+              <div class="relative">
+                <input type="text" id="inputBandaraBA" list="listBandaraDatalist" autocomplete="off" required 
+                       placeholder="Cari kode IATA (CGK) / nama..."
+                       oninput="handleBandaraComboboxChange(this, 'manualBandaraContainer', 'hiddenKodeBandaraBA', 'hiddenLokasiBandaraBA')"
+                       class="touch-target min-h-[44px] w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 pr-9 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none bg-white shadow-xs">
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                  <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </div>
+              </div>
+              <input type="hidden" id="hiddenKodeBandaraBA" value="">
+              <input type="hidden" id="hiddenLokasiBandaraBA" value="">
             </div>
           </div>
           <!-- Kontainer Input Manual Master Bandara Baru (Modal Tambah) -->
@@ -1549,14 +1732,27 @@
             </div>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Badan Usaha (PT) *</label>
-            <input type="text" name="namaPT" required placeholder="Contoh: PT Gapura Angkasa" 
-                   class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none shadow-xs">
+            <label for="inputNamaPT" class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+              <span>Nama Badan Usaha (PT) *</span>
+              <span class="text-[10px] font-normal text-slate-500">Pilih / Ketik PT Baru</span>
+            </label>
+            <input type="text" name="namaPT" id="inputNamaPT" list="listPtDatalist" autocomplete="off" required 
+                   placeholder="Contoh: PT Gapura Angkasa" 
+                   class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none shadow-xs bg-white">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Tim PIC Pemeriksa *</label>
-            <input type="text" name="picList" placeholder="1. Andy Bastian  2. Tony Fredrik" required 
-                   class="touch-target w-full text-xs sm:text-sm border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none shadow-xs">
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+              <span>Tim PIC Pemeriksa *</span>
+              <span class="text-[10px] font-normal text-slate-500">Auto-numbering vertikal</span>
+            </label>
+            <div id="picContainer" class="space-y-2">
+              <!-- Diisi dinamis via addPicRow -->
+            </div>
+            <button type="button" onclick="addPicRow('picContainer')"
+                    class="mt-2 w-full py-2.5 border-2 border-dashed border-slate-200 hover:border-blue-400 text-blue-600 rounded-xl text-xs font-semibold hover:bg-blue-50/40 transition flex items-center justify-center gap-1.5 touch-target min-h-[44px]">
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span>Tambah Personil PIC</span>
+            </button>
           </div>
           <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80">
             <label class="block text-xs font-semibold text-slate-700 mb-1.5">
@@ -1578,6 +1774,7 @@
             </div>
           </div>
         `;
+        addPicRow('picContainer', '');
       }
       document.getElementById('formModal').classList.remove('hidden');
     }
@@ -1585,6 +1782,8 @@
     function closeModal() {
       document.getElementById('formModal').classList.add('hidden');
       document.getElementById('mainForm').reset();
+      const picCont = document.getElementById('picContainer');
+      if (picCont) picCont.innerHTML = '';
       const manual = document.getElementById('manualBandaraContainer');
       if (manual) {
         manual.classList.add('hidden');
@@ -1661,24 +1860,33 @@
       document.getElementById('readBANoUrut').textContent = row[0];
 
       document.getElementById('editBANamaPT').value = row[3] || '';
-      document.getElementById('editBAPicList').value = row[6] || '';
 
-      const selBandara = document.getElementById('editBABandaraSelect');
-      if (selBandara) {
-        const bandaraStr = String(row[4] || '');
-        let found = false;
-        for (let i = 0; i < selBandara.options.length; i++) {
-          const opt = selBandara.options[i];
-          if (opt.value && opt.value !== '__MANUAL__' && (bandaraStr.includes(opt.value) || opt.text.includes(bandaraStr))) {
-            selBandara.selectedIndex = i;
-            found = true;
-            break;
-          }
+      // Populate Dynamic Tim PIC Pemeriksa
+      populatePicRows('editPicContainer', row[6] || '');
+
+      // Populate Searchable Bandara
+      const bandaraStr = String(row[4] || '').trim();
+      const inputBandara = document.getElementById('editInputBandaraBA');
+      const hiddenKode = document.getElementById('editHiddenKodeBandaraBA');
+      const hiddenLokasi = document.getElementById('editHiddenLokasiBandaraBA');
+
+      const match = BANDARA_OPTIONS.find(b => {
+        return bandaraStr.toUpperCase().includes(b.kode) || bandaraStr.toLowerCase().includes(b.nama.toLowerCase());
+      });
+
+      if (match) {
+        if (inputBandara) inputBandara.value = `${match.kode} - ${match.nama}`;
+        if (hiddenKode) hiddenKode.value = match.kode;
+        if (hiddenLokasi) hiddenLokasi.value = `${match.nama} (${match.kode})`;
+        const manualCont = document.getElementById('editManualBandaraContainer');
+        if (manualCont) {
+          manualCont.classList.add('hidden');
+          manualCont.querySelectorAll('input').forEach(i => { i.required = false; i.value = ''; });
         }
-        if (!found && selBandara.options.length > 0) {
-          selBandara.selectedIndex = 0;
-        }
-        handleBandaraSelectChange(selBandara, 'editManualBandaraContainer');
+      } else {
+        if (inputBandara) inputBandara.value = bandaraStr;
+        if (hiddenKode) hiddenKode.value = '';
+        if (hiddenLokasi) hiddenLokasi.value = bandaraStr;
       }
 
       const badgeBA = document.getElementById('badgeExistingBA');
@@ -1701,6 +1909,8 @@
     function closeEditBAModal() {
       document.getElementById('editBAModal').classList.add('hidden');
       document.getElementById('editBAForm').reset();
+      const editPicCont = document.getElementById('editPicContainer');
+      if (editPicCont) editPicCont.innerHTML = '';
       const editManual = document.getElementById('editManualBandaraContainer');
       if (editManual) {
         editManual.classList.add('hidden');
@@ -1786,13 +1996,24 @@
       const btn = document.getElementById('btnEditBASubmit');
       const noUrut = document.getElementById('editBANoUrut').value;
       const nomorBA = document.getElementById('editBANomorBA').value;
-      const namaPT = document.getElementById('editBANamaPT').value;
-      const picList = document.getElementById('editBAPicList').value;
-      const selBandara = document.getElementById('editBABandaraSelect');
-      const isManual = selBandara.value === '__MANUAL__';
+      const namaPT = document.getElementById('editBANamaPT').value.trim();
 
-      let kodeBandara = selBandara.value;
-      let lokasiBandara = selBandara.options[selBandara.selectedIndex] ? selBandara.options[selBandara.selectedIndex].text : '';
+      const picList = getFormattedPicString('editPicContainer');
+      if (!picList) {
+        showToast("Harap isi minimal 1 personil Tim PIC Pemeriksa.", "error");
+        return;
+      }
+
+      const inputBandara = document.getElementById('editInputBandaraBA');
+      const hiddenKode = document.getElementById('editHiddenKodeBandaraBA');
+      const hiddenLokasi = document.getElementById('editHiddenLokasiBandaraBA');
+
+      const isManual = (hiddenKode && hiddenKode.value === '__MANUAL__') || 
+                       (inputBandara && inputBandara.value.startsWith('+')) ||
+                       (!document.getElementById('editManualBandaraContainer').classList.contains('hidden'));
+
+      let kodeBandara = hiddenKode ? hiddenKode.value : '';
+      let lokasiBandara = hiddenLokasi && hiddenLokasi.value ? hiddenLokasi.value : (inputBandara ? inputBandara.value.trim() : '');
       let namaBandaraBaru = '';
 
       if (isManual) {
@@ -1809,6 +2030,20 @@
         kodeBandara = manualKode;
         namaBandaraBaru = manualNama;
         lokasiBandara = `${manualNama} (${manualKode})`;
+      } else if (!kodeBandara && inputBandara) {
+        const typedVal = inputBandara.value.trim();
+        const match = BANDARA_OPTIONS.find(b => {
+          const combined = `${b.kode} - ${b.nama}`.toLowerCase();
+          const valLower = typedVal.toLowerCase();
+          return b.kode.toLowerCase() === valLower || combined === valLower || b.nama.toLowerCase() === valLower;
+        });
+        if (match) {
+          kodeBandara = match.kode;
+          lokasiBandara = `${match.nama} (${match.kode})`;
+        } else {
+          kodeBandara = typedVal.substring(0, 3).toUpperCase();
+          lokasiBandara = typedVal;
+        }
       }
 
       btn.disabled = true;
@@ -1905,11 +2140,22 @@
           btn.innerHTML = `<span>Simpan</span>`;
         }
       } else {
-        const selBandara = document.getElementById('bandaraSelect');
-        const isManual = selBandara.value === '__MANUAL__';
+        const picList = getFormattedPicString('picContainer');
+        if (!picList) {
+          showToast("Harap isi minimal 1 personil Tim PIC Pemeriksa.", "error");
+          return;
+        }
 
-        let kodeBandara = selBandara.value;
-        let lokasiBandara = selBandara.options[selBandara.selectedIndex] ? selBandara.options[selBandara.selectedIndex].text : '';
+        const inputBandara = document.getElementById('inputBandaraBA');
+        const hiddenKode = document.getElementById('hiddenKodeBandaraBA');
+        const hiddenLokasi = document.getElementById('hiddenLokasiBandaraBA');
+
+        const isManual = (hiddenKode && hiddenKode.value === '__MANUAL__') || 
+                         (inputBandara && inputBandara.value.startsWith('+')) ||
+                         (!document.getElementById('manualBandaraContainer').classList.contains('hidden'));
+
+        let kodeBandara = hiddenKode ? hiddenKode.value : '';
+        let lokasiBandara = hiddenLokasi && hiddenLokasi.value ? hiddenLokasi.value : (inputBandara ? inputBandara.value.trim() : '');
         let namaBandaraBaru = '';
 
         if (isManual) {
@@ -1926,6 +2172,20 @@
           kodeBandara = manualKode;
           namaBandaraBaru = manualNama;
           lokasiBandara = `${manualNama} (${manualKode})`;
+        } else if (!kodeBandara && inputBandara) {
+          const typedVal = inputBandara.value.trim();
+          const match = BANDARA_OPTIONS.find(b => {
+            const combined = `${b.kode} - ${b.nama}`.toLowerCase();
+            const valLower = typedVal.toLowerCase();
+            return b.kode.toLowerCase() === valLower || combined === valLower || b.nama.toLowerCase() === valLower;
+          });
+          if (match) {
+            kodeBandara = match.kode;
+            lokasiBandara = `${match.nama} (${match.kode})`;
+          } else {
+            kodeBandara = typedVal.substring(0, 3).toUpperCase();
+            lokasiBandara = typedVal;
+          }
         }
 
         btn.disabled = true;
@@ -1937,10 +2197,10 @@
           payload = {
             action: "addBAJasaTerkait",
             tanggal: form.tanggal.value,
-            namaPT: form.namaPT.value,
+            namaPT: form.namaPT.value.trim(),
             kodeBandara: kodeBandara,
             lokasiBandara: lokasiBandara,
-            picList: form.picList.value,
+            picList: picList,
             fileBA: base64BA
           };
 
@@ -1994,6 +2254,8 @@
     }
 
     window.onload = () => {
+      initPegawaiDatalist();
+      initBandaraDatalist();
       initKonseptorFilter();
       initBandaraFilterBA();
       loadData();
